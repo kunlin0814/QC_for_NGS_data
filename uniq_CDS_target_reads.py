@@ -57,7 +57,7 @@ def binarySearch (arr, left, right, reads_position, read_length):
 
 small_interval_dict ={}
 large_interval_dict ={}
-with open('/scratch/kh31516/Melanoma/Melanoma_source/Canis_familiaris.CanFam3.1.81.gtf-chr1-38X-CDS-forDepthOfCoverage.interval_list', 'r') as f:
+with open('/scratch/kh31516/Melanoma/Melanoma_source/uniq_Canis_familiaris.CanFam3.1.81.gtf-chr1-38X-CDS-forDepthOfCoverage.interval_list', 'r') as f:
     file = f.read()
 
 
@@ -126,21 +126,21 @@ with open(sam_file,'r') as f1:
 dup = [key for (key, value) in Counter(transcript_list).items() if value > 1 and key]
 pairs = total / 2
 
-summary = open('/scratch/kh31516/Original_Melanoma/'+file_name+'_CDS_mapping.txt','w')
+summary = open('/scratch/kh31516/Original_Melanoma/'+file_name+'Uniq_CDS_mapping.txt','w')
 
 summary.write('Total_reads'+'\t'+'Total_uniq\t'+'uniq_mapped_rate\t'+'Total_read_pairs\t'+'uniq_CDS_region\t'+'uniq_CDS_region_paris_rates\t'+'\n')
 summary.write(str(total)+'\t'+str(unique)+'\t'+str(unique/total)+'\t'+str(pairs)+'\t'+str(pass_line)+'\t'+str(pass_line/unique)+'\t'+'\n')
 summary.close()
 
       
-duplist = open('/scratch/kh31516/Original_Melanoma/'+file_name+'_dup_CDS_Mapping_list.txt','w')
+duplist = open('/scratch/kh31516/Original_Melanoma/'+file_name+'_dup_Uniq_CDS_Mapping_list.txt','w')
 
 for i in dup:
     duplist.write(i+'\n')
     
 duplist.close()
 
-allList = open('/scratch/kh31516/Original_Melanoma/'+file_name+'_all_CDS_Mapping_list.txt','w')
+allList = open('/scratch/kh31516/Original_Melanoma/'+file_name+'_all_Uniq_CDS_Mapping_list.txt','w')
 for i in transcript_list:
     allList.write(i+'\n')
 
