@@ -127,7 +127,6 @@ dup = [key for (key, value) in Counter(transcript_list).items() if value > 1 and
 pairs = total / 2
 
 summary = open('/scratch/kh31516/Original_Melanoma/'+file_name+'_CDS_mapping.txt','w')
-
 summary.write('Total_reads'+'\t'+'Total_uniq\t'+'uniq_mapped_rate\t'+'Total_read_pairs\t'+'uniq_CDS_region\t'+'uniq_CDS_region_paris_rates\t'+'\n')
 summary.write(str(total)+'\t'+str(unique)+'\t'+str(unique/total)+'\t'+str(pairs)+'\t'+str(pass_line)+'\t'+str(pass_line/unique)+'\t'+'\n')
 summary.close()
@@ -140,9 +139,10 @@ for i in dup:
     
 duplist.close()
 
+"""
 allList = open('/scratch/kh31516/Original_Melanoma/'+file_name+'_all_CDS_Mapping_list.txt','w')
 for i in transcript_list:
     allList.write(i+'\n')
 
 allList.close()
-    
+"""   
