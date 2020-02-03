@@ -5,6 +5,12 @@ Created on Wed Jan 29 13:38:09 2020
 
 @author: kun-linho
 """
+## The script can analyze how many sequence reads are in the exom region that definfed in the exon interval files
+## to see the whole exome sequence quality. Idealy, the sequence file needs to have at least 70% reads in the exon regions
+## The script take sequence sam file , sequence reads, and exon interval file as an input files.
+
+## The script implement the binary search to reduce the search time
+
 import sys
 from collections import Counter
 
