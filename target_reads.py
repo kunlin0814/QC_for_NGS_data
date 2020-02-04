@@ -18,11 +18,12 @@ from collections import Counter
 # min = 23840680 
 # max = 123780325
 
-## use 50 million bp as a cut off
-
-sam_file=sys.argv[1]
-file_name=sys.argv[2]
-read_length= int(sys.argv[3])
+sam_file="/Volumes/Research_Data/Pan_cancer/CMT-SRR7780976-test2.sam"
+#sys.argv[1]
+file_name="CMT-SRR7780976"
+#sys.argv[2]
+read_length = 101
+#int(sys.argv[3])
 
 ## criteria is Reads start site <=Exon end site and exon start site <= reads end site
 def withinRegion(reads_position, exom_start, exom_end):
@@ -63,7 +64,8 @@ def binarySearch (arr, left, right, reads_position, read_length):
 
 small_interval_dict ={}
 large_interval_dict ={}
-with open('/scratch/kh31516/Melanoma/Melanoma_source/Canis_familiaris.CanFam3.1.81.gtf-chr1-38X-CDS-forDepthOfCoverage.interval_list', 'r') as f:
+Total_interval_dict = {}
+with open('/Volumes/Research_Data/Pan_cancer/Mapping_source/Canis_familiaris.CanFam3.1.81.gtf-chr1-38X-CDS-forDepthOfCoverage.interval_list', 'r') as f:
     file = f.read()
 
 
@@ -73,22 +75,15 @@ for i in range(len(CDS)):
     chrom = CDS[i].split(':')[0]
     start = int(CDS[i].split(':')[1].split('-')[0])
     end = int(CDS[i].split(':')[1].split('-')[1])
-    if (start >= 50000000 and end >= 50000000):
-        if chrom not in large_interval_dict.keys():
-            large_interval_dict[chrom]=[(start, end)]
-        else:
-            large_interval_dict[chrom].append((start, end))
-    else: 
-         if chrom not in small_interval_dict.keys():
-            small_interval_dict[chrom]=[(start, end)]
-         else:
-            small_interval_dict[chrom].append((start, end))
-
-for i in small_interval_dict.keys():
-    small_interval_dict[i].sort()
+    if chrom not in Total_interval_dict.keys():
+        Total_interval_dict[chrom]=[(start, end)]
+    else:
+        Total_interval_dict[chrom].append((start, end))
    
-for i in large_interval_dict.keys():
-     large_interval_dict[i].sort()
+
+for i in Total_interval_dict.keys():
+    Total_interval_dict[i].sort()
+   
 
 unique = 0 #3
 #duplicate = 0 #3
@@ -116,36 +111,30 @@ with open(sam_file,'r') as f1:
                         status2 = ele.split(':')[2]
                         if status2 == 'U' or status2 == 'M':
                             unique += 1
-                            if reads_position < 50000000:
-                                exome_loc = small_interval_dict[reads_chr]
-                                if (binarySearch(exome_loc,0, len(exome_loc)-1,reads_position,read_length)!=-2):
-                                    transcript_list.append(reads_name)
-                                    pass_line+=1
-                                    
-                            else:
-                                 exome_loc = large_interval_dict[reads_chr]
-                                 if (binarySearch(exome_loc,0, len(exome_loc)-1,reads_position,read_length)!=-2):
-                                    transcript_list.append(reads_name)
-                                    pass_line+=1
+                            exome_loc = Total_interval_dict[reads_chr]
+                            if (binarySearch(exome_loc,0, len(exome_loc)-1,reads_position,read_length)!=-2):
+                                transcript_list.append(reads_name)
+                                pass_line+=1
                                 
+                           
 
-dup = [key for (key, value) in Counter(transcript_list).items() if value > 1 and key]
+#dup = [key for (key, value) in Counter(transcript_list).items() if value > 1 and key]
 pairs = total / 2
 
-summary = open('/scratch/kh31516/Original_Melanoma/'+file_name+'_CDS_mapping.txt','w')
-summary.write('Total_reads'+'\t'+'Total_uniq\t'+'uniq_mapped_rate\t'+'Total_read_pairs\t'+'uniq_CDS_region\t'+'uniq_CDS_region_paris_rates\t'+'\n')
-summary.write(str(total)+'\t'+str(unique)+'\t'+str(unique/total)+'\t'+str(pairs)+'\t'+str(pass_line)+'\t'+str(pass_line/unique)+'\t'+'\n')
+summary = open('/Users/kun-linho/Desktop/'+file_name+'_CDS_mapping.txt','w')
+#summary.write('File_name\t'+'Total_reads'+'\t'+'Total_uniq\t'+'uniq_mapped_rate\t'+'Total_read_pairs\t'+'uniq_CDS_region\t'+'uniq_CDS_region_paris_rates\t'+'\n')
+summary.write(file_name+'\t'+str(total)+'\t'+str(unique)+'\t'+str(unique/total)+'\t'+str(pairs)+'\t'+str(pass_line)+'\t'+str(pass_line/unique)+'\n')
 summary.close()
 
-      
-duplist = open('/scratch/kh31516/Original_Melanoma/'+file_name+'_dup_CDS_Mapping_list.txt','w')
+"""    
+#duplist = open('/scratch/kh31516/Original_Melanoma/'+file_name+'_dup_CDS_Mapping_list.txt','w')
 
 for i in dup:
     duplist.write(i+'\n')
     
 duplist.close()
 
-"""
+
 allList = open('/scratch/kh31516/Original_Melanoma/'+file_name+'_all_CDS_Mapping_list.txt','w')
 for i in transcript_list:
     allList.write(i+'\n')
