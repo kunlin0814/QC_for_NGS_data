@@ -25,9 +25,7 @@ public class Total_dict_Get_exon_reads {
         String SamFile = args[0];
         String file_name = args[1];
         int read_length = Integer.parseInt(args[3]);
-        File file_output = new File(args[2]);
-        //File file = new File("/scratch/kh31516/Original_Mammary/test-"+file_name+"_exongenetic_mapping.txt");
-        //String outputFile = "/Users/kun-linho/Desktop/Exon_java_test.txt";	
+        File file_output = new File(args[2]);	
 		
 		//Map<String, ArrayList<ExonLocationInfo>> small_interval_dict = new TreeMap<>();
 		//Map<String, ArrayList<ExonLocationInfo>> large_interval_dict = new TreeMap<>();
@@ -93,7 +91,7 @@ public class Total_dict_Get_exon_reads {
 		while ((strCurrentLine_sam = objReader_samfile.readLine()) != null) {
 			
 		if(strCurrentLine_sam.startsWith("@")) {
-			 
+			 ;
 		}
 		else {
 			String [] file_lst =  strCurrentLine_sam.split("\t");
@@ -206,9 +204,8 @@ class ExonLocationInfo implements Comparable <ExonLocationInfo>{
         return end;     
       }                      
   public int compareTo(ExonLocationInfo exon) {              
-	  
-	  return (this.getstart() < exon.getstart() ? -1 : 
-    	            (this.getstart() == exon.getstart() ? 0 : 1));     
+	  // use start point to sort
+	  return this.start-exon.start;     
     	  }                
 
 
