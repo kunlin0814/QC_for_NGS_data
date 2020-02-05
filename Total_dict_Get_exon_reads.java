@@ -29,9 +29,9 @@ public class Total_dict_Get_exon_reads {
         //File file = new File("/scratch/kh31516/Original_Mammary/test-"+file_name+"_exongenetic_mapping.txt");
         //String outputFile = "/Users/kun-linho/Desktop/Exon_java_test.txt";	
 		
-		Map<String, ArrayList<ExonLocationInfo>> small_interval_dict = new TreeMap<>();
-		Map<String, ArrayList<ExonLocationInfo>> large_interval_dict = new TreeMap<>();
-		TreeMap<String, ArrayList<ExonLocationInfo>> Total_interval_dict = new TreeMap<>();
+		//Map<String, ArrayList<ExonLocationInfo>> small_interval_dict = new TreeMap<>();
+		//Map<String, ArrayList<ExonLocationInfo>> large_interval_dict = new TreeMap<>();
+		Map<String, ArrayList<ExonLocationInfo>> Total_interval_dict = new HashMap<>();
 		
 		BufferedReader objReader = null;
 		objReader = new BufferedReader(new FileReader(ExonInterval));
