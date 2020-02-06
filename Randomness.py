@@ -11,7 +11,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-file_line = int(sys.argv[2]) 
+#file_line = int(sys.argv[2]) 
 with open ("C:/Users/abc73_000/Desktop/SRR7780979_DepthofCoverage_Distribution.txt",'r') as f:
     file = f.read()
 
@@ -48,7 +48,10 @@ data_frame = pd.DataFrame(data=df )
 
 plt.figure(figsize=(16,9))
 sns.set(font_scale=3)
-g =sns.lineplot(x='Position',y='Frequency', data = data_frame)      
+sns.distplot(freq_number, bins = len(freq_number),kde=False, axlabel= 'Frequency', color='orange')      
+plt.ylim(0,100)
+plt.xlim(0,1000)
+plt.close()
 #g.legend.remove() 
     
     
