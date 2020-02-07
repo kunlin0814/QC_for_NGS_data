@@ -45,7 +45,7 @@ skewness = skew(np.array(original_list))
 
 output = open(file_name+'_randomness_summary.txt','w')
 
-output.write(str(average)+'\t'+str(std)+'\t'+str(skewness))
+output.write(file_name+'\t'+str(average)+'\t'+str(std)+'\t'+str(skewness))
 output.close()
 
 
