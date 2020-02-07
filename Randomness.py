@@ -10,18 +10,21 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from scipy.stats import skew 
 
-Total_line = int(sys.argv[2]) 
-with open ("/Users/kun-linho/Desktop/test_distribution",'r') as f:
+
+input_file = sys.argv[1]
+file_name = sys.argv[2]
+with open (input_file,'r') as f:
     file = f.read()
 
 table = file.split('\n')[:-1]
 table.remove('1 Total_Depth')
-
    
 
 pos_number = []
-freq_number =[]    
+freq_number =[]
+original_list=[]    
 sum = 0    
 line = 0
 for content in table:
@@ -33,15 +36,23 @@ for content in table:
     freq_number.append(freq)
     total = freq*pos
     sum += total
+    for i in range(freq):
+        original_list.append(pos)
+          
+std = np.std(np.array(original_list))
+average = np.mean(np.array(original_list))    
+skewness = skew(np.array(original_list))
 
-average = sum/Total_line
+output = open(file_name+'_randomness_summary.txt','w')
 
-Std = 
+output.write(str(average)+'\t'+str(std)+'\t'+str(skewness))
+output.close()
 
 
-### Calcaulte Standard deviation ###
+## median= position (sum(freq)+1)/2 th position 
+## Calcaulte Standard deviation ###
 ## sqrt(sum of (freq*(value - mean)**2)/sum of (freq)) 
-
+"""
 df = {'Frequency': np.log2(np.array(freq_number)), 'Position': np.array(pos_number)}    
 data_frame = pd.DataFrame(data=df )
 
@@ -50,9 +61,8 @@ sns.set(font_scale=3)
 sns.lineplot(x ='Position', y = 'Frequency', data =df)
 #sns.distplot(freq_number, bins = len(freq_number),kde=False, axlabel= 'Frequency', color='orange')      
 
-#plt.close()
-#g.legend.remove() 
-"""   
+#plt.close() 
+  
 def makeOneSpace(String):
     content = String.split(' ')
     i = 0
