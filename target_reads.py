@@ -10,14 +10,14 @@ Created on Wed Jan 29 13:38:09 2020
 ## The script take sequence sam file , sequence reads, and exon interval file as an input files.
 
 ## The script implement the binary search to reduce the search time
-
+from datetime import datetime
 import sys
 from collections import Counter
 
 # each chromosome
 # min = 23840680 
 # max = 123780325
-
+now = datetime. now()
 sam_file="/Volumes/Research_Data/Pan_cancer/CMT-SRR7780976-test2.sam"
 #sys.argv[1]
 file_name="CMT-SRR7780976"
@@ -84,7 +84,8 @@ for i in range(len(CDS)):
 for i in Total_interval_dict.keys():
     Total_interval_dict[i].sort()
    
-
+current_time = datetime.now()
+print(current_time-now)
 unique = 0 #3
 #duplicate = 0 #3
 #Onemapped = 0 #5,9
@@ -120,12 +121,14 @@ with open(sam_file,'r') as f1:
 
 #dup = [key for (key, value) in Counter(transcript_list).items() if value > 1 and key]
 pairs = total / 2
-
+current_time = datetime.now()
+print(current_time-now)
+"""
 summary = open('/Users/kun-linho/Desktop/'+file_name+'_CDS_mapping.txt','w')
 #summary.write('File_name\t'+'Total_reads'+'\t'+'Total_uniq\t'+'uniq_mapped_rate\t'+'Total_read_pairs\t'+'uniq_CDS_region\t'+'uniq_CDS_region_paris_rates\t'+'\n')
 summary.write(file_name+'\t'+str(total)+'\t'+str(unique)+'\t'+str(unique/total)+'\t'+str(pairs)+'\t'+str(pass_line)+'\t'+str(pass_line/unique)+'\n')
 summary.close()
-
+"""
 """    
 #duplist = open('/scratch/kh31516/Original_Melanoma/'+file_name+'_dup_CDS_Mapping_list.txt','w')
 
