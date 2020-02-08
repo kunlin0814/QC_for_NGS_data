@@ -1,26 +1,17 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Feb  6 09:40:32 2020
+Created on Sat Feb  8 13:12:27 2020
 
-@author: kun-linho
+@author: abc73_000
 """
-
-def main():
-    car ={'plate':"GA", 'millage':50000}
-    car['brand']='WA'
-    car['year']=2015
-    car['owner']='lauren'
-    car['seller']= 'VW Athens'
-    print(car)
-    for i,j in car.items():
-        print(i,j )
-    for i in car.keys():
-        print (i)
-    for i in car:
-        print (car[i])
-    print(len(car))
-    car.pop('seller')
-    print(len(car),car)
-main()
-        
+import io
+a =[]
+with open('C:\\Users\\abc73_000\\Desktop\\test.sam','rb') as f:
+   
+    while True:
+         line = f.readline()
+         if line:
+             each= str(line.decode('ascii'))
+             a.append(each)
+         else:
+            break
