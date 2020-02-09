@@ -13,12 +13,16 @@ Created on Wed Jan 29 13:38:09 2020
 from datetime import datetime
 import sys
 from collections import Counter
-
+import numpy as np
+import io
+import multiprocessing
 # each chromosome
 # min = 23840680 
 # max = 123780325
+pool = multiprocessing.Pool(4)
+
 now = datetime. now()
-sam_file="/Volumes/Research_Data/Pan_cancer/CMT-SRR7780976-test2.sam"
+sam_file="C:\\Users\\abc73_000\\Desktop\\CMT-SRR7780976-test2.sam"
 #sys.argv[1]
 file_name="CMT-SRR7780976"
 #sys.argv[2]
@@ -65,7 +69,7 @@ def binarySearch (arr, left, right, reads_position, read_length):
 small_interval_dict ={}
 large_interval_dict ={}
 Total_interval_dict = {}
-with open('/Volumes/Research_Data/Pan_cancer/Mapping_source/Canis_familiaris.CanFam3.1.81.gtf-chr1-38X-CDS-forDepthOfCoverage.interval_list', 'r') as f:
+with open('G:\\Pan_cancer\\Mapping_source\\Canis_familiaris.CanFam3.1.81.gtf-chr1-38X-CDS-forDepthOfCoverage.interval_list', 'r') as f:
     file = f.read()
 
 
@@ -83,6 +87,7 @@ for i in range(len(CDS)):
 
 for i in Total_interval_dict.keys():
     Total_interval_dict[i].sort()
+
    
 current_time = datetime.now()
 print(current_time-now)
@@ -95,7 +100,7 @@ unique = 0 #3
 transcript_list =[]    
 total = 0 
 pass_line =0
-with open(sam_file,'r') as f1:   
+with io.open(sam_file,'r',buffering=200000) as f1:   
     for line in f1:
         file_lst = line.split('\t')
         if '@' in file_lst[0]:
