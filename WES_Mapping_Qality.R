@@ -4,7 +4,7 @@ library(dplyr)
 
 
 list <- c('Normal_Mammary_WES_Mapping','Tumor_Mammary_WES_Mapping','Normal_Melanoma_Mapping','Tumor_Melanoma_Mapping',
-          'Normal_Osteo_Mapping','Tumor_Osteo_Mapping','Normal_Lym_Mapping','Tumor_Lym_Mapping')
+          'Normal_Osteo_Mapping','Tumor_Osteo_Mapping','Normal_Lym_Mapping','Tumor_Lym_Mapping','Normal_Others_Mapping','Tumor_Others_Mapping')
 Df  <- "/Users/kun-linho/Desktop/Pan-Cancer-Uniq_exonic_mapped_Distribution.pdf"
 pdf(file=Df, w=7, h=5)
 
