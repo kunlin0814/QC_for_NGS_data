@@ -3,7 +3,7 @@ library(readxl)
 library(dplyr)
 
 
-Total_table <- read_excel("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Randomness/Randomness.xlsx",sheet ='Total_random')
+Total_table <- read_excel("C:\\Users\\abc73_000\\Desktop\\Pan_cancer_mapping_result\\Randomness\\Randomness.xlsx",sheet ='Total_random')
 Total_table <- na.omit(Total_table)  
  
 plot_result <- png("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Randomness/mean.png",width=3000,height=2400,res=300)  
@@ -64,8 +64,9 @@ dev.off()
   #   ggtitle(i))
   
   
-Total_table$c[order(Cancer_type),]
-attach(mtcars)
-mtcars$
-# sort by mpg
-newdata <- mtcars[order(mpg),]
+
+
+
+
+
+
