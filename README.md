@@ -10,3 +10,5 @@ The script implements the binary search to reduce the searching time.
 
 One whole exome sequence file takes about 1.5 hours to get the exon(CDS) mapping rates using python script.
 One WES file take about 15 mins to get the exon (CDS) mapping rates using java script
+
+For RNA-seq, it's better to have 90% sequenc reads in the exonic regions
