@@ -21,9 +21,11 @@ from scipy.stats import poisson
 from sklearn.metrics import mean_squared_error
 from math import sqrt
 
-input_file = '/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt'
+input_file = sys.argv[1]
+#'G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt'
 #sys.argv[1]
-file_name = 'SRR7780741'
+file_name = sys.argv[2]
+#'SRR7780741'
 #sys.argv[2]
 with open (input_file,'r') as f:
     file = f.read()
@@ -36,7 +38,7 @@ pos_number = []
 freq_number =[]
 original_list=[]    
 Total_line = 0    
-line = 0
+#line = 0
 for content in table:
     #content_list = makeOneSpace(con)
     content_list = content.split()
@@ -50,29 +52,36 @@ for content in table:
         original_list.append(pos)
 
 total_pos_arr = np.array(original_list)
-original_list.clear()
 
 #frequency_array = np.array(freq_number)/Total_line
 df = {'Frequency': np.array(freq_number), 'Position': np.array(pos_number)}    
 data_frame = pd.DataFrame(data=df )
 #poisson_number = int(data_frame.iloc[-1]["Position"])
-Total600line = sum(data_frame['Frequency'][0:601]*data_frame['Position'][0:601])
-event_arr = data_frame['Frequency'][0:601].values/Total600line
+Total600line = sum(data_frame['Frequency'][0:946]*data_frame['Position'][0:946])
+event_arr = (data_frame['Frequency'][0:946].values)/Total600line
+freq_arr = data_frame['Frequency'].values[0:946]
 mu = 100
-poisson_list=[]
-for i in range(601):
-    poisson_list.append(poisson.pmf(i,mu))
+
+poisson_list=[ poisson.pmf(i,mu) for i in range(946)]
+
+    #for i in range(601):
+#    poisson_list.append(poisson.pmf(i,mu))
 
 rmse = sqrt(mean_squared_error(event_arr, np.array(poisson_list)))    
-sumOferror= sum(event_arr[0:601]-np.array(poisson_list)[0:601])**2
+sumOferror= sqrt(sum((event_arr-np.array(poisson_list))**2))
+
+poisson_list_count=[poisson.pmf(i,mu)*Total600line for i in range(946)]
+
+rmse_count = sqrt(mean_squared_error(freq_arr, np.array(poisson_list_count)))    
+sumOferror_count= sqrt(sum((freq_arr-np.array(poisson_list_count))**2))
    
 std = np.std(np.array(original_list))
 average = np.mean(np.array(original_list))    
-skewness = skew(np.array(original_list))
+#skewness = skew(np.array(original_list))
 
 output = open(file_name+'_randomness_summary.txt','w')
 
-output.write(file_name+'\t'+str(average)+'\t'+str(std)+'\t'+str(skewness)+'\n')
+output.write(file_name+'\t'+str(average)+'\t'+str(std)+'\t'+str(rmse)+'\t'+str(sumOferror)+'\t'+str(rmse_count)+'\t'+str(sumOferror_count)+'\n')
 output.close()
 
 
@@ -81,14 +90,14 @@ output.close()
 ## sqrt(sum of (freq*(value - mean)**2)/sum of (freq)) 
 
 
-
+"""
 plt.figure(figsize=(16,9))
 sns.set(font_scale=3)
 sns.lineplot(x ='Position', y = 'Frequency', data =df)
 #sns.distplot(freq_number, bins = len(freq_number),kde=False, axlabel= 'Frequency', color='orange')      
 
 #plt.close() 
-""" 
+
 def makeOneSpace(String):
     content = String.split(' ')
     i = 0
