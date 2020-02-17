@@ -57,10 +57,11 @@ total_pos_arr = np.array(original_list)
 df = {'Frequency': np.array(freq_number), 'Position': np.array(pos_number)}    
 data_frame = pd.DataFrame(data=df )
 #poisson_number = int(data_frame.iloc[-1]["Position"])
-Total600line = sum(data_frame['Frequency'][0:946]*data_frame['Position'][0:946])
-event_arr = (data_frame['Frequency'][0:946].values)/Total600line
-freq_arr = data_frame['Frequency'].values[0:946]
-mu = 100
+Total600line = sum(data_frame['Frequency'][0:600]*data_frame['Position'][0:600])
+event_arr = (data_frame['Frequency'][0:600].values)/Total600line
+freq_arr = data_frame['Frequency'].values[0:600]
+average = np.mean(np.array(original_list)) 
+mu = average
 
 poisson_list=[ poisson.pmf(i,mu) for i in range(946)]
 
@@ -70,13 +71,16 @@ poisson_list=[ poisson.pmf(i,mu) for i in range(946)]
 rmse = sqrt(mean_squared_error(event_arr, np.array(poisson_list)))    
 sumOferror= sqrt(sum((event_arr-np.array(poisson_list))**2))
 
+## need to check the longest continuous number
+
+
 poisson_list_count=[poisson.pmf(i,mu)*Total600line for i in range(946)]
 
 rmse_count = sqrt(mean_squared_error(freq_arr, np.array(poisson_list_count)))    
 sumOferror_count= sqrt(sum((freq_arr-np.array(poisson_list_count))**2))
    
 std = np.std(np.array(original_list))
-average = np.mean(np.array(original_list))    
+   
 #skewness = skew(np.array(original_list))
 
 output = open(file_name+'_randomness_summary.txt','w')
