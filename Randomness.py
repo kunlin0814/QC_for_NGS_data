@@ -21,10 +21,12 @@ from scipy.stats import poisson
 from sklearn.metrics import mean_squared_error
 from math import sqrt
 
-input_file = sys.argv[1]
+input_file =sys.argv[1]
+#sys.argv[1]
 #'G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt'
 #sys.argv[1]
 file_name = sys.argv[2]
+#sys.argv[2]
 #'SRR7780741'
 #sys.argv[2]
 with open (input_file,'r') as f:
@@ -56,14 +58,18 @@ total_pos_arr = np.array(original_list)
 #frequency_array = np.array(freq_number)/Total_line
 df = {'Frequency': np.array(freq_number), 'Position': np.array(pos_number)}    
 data_frame = pd.DataFrame(data=df )
-#poisson_number = int(data_frame.iloc[-1]["Position"])
-Total600line = sum(data_frame['Frequency'][0:600]*data_frame['Position'][0:600])
-event_arr = (data_frame['Frequency'][0:600].values)/Total600line
-freq_arr = data_frame['Frequency'].values[0:600]
+poisson_number = data_frame["Position"].values
+
+max_line= 600
+        
+
+Totalline = sum(data_frame['Frequency'][0:max_line]*data_frame['Position'][0:max_line])
+event_arr = (data_frame['Frequency'][0:max_line].values)/Totalline
+freq_arr = data_frame['Frequency'].values[0:max_line]
 average = np.mean(np.array(original_list)) 
 mu = average
 
-poisson_list=[ poisson.pmf(i,mu) for i in range(946)]
+poisson_list=[ poisson.pmf(i,mu) for i in range(max_line)]
 
     #for i in range(601):
 #    poisson_list.append(poisson.pmf(i,mu))
@@ -74,7 +80,7 @@ sumOferror= sqrt(sum((event_arr-np.array(poisson_list))**2))
 ## need to check the longest continuous number
 
 
-poisson_list_count=[poisson.pmf(i,mu)*Total600line for i in range(946)]
+poisson_list_count=[poisson.pmf(i,mu)*Totalline for i in range(max_line)]
 
 rmse_count = sqrt(mean_squared_error(freq_arr, np.array(poisson_list_count)))    
 sumOferror_count= sqrt(sum((freq_arr-np.array(poisson_list_count))**2))
