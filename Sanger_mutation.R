@@ -56,7 +56,7 @@ dev.off()
 both_table <-  cbind(Mut_table, our_data$non_retro_PASS,our_data$non_retro_mutation_rate  )
 colnames(both_table) <- c("Samples", "Sanger_mut", "our_callable","Sanger_mut_rate","Our_mut","Our_mut_rate")
 both_table <- both_table[order(both_table$Our_mut_rate),]
-png("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/y-axis-Mutation_rate_comparison.png",width=3000,height=2400,res=300)  
+png("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/new-y-axis-Mutation_rate_comparison.png",width=3000,height=2400,res=300)  
 ggplot(data= both_table, aes(x = both_table$Our_mut_rate, y=both_table$Sanger_mut_rate))+
   geom_point(shape = 1, size =4)+
   ylim(0,max(both_table$Our_mut_rate))+
