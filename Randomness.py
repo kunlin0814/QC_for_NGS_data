@@ -21,22 +21,19 @@ from scipy.stats import poisson
 from sklearn.metrics import mean_squared_error
 from math import sqrt
 
-<<<<<<< HEAD
+
 input_file = "/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
 #sys.argv[1]
 #'G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt'
 #sys.argv[1]
 file_name = "SRR7780741"
 #sys.argv[2]
-=======
-input_file =sys.argv[1]
+
 #sys.argv[1]
 #'G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt'
 #sys.argv[1]
-file_name = sys.argv[2]
 #sys.argv[2]
 #'SRR7780741'
->>>>>>> 7623a371d35828b4c66229d112b5aca352a49636
 #sys.argv[2]
 with open (input_file,'r') as f:
     file = f.read()
@@ -72,7 +69,7 @@ final_total = total_data.drop(1,axis = 0)
 #frequency_array = np.array(freq_number)/Total_line
 df = {'Frequency': np.array(freq_number), 'Position': np.array(pos_number)}    
 data_frame = pd.DataFrame(data=df )
-<<<<<<< HEAD
+
 
 last_Position = data_frame['Position'].iloc[-1]
 
@@ -80,7 +77,7 @@ last_Position = data_frame['Position'].iloc[-1]
 Total600line = sum(data_frame['Frequency'][0:600]*data_frame['Position'][0:600])
 event_arr = (data_frame['Frequency'][0:600].values)/Total600line
 freq_arr = data_frame['Frequency'].values[0:600]
-=======
+
 poisson_number = data_frame["Position"].values
 
 max_line= 600
@@ -89,7 +86,7 @@ max_line= 600
 Totalline = sum(data_frame['Frequency'][0:max_line]*data_frame['Position'][0:max_line])
 event_arr = (data_frame['Frequency'][0:max_line].values)/Totalline
 freq_arr = data_frame['Frequency'].values[0:max_line]
->>>>>>> 7623a371d35828b4c66229d112b5aca352a49636
+
 average = np.mean(np.array(original_list)) 
 mu = average
 
