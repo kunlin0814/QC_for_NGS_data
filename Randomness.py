@@ -22,25 +22,94 @@ from sklearn.metrics import mean_squared_error
 from math import sqrt
 
 
-input_file = "/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
+
+input_file = "G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt"
 #sys.argv[1]
 #'G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt'
 #sys.argv[1]
 file_name = "SRR7780741"
 #sys.argv[2]
 
-#sys.argv[1]
-#'G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt'
-#sys.argv[1]
-#sys.argv[2]
-#'SRR7780741'
-#sys.argv[2]
+total_data = pd.read_csv(input_file, sep=" ", header = None)
+total_data.columns = ['Frequency', 'Position']
+
+if total_data['Position'][1] == 'Total_Depth':
+     total_data.drop(1,axis = 0,inplace= True)
+else:
+    for i in range(len(total_data['Position'])):
+        if  total_data['Position'][i] == 'Total_Depth':
+             total_data.drop(i,axis = 0, inplace= True)
+             
+             
+total_data.reset_index(inplace = True, drop=True)
+last_Position = int(total_data['Position'].iloc[-1])
+total_data.astype('int64').dtypes
+current_pos = list(map(int,list(total_data['Position'])))
+
+pos_list =[]
+freq_list =[]
+
+
+for i in range(last_Position+1):
+    if i not in current_pos:
+        summary[int(i)]= 0
+    else:
+        for j in range(len(total_data)):
+            Position = total_data.iloc[i]['Position']
+            value =  total_data.iloc[i]['Frequency']
+            summary[int(Position)]= value
+        
+with open("G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt",'r')as f:
+    file = f.read().split('\n')[:-1]
+
+file.remove('1 Total_Depth')
+summary = {}
+for i in range(len(file)):
+    freq = int(file[i].split(" ")[0])
+    pos = int(file[i].split(" ")[1])
+    summary[pos]= int(freq)
+
+last_pos = list(summary.keys())[-1]
+
+for i in range(last_pos+1):
+    if i not in summary.keys():
+        summary[i]=0
+
+for i in summary.keys():
+    summary[i]=summary[i]
+
+  
+total_data = pd.DataFrame(summary.items())
+
+for i in range(len(total_data)):
+    if int(total_data.iloc[i][0])==948:
+        print(i)
+
+
+Pos_Ser = pd.Series([])
+Frq_Ser = pd.Series([],dtype = int)
+for i in range(last_Position):
+    if int(total_data.iloc[i]['Position'])==i:
+        pass
+        #pd.concat([Pos_Ser, pd.Series(total_data.iloc[i]['Position'])], ignore_index= True)
+        #pd.concat([Frq_Ser, pd.Series(total_data.iloc[i]['Frequency'])], ignore_index= True)
+    else:
+        total_data.loc[-1]=[0,i]
+        total_data.index= total_data.index+1
+        total_data = total_data.sort_index()
+        #total_data= 
+        #pd.concat([Pos_Ser, pd.Series([i])], ignore_index= True)
+        #pd.concat([Frq_Ser, pd.Series([0])], ignore_index= True)
+        
+     """   
+"""
+total_lines = sum(total_data['Frequency'].values)
 with open (input_file,'r') as f:
     file = f.read()
 
 table = file.split('\n')[:-1]
 table.remove('1 Total_Depth')
-   
+""" 
 
 pos_number = []
 freq_number =[]
@@ -61,8 +130,7 @@ for content in table:
 
 total_pos_arr = np.array(original_list)
 
-total_data = pd.read_csv("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt", sep=" ", header = None)
-final_total = total_data.drop(1,axis = 0)
+
 
 
 
@@ -71,7 +139,7 @@ df = {'Frequency': np.array(freq_number), 'Position': np.array(pos_number)}
 data_frame = pd.DataFrame(data=df )
 
 
-last_Position = data_frame['Position'].iloc[-1]
+
 
 #poisson_number = int(data_frame.iloc[-1]["Position"])
 Total600line = sum(data_frame['Frequency'][0:600]*data_frame['Position'][0:600])
