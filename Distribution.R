@@ -61,3 +61,59 @@ DrawDistribution(paste("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distr
  
 }
 dev.off()
+
+
+file_list <- read.table("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt",
+                        sep = "", header = F, stringsAsFactors = F)
+colnames(file_list) = c('Frequency', 'Bases')
+library(ggplot2)
+
+
+
+
+file_list <- file_list[-2,]
+#a <- density(file_list$V1,kernel = c("gaussian"))
+ggplot(file_list, aes(x=file_list$V2, y= file_list$V1))+
+  geom_density()
+
+
+a <- hist(as.numeric(file_list$Bases), breaks = 1000)
+
+dev.off()
+total <- sum(file_list)
+each_pro <- file_list$V1/total
+plot(density(ea))
+plot(density(as.numeric(as.character(file_list$Bases))))
+
+ggplot(file_list, aes(x=as.numeric(as.character(Bases)))) + 
+  geom_density()
+
+dev.off()
+
+
+hist(as.numeric(as.character(file_list$Bases)))
+
+a <- apply(file_list$Bases,FUN=function(x) return (rep(file_list$Bases),x+1))
+
+list <- c()
+for (j in file_list$Bases){
+for (i in 1:as.numeric(as.character(file_list$Frequency))){
+  list <- c(list, rep(j, as.numeric(as.numeric(file_list$Frequency[i]))))
+}
+}
+rep(as.numeric(as.character(file_list$Frequency)))
+
+sapply(c(),FUN=function(x) return (rep(file_list$Bases,x)))
+list <- c()
+for (i in 1:100){
+  list <- c(list, rep(file_list$Bases,i))
+}
+
+b <- c()
+for (i in 1:length(file_list$Frequency)){
+#a <- sapply(c(),FUN=function(x) return (rep(file_list$Bases[1],file_list$Frequency[1])))
+  b <- c(b,rep(file_list$Bases[i],file_list$Frequency[i]) )
+}  
+  
+  
+b <- c()
