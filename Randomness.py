@@ -6,7 +6,6 @@ The script take the depth of coverage as input file
 to identify the frequency of the coverage of depth for all of the base
 position for each sample 
 
-
 @author: abc73_000
 """
 
@@ -24,14 +23,12 @@ from math import sqrt
 
 
 
-input_file = "/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
-#sys.argv[1]
+input_file = sys.argv[1]
 #'G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt'
-#sys.argv[1]
-file_name = "SRR7780741"
+#"/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
+file_name = sys.argv[2]
+#"SRR7780741"
 #sys.argv[2]
-
-
 
 with open(input_file,'r')as f:
     file = f.read().split('\n')[:-1]
@@ -45,7 +42,7 @@ for i in range(len(file)):
     summary[pos]= int(freq)
     for j in range(freq):
         original_list.append(pos)
-
+total_line = len(original_list)
 last_pos = int(list(summary.keys())[-1])
 
 for i in range(last_pos+1):
@@ -61,32 +58,24 @@ total_data.columns = [ 'Position', 'Frequency',]
 
 freq_arr = total_data['Frequency'].values
 
-average = np.mean(np.array(original_list)) 
+average = np.mean(np.array(original_list))
+std = np.std(np.array(original_list)) 
 mu = average
 
+prob_arr= freq_arr/total_line
 poisson_list=[ poisson.pmf(i,mu) for i in range(last_pos+1)]
 
-    #for i in range(601):
-#    poisson_list.append(poisson.pmf(i,mu))
+rmse = sqrt(mean_squared_error(prob_arr, np.array(poisson_list))) 
+sumOfSqerror= sqrt(sum((prob_arr-np.array(poisson_list))**2))
 
-rmse = sqrt(mean_squared_error(freq_arr, np.array(poisson_list)))    
-sumOfSqerror= sqrt(sum((freq_arr-np.array(poisson_list))**2))
+poisson_list_count=[poisson.pmf(i,mu)*total_line for i in range(last_pos+1)]
 
-## need to check the longest continuous number
-
-
-poisson_list_count=[poisson.pmf(i,mu)*Totalline for i in range(max_line)]
-
-rmse_count = sqrt(mean_squared_error(freq_arr, np.array(poisson_list_count)))    
-sumOferror_count= sqrt(sum((freq_arr-np.array(poisson_list_count))**2))
-   
-std = np.std(np.array(original_list))
-   
-#skewness = skew(np.array(original_list))
+rmse_count = sqrt(mean_squared_error(freq_arr, np.array(poisson_list)))     
+sumOfSqerror_count= sqrt(sum((freq_arr-np.array(poisson_list_count))**2))
 
 output = open(file_name+'_randomness_summary.txt','w')
 
-output.write(file_name+'\t'+str(average)+'\t'+str(std)+'\t'+str(rmse)+'\t'+str(sumOferror)+'\t'+str(rmse_count)+'\t'+str(sumOferror_count)+'\n')
+output.write(file_name+'\t'+str(average)+'\t'+str(std)+'\t'+str(rmse)+'\t'+str(sumOfSqerror)+'\t'+str(rmse_count)+'\t'+str(sumOfSqerror_count)+'\n')
 output.close()
 
 
