@@ -56,7 +56,7 @@ dev.off()
 both_table <-  cbind(Mut_table, our_data$non_retro_PASS,our_data$non_retro_mutation_rate  )
 colnames(both_table) <- c("Samples", "Sanger_mut", "our_callable","Sanger_mut_rate","Our_mut","Our_mut_rate")
 
-sig_diff <- both_table$Samples[both_table$Sanger_mut-both_table$Our_mut>20]
+sig_diff <- both_table$Samples[both_table$Sanger_mut-both_table$Our_mut>20] ## prepare to highlight the difference >20
 sig_diff_table <- both_table %>% 
   filter(Samples %in%sig_diff)
 
@@ -66,6 +66,8 @@ ggplot(data= both_table, aes(x = Our_mut, y=Sanger_mut))+
   geom_point(shape = 1, size =4)+
   geom_abline(intercept = 0, slope = 1, color="blue", 
               linetype="dashed", size=1.5)+
+xlim(0,125)+
+  scale_x_continuous(limits=c(0, 125))+
 xlab("Our  Data")+
 ylab("Sanger Data")+
   theme(
