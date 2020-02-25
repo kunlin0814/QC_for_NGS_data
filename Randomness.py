@@ -23,10 +23,12 @@ from math import sqrt
 
 
 
-input_file = sys.argv[1]
+input_file ='G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt' 
+#sys.argv[1]
 #'G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt'
 #"/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
-file_name = sys.argv[2]
+file_name = 'SRR7780741'
+#sys.argv[2]
 #"SRR7780741"
 #sys.argv[2]
 
@@ -57,6 +59,7 @@ total_data = pd.DataFrame(order_summary.items())
 total_data.columns = [ 'Position', 'Frequency',]
 
 freq_arr = total_data['Frequency'].values
+total_array = np.array(original_list)
 
 average = np.mean(np.array(original_list))
 std = np.std(np.array(original_list)) 
@@ -84,14 +87,17 @@ output.close()
 ## sqrt(sum of (freq*(value - mean)**2)/sum of (freq)) 
 
 
-"""
+
 plt.figure(figsize=(16,9))
 sns.set(font_scale=3)
-sns.lineplot(x ='Position', y = 'Frequency', data =df)
-#sns.distplot(freq_number, bins = len(freq_number),kde=False, axlabel= 'Frequency', color='orange')      
-
+#sns.lineplot(x ='Position', y = 'Frequency', data =total_data)
+#sns.distplot(total_data['Frequency'],hist=False, kde=True, axlabel= 'Frequency', color='orange')
+p = sns.distplot(total_array, kde=False, axlabel= 'Position', color='blue', bins=1000)  
+p.set_yscale('log')   # set into log scale 
+#p = p.map(plt.hist, "value", color="r", log=True)      
+sns.kdeplot(total_array, shade=True, bw=0.1);
 #plt.close() 
-
+"""
 def makeOneSpace(String):
     content = String.split(' ')
     i = 0
