@@ -23,9 +23,9 @@ from math import sqrt
 
 
 
-input_file ='G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt' 
+input_file ="/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
+#'G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt' 
 #sys.argv[1]
-#'G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt'
 #"/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
 file_name = 'SRR7780741'
 #sys.argv[2]
@@ -66,12 +66,27 @@ std = np.std(np.array(original_list))
 mu = average
 
 prob_arr= freq_arr/total_line
-poisson_list=[ poisson.pmf(i,mu) for i in range(last_pos+1)]
+poisson_list=[]
+for i in range(last_pos+1):
+    value = poisson.pmf(i,mu)
+    poisson_list.append(value)
+#poisson.pmf(i,mu) for i in range(last_pos+1)
 
-rmse = sqrt(mean_squared_error(prob_arr, np.array(poisson_list))) 
-sumOfSqerror= sqrt(sum((prob_arr-np.array(poisson_list))**2))
+rmse = sqrt(mean_squared_error(prob_arr, np.array(poisson_list))) ## compare the proportion
+sumOfSqerror= sqrt(sum((prob_arr-np.array(poisson_list))**2)) ## rmse that didn't divide the N, vs proportion
 
-poisson_list_count=[poisson.pmf(i,mu)*total_line for i in range(last_pos+1)]
+poisson_list_count =[]
+for i in range(last_pos+1):
+    value = poisson.pmf(i,mu)*total_line
+    poisson_list_count.append(value)
+    
+poisson_original_list=[]
+for i in range(len(poisson_list)+1):
+    value = int(poisson.pmf(i,mu)*total_line)
+    for j in range(value+1):
+        poisson_original_list.append(value)
+    
+#=[poisson.pmf(i,mu)*total_line for i in range(last_pos+1)]
 
 rmse_count = sqrt(mean_squared_error(freq_arr, np.array(poisson_list)))     
 sumOfSqerror_count= sqrt(sum((freq_arr-np.array(poisson_list_count))**2))
@@ -92,7 +107,7 @@ plt.figure(figsize=(16,9))
 sns.set(font_scale=3)
 #sns.lineplot(x ='Position', y = 'Frequency', data =total_data)
 #sns.distplot(total_data['Frequency'],hist=False, kde=True, axlabel= 'Frequency', color='orange')
-p = sns.distplot(total_array, kde=False, axlabel= 'Position', color='blue', bins=1000)  
+p = sns.distplot(np.array(poisson_original_list), kde=False, axlabel= 'Position', color='blue', bins=1000)  
 p.set_yscale('log')   # set into log scale 
 #p = p.map(plt.hist, "value", color="r", log=True)      
 sns.kdeplot(total_array, shade=True, bw=0.1);
