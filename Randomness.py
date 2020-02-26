@@ -20,20 +20,30 @@ from scipy.stats import skew
 from scipy.stats import poisson
 from sklearn.metrics import mean_squared_error
 from math import sqrt
+from matplotlib.backends.backend_pdf import PdfPages
 
 
+with open("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Osteo/Normal/Normal_list")as f:
+    file_list = f.read().split('\n')[:-1]
+pp = PdfPages('/Users/kun-linho/Desktop/Normal_Osteosarcoma.pdf')
 
-input_file =sys.argv[1]
+
+#for i in file_list:
+input_file ="/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
+
+#'/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Osteo/Normal/'+i
 #'G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt' 
 #"/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
-#'G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt' 
 #sys.argv[1]
 #"/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
-file_name = sys.argv[2]
+file_name = "SRR7780741"
+
+#i.split('_')[0]
 #sys.argv[2]
 #"SRR7780741"
 #sys.argv[2]
 
+## fill up the gap data, if there is no data at that position, then fill up with 0
 with open(input_file,'r')as f:
     file = f.read().split('\n')[:-1]
 
@@ -66,8 +76,8 @@ total_data.columns = [ 'Position', 'Frequency']
 
 freq_arr = total_data['Frequency'].values
 pos_arr = total_data['Position'].values
-
-
+freq_arr_1000 = freq_arr[0:1001]
+pos_arr_1000 = pos_arr[0:1001]
 total_array = np.array(original_list)
 
 average = np.mean(np.array(original_list))
@@ -95,11 +105,32 @@ for i in range(last_pos+1):
 
 rmse_count = sqrt(mean_squared_error(freq_arr, np.array(poisson_list_count)))     
 sumOfSqerror_count= sqrt(sum((freq_arr-np.array(poisson_list_count))**2))
+    """
+    output = open(file_name+'_randomness_summary.txt','w')
+    
+    output.write(file_name+'\t'+str(average)+'\t'+str(std)+'\t'+str(rmse)+'\t'+str(sumOfSqerror)+'\t'+str(rmse_count)+'\t'+str(sumOfSqerror_count)+'\n')
+    output.close()
+    """
+    
+   
+    
+    plt.figure(figsize=(13,6))
+    sns.set(font_scale=2)
+    #p = sns.lineplot(x ='Position', y = 'Frequency', data =total_data)
+    #sns.distplot(total_data['Frequency'],hist=False, kde=True, axlabel= 'Frequency', color='orange')
+    p = sns.distplot(np.array(original_list),kde=False, axlabel= 'Position', color='black', bins=200)  
+    plt.title(file_name)
+    p.set_yscale('log')   # set into log scale 
+    pp.savefig()
+    #p = p.map(plt.hist, "value", color="r", log=True)
+    plt.figure(figsize=(13,6))
+    sns.set(font_scale=2)      
+    sns.kdeplot(np.array(original_list), shade=True);
+    pp.savefig()
+    plt.close() 
+pp.close()
 
-output = open(file_name+'_randomness_summary.txt','w')
 
-output.write(file_name+'\t'+str(average)+'\t'+str(std)+'\t'+str(rmse)+'\t'+str(sumOfSqerror)+'\t'+str(rmse_count)+'\t'+str(sumOfSqerror_count)+'\n')
-output.close()
 
 
 ## median= position (sum(freq)+1)/2 th position 

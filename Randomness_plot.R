@@ -4,14 +4,14 @@ library(dplyr)
 
 
 ### Without data point ###
-table <- read_excel("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Randomness/V3_Randomness.xlsx",sheet ='Total_random')
+table <- read_excel("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Randomness/V4_Randomness.xlsx",sheet ='Total_random')
 Total_table  <- table %>% 
   filter(MEAN!=0)
 
 
 #Cancer <- factor(Total_table$Cancer_type,levels =Total_table$Cancer_type) 
 
-plot_result <- png("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/V3mean.png",width=3000,height=2400,res=400)  
+plot_result <- png("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/V4mean.png",width=3000,height=2400,res=400)  
 mean <- ggplot(Total_table, aes(x=factor(Cancer_type,levels = c("Mammary Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")), y=MEAN, fill=Status)) + 
   geom_violin(trim=FALSE)+
   theme_classic()+
@@ -28,7 +28,7 @@ mean
 #position_dodge(width = 0.9))
 dev.off()
 
-plot_result <- png("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/V3STD.png",width=3000,height=2400,res=300)  
+plot_result <- png("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/V4STD.png",width=3000,height=2400,res=300)  
 std <-  ggplot(Total_table, aes(x=factor(Cancer_type,levels = c("Mammary Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")), y=STD, fill=Status)) + 
   geom_violin(trim=FALSE)+
   theme_classic()+
@@ -42,7 +42,7 @@ std <-  ggplot(Total_table, aes(x=factor(Cancer_type,levels = c("Mammary Cancer"
 std
 dev.off()
 #stat_summary(fun.data=mean_sdl,geom="pointrange", color="black",position = position_dodge(width = 0.9))
-plot_result <- png("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/V3rmse.png",width=3000,height=2400,res=300)  
+plot_result <- png("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/V4rmse.png",width=3000,height=2400,res=300)  
 rmse <-  ggplot(Total_table, aes(x=factor(Cancer_type,levels = c("Mammary Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")), y=rmse, fill=Status)) + 
   geom_violin(trim=FALSE)+
   theme_classic()+
@@ -56,7 +56,7 @@ rmse <-  ggplot(Total_table, aes(x=factor(Cancer_type,levels = c("Mammary Cancer
 rmse
 dev.off()
 
-plot_result <- png("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/V3sum_of_square_error.png",width=3000,height=2400,res=300)  
+plot_result <- png("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/V4sum_of_square_error.png",width=3000,height=2400,res=300)  
 sum_of_square_error <-  ggplot(Total_table, aes(x=factor(Cancer_type,levels = c("Mammary Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")), y=sum_of_square_error, fill=Status)) + 
   geom_violin(trim=FALSE)+
   theme_classic()+
@@ -70,8 +70,8 @@ sum_of_square_error <-  ggplot(Total_table, aes(x=factor(Cancer_type,levels = c(
 sum_of_square_error
 dev.off()
 
-plot_result <- png("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/V3rmse_count.png",width=3000,height=2400,res=300)  
-rmse_count <-  ggplot(Total_table, aes(x=factor(Cancer_type,levels = c("Mammary Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")), y=rmse_count, fill=Status)) + 
+plot_result <- png("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/log2-V4rmse_count.png",width=3000,height=2400,res=300)  
+rmse_count <-  ggplot(Total_table, aes(x=factor(Cancer_type,levels = c("Mammary Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")), y=log2(rmse_count), fill=Status)) + 
   geom_violin(trim=FALSE)+
   theme_classic()+
   scale_fill_manual(values=c("gray","red"))+
@@ -84,8 +84,8 @@ rmse_count <-  ggplot(Total_table, aes(x=factor(Cancer_type,levels = c("Mammary 
 rmse_count
 dev.off()
 
-plot_result <- png("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/V3sum_of_square_error_count.png",width=3000,height=2400,res=300)  
-sum_of_square_error_count <-  ggplot(Total_table, aes(x=factor(Cancer_type,levels = c("Mammary Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")), y=sum_of_square_error_count, fill=Status)) + 
+plot_result <- png("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/log2-V4sum_of_square_error_count.png",width=3000,height=2400,res=300)  
+sum_of_square_error_count <-  ggplot(Total_table, aes(x=factor(Cancer_type,levels = c("Mammary Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")), y=log2(sum_of_square_error_count), fill=Status)) + 
   geom_violin(trim=FALSE)+
   theme_classic()+
   scale_fill_manual(values=c("gray","red"))+
