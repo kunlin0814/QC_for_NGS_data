@@ -25,11 +25,12 @@ from matplotlib.backends.backend_pdf import PdfPages
 
 with open("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Osteo/Normal/Normal_list")as f:
     file_list = f.read().split('\n')[:-1]
+    
 pp = PdfPages('/Users/kun-linho/Desktop/Normal_Osteosarcoma.pdf')
 
 
 #for i in file_list:
-input_file ="/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
+input_file ="G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt"
 
 #'/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Osteo/Normal/'+i
 #'G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt' 
@@ -76,35 +77,69 @@ total_data.columns = [ 'Position', 'Frequency']
 
 freq_arr = total_data['Frequency'].values
 pos_arr = total_data['Position'].values
-freq_arr_1000 = freq_arr[0:1001]
-pos_arr_1000 = pos_arr[0:1001]
+freq_arr_1000 = freq_arr[0:1000]
+pos_arr_1000 = pos_arr[0:1000]
+
 total_array = np.array(original_list)
 
+original_list_1000=[]
+for i in range(1000):
+    pos = pos_arr[i]
+    freq = freq_arr_1000[i]
+    for j in range(freq):
+        original_list_1000.append(pos)
+
+
 average = np.mean(np.array(original_list))
-std = np.std(np.array(original_list)) 
+average_1000= np.mean(np.array(original_list_1000))
+std = np.std(np.array(original_list))
+std_1000 = np.std(np.array(original_list_1000))  
+
 mu = average
+mu_1000= average_1000
 
 prob_arr= freq_arr/total_line
-freq_list= list(freq_arr)
 
+freq_list= list(freq_arr)
 poisson_fract_list=[]
+
 for i in range(last_pos+1):
     value = poisson.pmf(i,mu)
     poisson_fract_list.append(value)
-#[poisson.pmf(i,mu) for i in range(last_pos+1)]
+    
+poisson_fract_list_1000=[]
 
+for i in range(1000):
+    value = poisson.pmf(i,mu_1000)
+    poisson_fract_list_1000.append(value)
+#[poisson.pmf(i,mu) for i in range(last_pos+1)]
+pos_1000_line = len(original_list_1000)
+
+prob_arr_1000 = freq_arr_1000/ pos_1000_line
 rmse = sqrt(mean_squared_error(prob_arr, np.array(poisson_fract_list))) ## compare the proportion
 sumOfSqerror= sqrt(sum((prob_arr-np.array(poisson_fract_list))**2)) ## rmse that didn't divide the N, vs proportion
 
-poisson_list_count =[]
+rmse_1000 = sqrt(mean_squared_error(prob_arr_1000, np.array(poisson_fract_list_1000))) ## compare the proportion
+sumOfSqerror_1000= sqrt(sum((prob_arr_1000-np.array(poisson_fract_list_1000))**2))
 
+
+poisson_list_count =[]
+poisson_list_count_1000 =[]
 for i in range(last_pos+1):
     value = poisson.pmf(i,mu)*total_line
     poisson_list_count.append(value)
+
+for i in range(1000):
+    value = poisson.pmf(i,mu)*pos_1000_line
+    poisson_list_count_1000.append(value)
         
 
 rmse_count = sqrt(mean_squared_error(freq_arr, np.array(poisson_list_count)))     
 sumOfSqerror_count= sqrt(sum((freq_arr-np.array(poisson_list_count))**2))
+
+rmse_count_1000 = sqrt(mean_squared_error(freq_arr_1000, np.array(poisson_list_count_1000)))     
+sumOfSqerror_count_1000= sqrt(sum((freq_arr_1000-np.array(poisson_list_count_1000))**2))
+
     """
     output = open(file_name+'_randomness_summary.txt','w')
     
@@ -125,14 +160,26 @@ sumOfSqerror_count= sqrt(sum((freq_arr-np.array(poisson_list_count))**2))
     #p = p.map(plt.hist, "value", color="r", log=True)
     plt.figure(figsize=(13,6))
     sns.set(font_scale=2)      
-    sns.kdeplot(np.array(original_list), shade=True);
+    sns.kdeplot(np.array(original_list), shade=True,bw='scott');
     pp.savefig()
     plt.close() 
 pp.close()
 
 
+plt.figure(figsize=(13,6))
+sns.set(font_scale=2)
+p = sns.distplot(np.array(original_list_1000), hist=True,kde=False, \
+             color = 'darkblue', \
+             bins = 500, \
+             hist_kws={'edgecolor':'black'}, \
+             kde_kws={'linewidth': 3})
+plt.title(file_name)
+#p.set_yscale('log')   # set into log scale 
+#pp.savefig()
 
-
+plt.figure(figsize=(13,6))
+sns.set(font_scale=2)      
+sns.kdeplot(np.array(original_list_1000), shade=True,bw='scott');
 ## median= position (sum(freq)+1)/2 th position 
 ## Calcaulte Standard deviation ###
 ## sqrt(sum of (freq*(value - mean)**2)/sum of (freq)) 
