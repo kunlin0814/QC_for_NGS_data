@@ -8,7 +8,6 @@ position for each sample
 
 @author: abc73_000
 """
-
 ## look at all the positions to the end of the bases
 
 import sys
@@ -20,30 +19,34 @@ from scipy.stats import skew
 from scipy.stats import poisson
 from sklearn.metrics import mean_squared_error
 from math import sqrt
-from matplotlib.backends.backend_pdf import PdfPages
+#from matplotlib.backends.backend_pdf import PdfPages
 
-
-with open("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Osteo/Normal/Normal_list")as f:
-    file_list = f.read().split('\n')[:-1]
+#with open("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Osteo/Normal/Normal_list")as f:
+#    file_list = f.read().split('\n')[:-1]
     
-pp = PdfPages('/Users/kun-linho/Desktop/Normal_Osteosarcoma.pdf')
+#pp = PdfPages('/Users/kun-linho/Desktop/Normal_Osteosarcoma.pdf')
 
 
 #for i in file_list:
-input_file ="G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt"
+input_file =sys.argv[1]
 
 #'/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Osteo/Normal/'+i
 #'G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt' 
 #"/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
 #sys.argv[1]
 #"/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
-file_name = "SRR7780741"
+file_name = sys.argv[2]
 
 #i.split('_')[0]
 #sys.argv[2]
 #"SRR7780741"
 #sys.argv[2]
-
+Cancer_type = sys.argv[3]
+#'Mammary_Cancer'
+#sys.argv[3]
+Status =  sys.argv[4]
+#'Normal'
+#sys.argv[4]
 ## fill up the gap data, if there is no data at that position, then fill up with 0
 with open(input_file,'r')as f:
     file = f.read().split('\n')[:-1]
@@ -59,7 +62,7 @@ for i in range(len(file)):
         original_list.append(pos)
         
 total_line = len(original_list)
-last_pos = int(list(summary.keys())[-1])
+last_pos = original_list[-1]
 
 for i in range(last_pos+1):
     if i not in summary.keys():
@@ -71,9 +74,6 @@ for i in sorted(summary.keys()):
 
 total_data = pd.DataFrame(order_summary.items())
 total_data.columns = [ 'Position', 'Frequency']
-
-
-
 
 freq_arr = total_data['Frequency'].values
 pos_arr = total_data['Position'].values
@@ -100,7 +100,7 @@ mu_1000= average_1000
 
 prob_arr= freq_arr/total_line
 
-freq_list= list(freq_arr)
+#freq_list= list(freq_arr)
 poisson_fract_list=[]
 
 for i in range(last_pos+1):
@@ -116,6 +116,7 @@ for i in range(1000):
 pos_1000_line = len(original_list_1000)
 
 prob_arr_1000 = freq_arr_1000/ pos_1000_line
+
 rmse = sqrt(mean_squared_error(prob_arr, np.array(poisson_fract_list))) ## compare the proportion
 sumOfSqerror= sqrt(sum((prob_arr-np.array(poisson_fract_list))**2)) ## rmse that didn't divide the N, vs proportion
 
@@ -140,14 +141,18 @@ sumOfSqerror_count= sqrt(sum((freq_arr-np.array(poisson_list_count))**2))
 rmse_count_1000 = sqrt(mean_squared_error(freq_arr_1000, np.array(poisson_list_count_1000)))     
 sumOfSqerror_count_1000= sqrt(sum((freq_arr_1000-np.array(poisson_list_count_1000))**2))
 
-    """
-    output = open(file_name+'_randomness_summary.txt','w')
+  
+output = open(file_name+'_randomness_summary.txt','w')
+
+output.write(file_name+'\t'+str(average)+'\t' \
++str(std)+'\t'+str(rmse)+'\t'+str(sumOfSqerror)+'\t' \
++str(rmse_count)+'\t'+str(sumOfSqerror_count)+'\t'+str(Cancer_type)+'\t' \
++str(Status)+'\n')
+
+output.close()
+
     
-    output.write(file_name+'\t'+str(average)+'\t'+str(std)+'\t'+str(rmse)+'\t'+str(sumOfSqerror)+'\t'+str(rmse_count)+'\t'+str(sumOfSqerror_count)+'\n')
-    output.close()
-    """
-    
-   
+"""   
     
     plt.figure(figsize=(13,6))
     sns.set(font_scale=2)
@@ -181,8 +186,9 @@ plt.figure(figsize=(13,6))
 sns.set(font_scale=2)      
 sns.kdeplot(np.array(original_list_1000), shade=True,bw='scott');
 ## median= position (sum(freq)+1)/2 th position 
-## Calcaulte Standard deviation ###
+## Calcaulte Standard deviation in a same for loop ###
 ## sqrt(sum of (freq*(value - mean)**2)/sum of (freq)) 
+"""
 """
 poisson_original_list=[]
 for i in range(last_pos+1):
@@ -190,15 +196,7 @@ for i in range(last_pos+1):
   for j in range(value):
       poisson_original_list.append(i)
 
-plt.figure(figsize=(16,9))
-sns.set(font_scale=3)
-#sns.lineplot(x ='Position', y = 'Frequency', data =total_data)
-#sns.distplot(total_data['Frequency'],hist=False, kde=True, axlabel= 'Frequency', color='orange')
-p = sns.distplot(np.array(poisson_original_list), kde=True, axlabel= 'Position', color='blue', bins=1000)  
-p.set_yscale('log')   # set into log scale 
-#p = p.map(plt.hist, "value", color="r", log=True)      
-sns.kdeplot(np.array(poisson_original_list), shade=True);
-#plt.close() 
+
 
 def makeOneSpace(String):
     content = String.split(' ')
