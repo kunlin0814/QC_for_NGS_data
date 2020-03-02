@@ -19,7 +19,7 @@ import multiprocessing
 # each chromosome
 # min = 23840680 
 # max = 123780325
-pool = multiprocessing.Pool(4)
+#pool = multiprocessing.Pool(4)
 
 now = datetime. now()
 sam_file="C:\\Users\\abc73_000\\Desktop\\CMT-SRR7780976-test2.sam"

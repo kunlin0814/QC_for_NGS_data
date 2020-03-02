@@ -19,32 +19,34 @@ from scipy.stats import skew
 from scipy.stats import poisson
 from sklearn.metrics import mean_squared_error
 from math import sqrt
-#from matplotlib.backends.backend_pdf import PdfPages
+from matplotlib.backends.backend_pdf import PdfPages
 
-#with open("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Osteo/Normal/Normal_list")as f:
-#    file_list = f.read().split('\n')[:-1]
+"""
+with open("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Osteo/Normal/Normal_list")as f:
+    file_list = f.read().split('\n')[:-1]
     
-#pp = PdfPages('/Users/kun-linho/Desktop/Normal_Osteosarcoma.pdf')
+pp = PdfPages('/Users/kun-linho/Desktop/Normal_Osteosarcoma.pdf')
+"""
 
 
-#for i in file_list:
-input_file =sys.argv[1]
+input_file ="/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
+
 
 #'/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Osteo/Normal/'+i
 #'G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt' 
-#"/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
+# "/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
 #sys.argv[1]
 #"/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
-file_name = sys.argv[2]
+file_name = "SRR7780741"
 
 #i.split('_')[0]
 #sys.argv[2]
 #"SRR7780741"
 #sys.argv[2]
-Cancer_type = sys.argv[3]
+Cancer_type = 'Mammary_Cancer'
 #'Mammary_Cancer'
 #sys.argv[3]
-Status =  sys.argv[4]
+Status =  'Normal'
 #'Normal'
 #sys.argv[4]
 ## fill up the gap data, if there is no data at that position, then fill up with 0
@@ -72,7 +74,9 @@ order_summary={}
 for i in sorted(summary.keys()):
     order_summary[i]=summary[i]
 
-total_data = pd.DataFrame(order_summary.items())
+total_data = pd.DataFrame(list(order_summary.items()))
+pd.DataFrame(list(order_summary.items()), columns=['Position', 'Frequency'])
+
 total_data.columns = [ 'Position', 'Frequency']
 
 freq_arr = total_data['Frequency'].values
