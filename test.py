@@ -32,7 +32,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 with open("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Distribution/Mammary/Normal/Normal_list")as f:
     file_list = f.read().split('\n')[:-1]
     
-pp = PdfPages('/Users/kun-linho/Desktop/Normal_Mammary.pdf')
+pp = PdfPages('/Users/kun-linho/Desktop/1000_bp_Normal_Mammary.pdf')
 
 
 for i in file_list:
@@ -163,14 +163,14 @@ for i in file_list:
     sns.set(font_scale=2)
     #p = sns.lineplot(x ='Position', y = 'Frequency', data =total_data)
     #sns.distplot(total_data['Frequency'],hist=False, kde=True, axlabel= 'Frequency', color='orange')
-    p = sns.distplot(np.array(original_list),kde=False, axlabel= 'Position', color='black', bins=200)  
+    p = sns.distplot(np.array(original_list_1000),kde=False, axlabel= 'Position', color='black', bins=200)  
     plt.title(file_name)
     p.set_yscale('log')   # set into log scale 
     pp.savefig()
     #p = p.map(plt.hist, "value", color="r", log=True)
     plt.figure(figsize=(13,6))
     sns.set(font_scale=2)      
-    sns.kdeplot(np.array(original_list), shade=True,bw='scott');
+    sns.kdeplot(np.array(original_list_1000), shade=True,bw='scott');
     pp.savefig()
     plt.close() 
 pp.close()

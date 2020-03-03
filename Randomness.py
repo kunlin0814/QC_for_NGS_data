@@ -29,7 +29,8 @@ pp = PdfPages('/Users/kun-linho/Desktop/Normal_Osteosarcoma.pdf')
 """
 
 
-input_file ='G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt' 
+input_file = "/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
+
 
 
 
