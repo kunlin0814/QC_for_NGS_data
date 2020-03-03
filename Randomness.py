@@ -29,7 +29,8 @@ pp = PdfPages('/Users/kun-linho/Desktop/Normal_Osteosarcoma.pdf')
 """
 
 
-input_file ="/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
+input_file ='G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt' 
+
 
 
 #'/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Osteo/Normal/'+i
@@ -74,10 +75,7 @@ order_summary={}
 for i in sorted(summary.keys()):
     order_summary[i]=summary[i]
 
-total_data = pd.DataFrame(list(order_summary.items()))
-pd.DataFrame(list(order_summary.items()), columns=['Position', 'Frequency'])
-
-total_data.columns = [ 'Position', 'Frequency']
+total_data = pd.DataFrame(list(order_summary.items()),columns=['Position', 'Frequency'])
 
 freq_arr = total_data['Frequency'].values
 pos_arr = total_data['Position'].values
