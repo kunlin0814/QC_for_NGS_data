@@ -29,7 +29,7 @@ pp = PdfPages('/Users/kun-linho/Desktop/Normal_Osteosarcoma.pdf')
 """
 
 
-input_file = "/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
+input_file = "/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Distribution/Others/Normal/SAMN03436272_DepthofCoverage_Distribution.txt"
 
 
 
@@ -120,6 +120,8 @@ pos_1000_line = len(original_list_1000)
 
 prob_arr_1000 = freq_arr_1000/ pos_1000_line
 
+Prob_data_1000 = pd.DataFrame(data= {'Prob' :prob_arr_1000,'Pos': pos_arr_1000})
+pd.DataFrame(list(order_summary.items()),columns=['Position', 'Frequency'])
 rmse = sqrt(mean_squared_error(prob_arr, np.array(poisson_fract_list))) ## compare the proportion
 sumOfSqerror= sqrt(sum((prob_arr-np.array(poisson_fract_list))**2)) ## rmse that didn't divide the N, vs proportion
 
@@ -154,6 +156,23 @@ output.write(file_name+'\t'+str(average)+'\t' \
 
 output.close()
 
+
+
+p = sns.lineplot(x ='Pos', y = 'Prob', data =Prob_data_1000)
+plt.title(Cancer_type+"_"+file_name+"_"+Status)
+p.set(xlabel='Coverage_Depth', ylabel= "fraction of the number of position")
+#sns.distplot(total_data['Frequency'],hist=False, kde=True, axlabel= 'Frequency', color='orange')
+p = sns.distplot(np.array(original_list),kde=False, axlabel= 'Position', color='black', bins=200)  
+plt.title(file_name)
+p.set_yscale('log')   # set into log scale 
+#pp.savefig()
+#p = p.map(plt.hist, "value", color="r", log=True)
+plt.figure(figsize=(13,6))
+sns.set(font_scale=2)      
+#sns.kdeplot(np.array(original_list), shade=True,bw='scott');
+#pp.savefig()
+plt.close() 
+#pp.close()
     
 """   
     

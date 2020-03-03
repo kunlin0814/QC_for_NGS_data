@@ -29,30 +29,29 @@ from sklearn.metrics import mean_squared_error
 from math import sqrt
 from matplotlib.backends.backend_pdf import PdfPages
 
-with open("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Distribution/Mammary/Normal/Normal_list")as f:
+with open("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Distribution/Others/Normal/Normal_list")as f:
     file_list = f.read().split('\n')[:-1]
     
-pp = PdfPages('/Users/kun-linho/Desktop/1000_bp_Normal_Mammary.pdf')
-
+Status =  'Normal'
+Cancer_type = 'Unclassified'
+    
+pp = PdfPages('/Users/kun-linho/Desktop/1000_bp_'+Status+'_'+Cancer_type+'.pdf')
 
 for i in file_list:
-    input_file ="/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Distribution/Mammary/Normal/"+i
+    input_file ="/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Distribution/Others/Normal/"+i
         
     #'/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Osteo/Normal/'+i
     #'G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt' 
     #"/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
     #sys.argv[1]
-    #"/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
     file_name = i.split('_')[0]
-    
     #i.split('_')[0]
     #sys.argv[2]
     #"SRR7780741"
-    #sys.argv[2]
-    Cancer_type = 'Mammary_Cancer'
+    
     #'Mammary_Cancer'
     #sys.argv[3]
-    Status =  'Normal'
+    
     #'Normal'
     #sys.argv[4]
     ## fill up the gap data, if there is no data at that position, then fill up with 0
@@ -106,8 +105,7 @@ for i in file_list:
     mu = average
     mu_1000= average_1000
     
-    prob_arr= freq_arr/total_line
-    
+
     #freq_list= list(freq_arr)
     poisson_fract_list=[]
     
@@ -124,6 +122,9 @@ for i in file_list:
     pos_1000_line = len(original_list_1000)
     
     prob_arr_1000 = freq_arr_1000/ pos_1000_line
+    prob_arr= freq_arr/total_line
+
+    Prob_data_1000 = pd.DataFrame(data= {'Prob' :prob_arr_1000,'Pos': pos_arr_1000})    
     
     rmse = sqrt(mean_squared_error(prob_arr, np.array(poisson_fract_list))) ## compare the proportion
     sumOfSqerror= sqrt(sum((prob_arr-np.array(poisson_fract_list))**2)) ## rmse that didn't divide the N, vs proportion
@@ -159,18 +160,26 @@ for i in file_list:
     
     output.close()
     """
-    plt.figure(figsize=(13,6))
+    plt.figure(figsize=(12,6))
     sns.set(font_scale=2)
-    #p = sns.lineplot(x ='Position', y = 'Frequency', data =total_data)
-    #sns.distplot(total_data['Frequency'],hist=False, kde=True, axlabel= 'Frequency', color='orange')
     p = sns.distplot(np.array(original_list_1000),kde=False, axlabel= 'Position', color='black', bins=200)  
-    plt.title(file_name)
+    plt.title(Cancer_type+"_"+file_name+"_"+Status)
     p.set_yscale('log')   # set into log scale 
+    p.set(xlabel='Coverage_Depth', ylabel= "# of Position")
     pp.savefig()
+    plt.close() 
     #p = p.map(plt.hist, "value", color="r", log=True)
-    plt.figure(figsize=(13,6))
+    plt.figure(figsize=(12,6))
     sns.set(font_scale=2)      
     sns.kdeplot(np.array(original_list_1000), shade=True,bw='scott');
+    plt.title(Cancer_type+"_"+file_name+"_"+Status)
+    pp.savefig()
+    plt.close() 
+    plt.figure(figsize=(12,6))
+    sns.set(font_scale=2)
+    plt.title(Cancer_type+"_"+file_name+"_"+Status)
+    p = sns.lineplot(x ='Pos', y = 'Prob', data =Prob_data_1000)
+    p.set(xlabel='Coverage_Depth', ylabel= "fraction of the number of position")
     pp.savefig()
     plt.close() 
 pp.close()
