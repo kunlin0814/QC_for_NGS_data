@@ -150,14 +150,15 @@ sumOfSqerror_count_1000= sqrt(sum((freq_arr_1000-np.array(poisson_list_count_100
 output = open(file_name+'_randomness_summary.txt','w')
 
 output.write(file_name+'\t'+str(average)+'\t' \
-+str(std)+'\t'+str(rmse)+'\t'+str(sumOfSqerror)+'\t' \
-+str(rmse_count)+'\t'+str(sumOfSqerror_count)+'\t'+str(Cancer_type)+'\t' \
++str(std)+'\t'+str(rmse)+'\t'+str(sumOfSqerror)+'\t'+str(rmse_count)+'\t'+str(sumOfSqerror_count)+'\t' \
++str(rmse_1000)+'\t'+str(sumOfSqerror_1000)+'\t'+str(rmse_count_1000)+'\t'+str(sumOfSqerror_count_1000)+'\t' \
++str(Cancer_type)+'\t' \
 +str(Status)+'\n')
 
 output.close()
 
 
-
+"""
 p = sns.lineplot(x ='Pos', y = 'Prob', data =Prob_data_1000)
 plt.title(Cancer_type+"_"+file_name+"_"+Status)
 p.set(xlabel='Coverage_Depth', ylabel= "fraction of the number of position")
@@ -173,7 +174,7 @@ sns.set(font_scale=2)
 #pp.savefig()
 plt.close() 
 #pp.close()
-    
+"""    
 """   
     
     plt.figure(figsize=(13,6))
