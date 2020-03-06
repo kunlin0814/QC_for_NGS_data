@@ -63,9 +63,6 @@ def binarySearch (arr, left, right, reads_position, read_length):
         # Element is not present in the array 
         return -2
 
-
-small_interval_dict ={}
-large_interval_dict ={}
 Total_interval_dict = {}
 with open('G:\\Pan_cancer\\Mapping_source\\Canis_familiaris.CanFam3.1.81.gtf-chr1-38X-CDS-forDepthOfCoverage.interval_list', 'r') as f:
     file = f.read()
