@@ -13,9 +13,7 @@ Created on Wed Jan 29 13:38:09 2020
 from datetime import datetime
 import sys
 from collections import Counter
-import numpy as np
 import io
-import multiprocessing
 # each chromosome
 # min = 23840680 
 # max = 123780325
