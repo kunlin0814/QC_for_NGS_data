@@ -21,7 +21,7 @@ public class Total_dict_Get_exon_reads {
 
 	public static void main(String[] args) throws IOException {
 		
-		String ExonInterval = "/scratch/kh31516/Melanoma/Melanoma_source/Canis_familiaris.CanFam3.1.81.gtf-chr1-38X-CDS-forDepthOfCoverage.interval_list";
+		String ExonInterval = "/work/szlab/kh31516_Lab_Share_script/Canis_familiaris.CanFam3.1.99.gtf-chr1-38X-CDS-forDepthOfCoverage.interval_list";
         String SamFile = args[0];
         String file_name = args[1];
         int read_length = Integer.parseInt(args[3]);
