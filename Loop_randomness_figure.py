@@ -29,16 +29,16 @@ from sklearn.metrics import mean_squared_error
 from math import sqrt
 from matplotlib.backends.backend_pdf import PdfPages
 
-with open("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Distribution/Others/Normal/Normal_list")as f:
+with open("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Randomness_Distribution/Others/Tumor/Tumor_list")as f:
     file_list = f.read().split('\n')[:-1]
     
-Status =  'Normal'
+Status =  'Tumor'
 Cancer_type = 'Unclassified'
     
 pp = PdfPages('/Users/kun-linho/Desktop/1000_bp_'+Status+'_'+Cancer_type+'.pdf')
 
 for i in file_list:
-    input_file ="/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Distribution/Others/Normal/"+i
+    input_file ="/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Randomness_Distribution/Others/Tumor/"+i
         
     #'/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Osteo/Normal/'+i
     #'G:\\Pan_cancer\\Pan_cancer_mapping_result\\Distribution\\Mammary\\Normal\\SRR7780741_DepthofCoverage_Distribution.txt' 
@@ -69,7 +69,10 @@ for i in file_list:
             original_list.append(pos)
             
     total_line = len(original_list)
-    last_pos = original_list[-1]
+    if original_list[-1] > 1000:
+        last_pos = original_list[-1]
+    else:
+        last_pos = 1000
     
     for i in range(last_pos+1):
         if i not in summary.keys():

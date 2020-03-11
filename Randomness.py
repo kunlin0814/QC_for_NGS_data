@@ -66,7 +66,13 @@ for i in range(len(file)):
         original_list.append(pos)
         
 total_line = len(original_list)
-last_pos = original_list[-1]
+
+if original_list[-1] > 1000:
+    last_pos = original_list[-1]
+else:
+    last_pos = 1000
+    
+
 
 for i in range(last_pos+1):
     if i not in summary.keys():

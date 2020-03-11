@@ -2,16 +2,173 @@ library(ggplot2)
 library(readxl)
 library(dplyr)
 
-
+exclude_sample <- read.table("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/total_exclude-samples.txt",
+                             header =  T,
+                             stringsAsFactors = F,
+                             sep = "\t")
 ### Without data point ###
-table <- read_excel("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Randomness/V4_Randomness.xlsx",sheet ='Total_random')
+table <- read_excel("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Supplement_Figure1/V2Supp1_Data.xlsx",sheet ='%CDS targeting rate')
+
+
 Total_table  <- table %>% 
-  filter(MEAN!=0)
+  na.omit(table) %>% 
+  filter(mean!=0) %>% 
+  filter(!Sample_names %in% exclude_sample$Sample_Name)
 
-
+#### plot the mean value #####
 #Cancer <- factor(Total_table$Cancer_type,levels =Total_table$Cancer_type) 
 
-plot_result <- png("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/V4mean.png",width=3000,height=2400,res=400)  
+plot_result <- png("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Randomness/CDS-mapping.png",width=3000,height=2400,res=400)  
+ggplot(table, aes(x=factor(Cancer_type,levels = c("Mammary_Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")),
+                        y=as.numeric(uniq_CDS_region_paris_rates),fill=Status,color=Status)) + 
+  geom_point(size=0.01,position = position_jitterdodge(jitter.width = 0.2)) +
+  ylab("Mean of the coverage")+
+  #labs(subtitle = "p<0.01")+
+  #stat_compare_means(aes(group=gene),label="p.signif",symnum.args = symnumargs,label.y = c(2.1,2.1,2.1,2.1,3,3)) +
+  #scale_y_log10(limits=c(0.001,1000),breaks=c(0.001,0.01,0.1,1,10,100,1000),labels=c(0,0.01,0.1,1,10,100,1000)) +
+  theme(axis.line = element_line(colour = "black"),
+        #panel.grid.major = element_blank(),
+        #panel.grid.minor = element_blank(),
+        #legend.position = "none",
+        legend.title = element_blank(),
+        legend.key=element_blank(),
+        #legend.text =element_text(color = c("firebrick","black")),
+        legend.background = element_rect(fill = "transparent"),
+        panel.border = element_blank(),
+        axis.title.x = element_blank(),
+        #axis.ticks.x = element_blank(),
+        axis.title.y = element_text(colour="black",size=18,margin = margin(1,0,0,0)),
+        plot.margin = margin(1, 10, 4, 5),
+        text = element_text(colour="black",size=14),
+        axis.text.x = element_text(colour=c("black"),
+                                   size=14,angle=45,vjust=1,hjust = 0.9),
+        axis.text.y = element_text(colour="black",size=14),
+        panel.background = element_blank())+
+  stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median,position = "dodge",
+               geom = "crossbar",size=0.1, width = .8,colour = "black")+
+  #scale_x_discrete(labels=panel2label)+
+  scale_color_manual(values = c("firebrick","darkolivegreen"))+
+  scale_fill_manual(values=c("firebrick","darkolivegreen"))+
+  scale_shape_manual(values = 20)
+
+dev.off()
+
+### plot the mean 1000 ###
+plot_result <- png("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Randomness/V7mean.png",width=3000,height=2400,res=400)  
+ggplot(Total_table, aes(x=factor(Cancer_type,levels = c("Mammary_Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")),
+                        y=Total_table$mean,fill=Status,color=Status)) + 
+  geom_point(size=0.01,position = position_jitterdodge(jitter.width = 0.2)) +
+  ylab("Mean of the coverage")+
+  #labs(subtitle = "p<0.01")+
+  #stat_compare_means(aes(group=gene),label="p.signif",symnum.args = symnumargs,label.y = c(2.1,2.1,2.1,2.1,3,3)) +
+  #scale_y_log10(limits=c(0.001,1000),breaks=c(0.001,0.01,0.1,1,10,100,1000),labels=c(0,0.01,0.1,1,10,100,1000)) +
+  theme(axis.line = element_line(colour = "black"),
+        #panel.grid.major = element_blank(),
+        #panel.grid.minor = element_blank(),
+        #legend.position = "none",
+        legend.title = element_blank(),
+        legend.key=element_blank(),
+        #legend.text =element_text(color = c("firebrick","black")),
+        legend.background = element_rect(fill = "transparent"),
+        panel.border = element_blank(),
+        axis.title.x = element_blank(),
+        #axis.ticks.x = element_blank(),
+        axis.title.y = element_text(colour="black",size=18,margin = margin(1,0,0,0)),
+        plot.margin = margin(1, 10, 4, 5),
+        text = element_text(colour="black",size=14),
+        axis.text.x = element_text(colour=c("black"),
+                                   size=14,angle=45,vjust=1,hjust = 0.9),
+        axis.text.y = element_text(colour="black",size=14),
+        panel.background = element_blank())+
+  stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median,position = "dodge",
+               geom = "crossbar",size=0.1, width = .8,colour = "black")+
+  #scale_x_discrete(labels=panel2label)+
+  scale_color_manual(values = c("firebrick","darkolivegreen"))+
+  scale_fill_manual(values=c("firebrick","darkolivegreen"))+
+  scale_shape_manual(values = 20)
+
+dev.off()
+
+
+
+
+### plot the rmse ####
+
+plot_result <- png("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Randomness/V7RMSE.png",width=3000,height=2400,res=400)  
+ggplot(Total_table, aes(x=factor(Cancer_type,levels = c("Mammary_Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")),
+      y=RMSE,fill=Status,color=Status)) + 
+  geom_point(size=0.01,position = position_jitterdodge(jitter.width = 0.2)) +
+  ylab("RMSE of the coverage")+
+  #labs(subtitle = "p<0.01")+
+  #stat_compare_means(aes(group=gene),label="p.signif",symnum.args = symnumargs,label.y = c(2.1,2.1,2.1,2.1,3,3)) +
+  #scale_y_log10(limits=c(0.001,1000),breaks=c(0.001,0.01,0.1,1,10,100,1000),labels=c(0,0.01,0.1,1,10,100,1000)) +
+  theme(axis.line = element_line(colour = "black"),
+        #panel.grid.major = element_blank(),
+        #panel.grid.minor = element_blank(),
+        #legend.position = "none",
+        legend.title = element_blank(),
+        legend.key=element_blank(),
+        #legend.text =element_text(color = c("firebrick","black")),
+        legend.background = element_rect(fill = "transparent"),
+        panel.border = element_blank(),
+        axis.title.x = element_blank(),
+        #axis.ticks.x = element_blank(),
+        axis.title.y = element_text(colour="black",size=18,margin = margin(1,0,0,0)),
+        plot.margin = margin(1, 10, 4, 5),
+        text = element_text(colour="black",size=14),
+        axis.text.x = element_text(colour=c("black"),
+                                   size=14,angle=45,vjust=1,hjust = 0.9),
+        axis.text.y = element_text(colour="black",size=14),
+        panel.background = element_blank())+
+  stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median,position = "dodge",
+               geom = "crossbar",size=0.1, width = .8,colour = "black")+
+  #scale_x_discrete(labels=panel2label)+
+  scale_color_manual(values = c("firebrick","darkolivegreen"))+
+  scale_fill_manual(values=c("firebrick","darkolivegreen"))+
+  scale_shape_manual(values = 20)
+
+dev.off()
+
+##### plot the rmse 1000 #####
+plot_result <- png("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Randomness/V7RMSE.png",width=3000,height=2400,res=400)  
+ggplot(Total_table, aes(x=factor(Cancer_type,levels = c("Mammary_Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")),
+                        y=RMSE,fill=Status,color=Status)) + 
+  geom_point(size=0.01,position = position_jitterdodge(jitter.width = 0.2)) +
+  ylab("RMSE of the coverage")+
+  #labs(subtitle = "p<0.01")+
+  #stat_compare_means(aes(group=gene),label="p.signif",symnum.args = symnumargs,label.y = c(2.1,2.1,2.1,2.1,3,3)) +
+  #scale_y_log10(limits=c(0.001,1000),breaks=c(0.001,0.01,0.1,1,10,100,1000),labels=c(0,0.01,0.1,1,10,100,1000)) +
+  theme(axis.line = element_line(colour = "black"),
+        #panel.grid.major = element_blank(),
+        #panel.grid.minor = element_blank(),
+        #legend.position = "none",
+        legend.title = element_blank(),
+        legend.key=element_blank(),
+        #legend.text =element_text(color = c("firebrick","black")),
+        legend.background = element_rect(fill = "transparent"),
+        panel.border = element_blank(),
+        axis.title.x = element_blank(),
+        #axis.ticks.x = element_blank(),
+        axis.title.y = element_text(colour="black",size=18,margin = margin(1,0,0,0)),
+        plot.margin = margin(1, 10, 4, 5),
+        text = element_text(colour="black",size=14),
+        axis.text.x = element_text(colour=c("black"),
+                                   size=14,angle=45,vjust=1,hjust = 0.9),
+        axis.text.y = element_text(colour="black",size=14),
+        panel.background = element_blank())+
+  stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median,position = "dodge",
+               geom = "crossbar",size=0.1, width = .8,colour = "black")+
+  #scale_x_discrete(labels=panel2label)+
+  scale_color_manual(values = c("firebrick","darkolivegreen"))+
+  scale_fill_manual(values=c("firebrick","darkolivegreen"))+
+  scale_shape_manual(values = 20)
+
+dev.off()
+
+
+###### Violin plot ########
+
+
 mean <- ggplot(Total_table, aes(x=factor(Cancer_type,levels = c("Mammary Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")), y=MEAN, fill=Status)) + 
   geom_violin(trim=FALSE)+
   theme_classic()+
@@ -43,7 +200,8 @@ std
 dev.off()
 #stat_summary(fun.data=mean_sdl,geom="pointrange", color="black",position = position_dodge(width = 0.9))
 plot_result <- png("/Users/kun-linho/Desktop/Pan_cancer_mapping_result/V4rmse.png",width=3000,height=2400,res=300)  
-rmse <-  ggplot(Total_table, aes(x=factor(Cancer_type,levels = c("Mammary Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")), y=rmse, fill=Status)) + 
+rmse <-  ggplot(Total_table, aes(x=factor(Cancer_type,levels = c("Mammary Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")), 
+                                 y=rmse, fill=Status)) + 
   geom_violin(trim=FALSE)+
   theme_classic()+
   scale_fill_manual(values=c("gray","red"))+
