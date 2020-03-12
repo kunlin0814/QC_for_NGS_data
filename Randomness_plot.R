@@ -18,11 +18,13 @@ Total_table  <- table %>%
 #### plot the mean value #####
 #Cancer <- factor(Total_table$Cancer_type,levels =Total_table$Cancer_type) 
 
-plot_result <- png("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Randomness/CDS-mapping.png",width=3000,height=2400,res=400)  
+plot_result <- png("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Exonic_mapping/CDS-mapping.png",width=3000,height=2400,res=400)  
 ggplot(table, aes(x=factor(Cancer_type,levels = c("Mammary_Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")),
                         y=as.numeric(uniq_CDS_region_paris_rates),fill=Status,color=Status)) + 
   geom_point(size=0.01,position = position_jitterdodge(jitter.width = 0.2)) +
-  ylab("Mean of the coverage")+
+  ylab("CDS mapping rate")+
+  geom_hline(yintercept=.3, linetype="dashed", 
+             color = "red", size=2)+
   #labs(subtitle = "p<0.01")+
   #stat_compare_means(aes(group=gene),label="p.signif",symnum.args = symnumargs,label.y = c(2.1,2.1,2.1,2.1,3,3)) +
   #scale_y_log10(limits=c(0.001,1000),breaks=c(0.001,0.01,0.1,1,10,100,1000),labels=c(0,0.01,0.1,1,10,100,1000)) +

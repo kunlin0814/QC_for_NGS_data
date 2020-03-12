@@ -6,21 +6,30 @@ library(dplyr)
 # new_glioma <- na.omit(glioma)
 # mean(new_glioma$`0...2`[!new_glioma$`0...2`==0])
 
+total_file <- read_excel("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Supplement_Figure1/V2Supp1_Data.xlsx",
+                         sheet ="Total")
+PAIR <- read_excel("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Supplement_Figure1/V2Supp1_Data.xlsx",
+                   sheet ="PAIRS")
 
-filter_read <- read_excel("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Supplement_Figure1/V2Supp1_Data.xlsx",
-                          sheet = "Total_sequence_pairs")
-col_name <- colnames(filter_read)
-final_filter_read <- filter_read %>% 
-  filter(Total_pairs < 5000000 | Total_pairs==NaN)
-rep_time <- nrow(final_filter_read)
-reason <- rep("Total_Pair_reads > 5M", rep_time)
-final_filter_read <- cbind(final_filter_read,reason)
+filter_read <- total_file %>% 
+  filter(Total_pairs < 5000000 | Total_pairs==NaN) %>% 
+  select(ID) 
+
+target <- PAIR$Cases[PAIR$Normal %in% as.matrix(filter_read)[ ,1]]
+
+Target_cases <- PAIR %>% 
+  filter(Cases %in% target) %>% 
+  as.data.frame()
+
+
+rep_time <- nrow(filter_read)
+reason <- rep("Total_Pair_reads < 5M", rep_time)
+final_filter_read <- cbind(filter_read,reason)
 write.table(final_filter_read,file="/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Exclude_process/seq_read_pairs_lt5M.txt",
-            quote = F,sep = "\t",row.names = F)
+            quote = F,sep = "\t",row.names = F)  
 
-mapping_quality <- read_excel("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Supplement_Figure1/V2Supp1_Data.xlsx",
-                          sheet = "Mapping Quality > 30")
-final_filter_mapping <- mapping_quality %>% 
+final_filter_mapping <- total_file %>% 
+  filter(!Total_pairs < 5000000 | Total_pairs==NaN)  %>% 
   filter(gt_30_fraction < 0.25 |gt_30_fraction ==NaN)
 rep_time <- nrow(final_filter_mapping)
 reason <- rep("faction of mapping quality", rep_time)
@@ -29,18 +38,20 @@ final_filter_mapping <- cbind(final_filter_mapping,reason)
 write.table(final_filter_mapping,file="/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Exclude_process/mapping_qualitylt0.25.txt",
             quote = F,sep = "\t",row.names = F)
 
-CDS_target <-  read_excel("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Supplement_Figure1/V2Supp1_Data.xlsx",
-                          sheet = "%CDS targeting rate")
-CDS_target %>% 
-  filter(Sample_Names=="SAMN03436471")
+final_filter_mapping <- 
+  total_file %>% 
+  filter(!Total_pairs < 5000000 | Total_pairs==NaN)  %>% 
+  filter(!gt_30_fraction < 0.25 |gt_30_fraction ==NaN) %>% 
+  filter(as.numeric(uniq_CDS_region_paris_rates) < 0.3|uniq_CDS_region_paris_rates==NaN) %>% 
+  select(ID)
 
-filter_CDS <- CDS_target %>% 
-  filter(as.numeric(uniq_CDS_region_paris_rates) < 0.3|uniq_CDS_region_paris_rates==NaN)
-rep_time <- nrow(filter_CDS)
+
+rep_time <- nrow(final_filter_mapping)
 reason <- rep("Unique CDS mapping rate < 0.3", rep_time)
-final_filter_CDS <- cbind(filter_CDS,reason)
+final_filter_CDS <- cbind(final_filter_mapping,reason)
 write.table(final_filter_CDS,file="/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Exclude_process/uniq_CDSlt0.3.txt",
-            quote = F,sep = "\t",row.names = F)
+            quote = F,sep = "\t",row.names = F)  
+
   
   # ggplot(aes(x=factor(Cancer_type,levels = c("Mammary_Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")),
   #                         y=as.numeric(uniq_CDS_region_paris_rates),fill=Status,color=Status)) + 
