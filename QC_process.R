@@ -6,51 +6,99 @@ library(dplyr)
 # new_glioma <- na.omit(glioma)
 # mean(new_glioma$`0...2`[!new_glioma$`0...2`==0])
 
-total_file <- read_excel("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Supplement_Figure1/V2Supp1_Data.xlsx",
+total_file <- read_excel("G:\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\V2Supp1_Data.xlsx",
                          sheet ="Total")
-PAIR <- read_excel("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Supplement_Figure1/V2Supp1_Data.xlsx",
+PAIR <- read_excel("G:\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\V2Supp1_Data.xlsx",
                    sheet ="PAIRS")
 
-filter_read <- total_file %>% 
+###### Sequence read pairs ######
+
+filtered <- total_file %>% 
   filter(Total_pairs < 5000000 | Total_pairs==NaN) %>% 
-  select(ID) 
-
-target <- PAIR$Cases[PAIR$Normal %in% as.matrix(filter_read)[ ,1]]
-
-Target_cases <- PAIR %>% 
-  filter(Cases %in% target) %>% 
-  as.data.frame()
+  select(ID, Total_pairs, Status,Cancer_Type) 
 
 
-rep_time <- nrow(filter_read)
+Cases <- c()
+
+for (i in filtered$ID){
+  
+  if (i %in% PAIR$Normal){
+  Case_name <- PAIR$Cases[PAIR$Normal==i]
+  }
+  else if ( i %in% PAIR$Tumor){
+  Case_name <- PAIR$Cases[PAIR$Tumor==i]  
+  }
+  
+  Cases <- c(Cases,Case_name )
+  }
+rep_time <- nrow(filtered)
 reason <- rep("Total_Pair_reads < 5M", rep_time)
-final_filter_read <- cbind(filter_read,reason)
-write.table(final_filter_read,file="/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Exclude_process/seq_read_pairs_lt5M.txt",
+Exclude_Reason <- paste(filtered$Status,filtered$ID,reason,sep = "-")
+finalTable <- cbind(Cases,filtered,Exclude_Reason)
+
+write.table(finalTable,file="G:\\Pan_cancer\\Pan_cancer_mapping_result\\Exclude_process\\seq_lt_5M.txt",
             quote = F,sep = "\t",row.names = F)  
 
-final_filter_mapping <- total_file %>% 
-  filter(!Total_pairs < 5000000 | Total_pairs==NaN)  %>% 
-  filter(gt_30_fraction < 0.25 |gt_30_fraction ==NaN)
-rep_time <- nrow(final_filter_mapping)
-reason <- rep("faction of mapping quality", rep_time)
-final_filter_mapping <- cbind(final_filter_mapping,reason)
+############# CDS #############
 
-write.table(final_filter_mapping,file="/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Exclude_process/mapping_qualitylt0.25.txt",
-            quote = F,sep = "\t",row.names = F)
+filtered <- total_file %>% 
+filter(!Total_pairs < 5000000 | Total_pairs==NaN)  %>% 
+filter(!gt_30_fraction < 0.25 |gt_30_fraction ==NaN) %>% 
+filter(as.numeric(uniq_CDS_region_paris_rates) < 0.3|uniq_CDS_region_paris_rates==NaN) %>% 
+select(ID, uniq_CDS_region_paris_rates,Status,Cancer_Type)
 
-final_filter_mapping <- 
-  total_file %>% 
+Cases <- c()
+
+for (i in filtered$ID){
+  
+  if (i %in% PAIR$Normal){
+    Case_name <- PAIR$Cases[PAIR$Normal==i]
+  }
+  else if ( i %in% PAIR$Tumor){
+    Case_name <- PAIR$Cases[PAIR$Tumor==i]  
+  }
+  
+  Cases <- c(Cases,Case_name )
+}
+
+rep_time <- rep_time <- nrow(filtered)
+Exclude_Reason <- rep("Unique CDS mapping rate < 0.3", rep_time)
+finalTable <- cbind(Cases,filtered,Exclude_Reason)
+
+write.table(finalTable,file="G:\\Pan_cancer\\Pan_cancer_mapping_result\\Exclude_process\\uniq_CDSlt0.3.txt",
+            quote = F,sep = "\t",row.names = F)  
+
+##### Randomness #####
+
+filtered <- total_file %>% 
   filter(!Total_pairs < 5000000 | Total_pairs==NaN)  %>% 
   filter(!gt_30_fraction < 0.25 |gt_30_fraction ==NaN) %>% 
-  filter(as.numeric(uniq_CDS_region_paris_rates) < 0.3|uniq_CDS_region_paris_rates==NaN) %>% 
-  select(ID)
+  filter(!as.numeric(uniq_CDS_region_paris_rates) < 0.3|uniq_CDS_region_paris_rates==NaN) %>% 
+  filter(mean <10) %>% 
+  select(ID,mean,Status,Cancer_Type)
 
+Cases <- c()
 
-rep_time <- nrow(final_filter_mapping)
-reason <- rep("Unique CDS mapping rate < 0.3", rep_time)
-final_filter_CDS <- cbind(final_filter_mapping,reason)
-write.table(final_filter_CDS,file="/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Exclude_process/uniq_CDSlt0.3.txt",
+for (i in filtered$ID){
+  
+  if (i %in% PAIR$Normal){
+    Case_name <- PAIR$Cases[PAIR$Normal==i]
+  }
+  else if ( i %in% PAIR$Tumor){
+    Case_name <- PAIR$Cases[PAIR$Tumor==i]  
+  }
+  
+  Cases <- c(Cases,Case_name )
+}
+
+rep_time <- rep_time <- nrow(filtered)
+Exclude_Reason <- rep("Mean Coverage < 10", rep_time)
+finalTable <- cbind(Cases,filtered,Exclude_Reason)
+
+write.table(finalTable,
+            file="G:\\Pan_cancer\\Pan_cancer_mapping_result\\Exclude_process\\mean_coveragelt10.txt",
             quote = F,sep = "\t",row.names = F)  
+
 
   
   # ggplot(aes(x=factor(Cancer_type,levels = c("Mammary_Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")),
@@ -85,7 +133,7 @@ write.table(final_filter_CDS,file="/Volumes/Research_Data/Pan_cancer/Pan_cancer_
   # scale_fill_manual(values=c("firebrick","darkolivegreen"))+
   # scale_shape_manual(values = 20)
 
-
+#### callable bases #####
 
 callable <- read_excel("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Supplement_Figure1/V2Supp1_Data.xlsx",
                        sheet = "Callable_Bases")
@@ -99,6 +147,9 @@ final_filter_callable <- cbind(filter_callable,reason)
 write.table(final_filter_CDS,
             file="/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Exclude_process/callablelt2M.txt",
             quote = F,sep = "\t",row.names = F)
+
+
+##### Randomness plot #####
 
 randomness <- read_excel("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Supplement_Figure1/V2Supp1_Data.xlsx",
                        sheet = "Randomness")
