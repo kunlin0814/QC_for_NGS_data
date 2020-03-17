@@ -4,10 +4,10 @@
 ## It returns an uniq mapped file, a rep mapped file and a summmy file
 
 import sys
-import pysam
+#import pysam
 
 sam_file=sys.argv[1]
-f = pysam.AlignmentFile(sam_file, "rb")
+#f = pysam.AlignmentFile(sam_file, "rb")
 output_name=sys.argv[2]
 
 summary=open(output_name+'_python_Mapping_summary.txt','w')
@@ -19,27 +19,27 @@ duplicate = 0 #3
 Onemapped = 0 #5,9
 incorrect = 0 #1
 unmapped = 0 #13
-
-for line in f:
-    file_lst = str(line).split('\t')
-    if '@' in file_lst[0]:
-        pass
-    else :
-        status = int(file_lst[1])%16
-        if status == 5 or status == 9:
-            Onemapped += 1
-        elif status == 1:
-            incorrect += 1
-        elif status == 13:
-            unmapped += 1
-        elif status == 3:
-            for ele in file_lst:
-                if 'XT:' in ele:
-                    status2 = ele.split(':')[2]
-                    if status2 == 'U' or status2 == 'M':
-                        unique += 1
-                    elif status2 == 'R':
-                        duplicate += 1
+with open(sam_file,'rb') as f:
+    for line in f:
+        file_lst = line.split(b'\t')
+        if b'@' in file_lst[0]:
+            pass
+        else :
+            status = int(file_lst[1])%16
+            if status == 5 or status == 9:
+                Onemapped += 1
+            elif status == 1:
+                incorrect += 1
+            elif status == 13:
+                unmapped += 1
+            elif status == 3:
+                for ele in file_lst:
+                    if b'XT:' in ele:
+                        status2 = ele.split(b':')[2]
+                        if status2 == b'U' or status2 == b'M':
+                            unique += 1
+                        elif status2 == b'R':
+                            duplicate += 1
 
 total = unique + duplicate + Onemapped + incorrect + unmapped
 pairs = total / 2
