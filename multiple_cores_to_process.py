@@ -4,8 +4,12 @@ Created on Thu Mar 19 11:16:45 2020
 
 @author: abc73_000
 """
+<<<<<<< HEAD
 #### Windows system, please don't use multiprocessing ###
 
+=======
+#### windows system, don't use multiprocessing ###
+>>>>>>> 6daed6a91ac9a74623cfd35f848e0ccef180e0fd
 
 ### simplified verion
 import multiprocessing as mp
