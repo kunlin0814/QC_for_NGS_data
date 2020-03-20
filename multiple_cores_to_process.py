@@ -4,6 +4,7 @@ Created on Thu Mar 19 11:16:45 2020
 
 @author: abc73_000
 """
+#### windows system, don't use multiprocessing ###
 
 ### simplified verion
 import multiprocessing as mp
