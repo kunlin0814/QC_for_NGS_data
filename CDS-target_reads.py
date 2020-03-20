@@ -40,36 +40,39 @@ def withinRegion(reads_position, exom_start, exom_end):
 
 
 def binarySearch (arr, left, right, reads_position, read_length): 
-    
     # Check base case 
     if right >= left: 
         mid = int((left+right)/2)
         exon_start_value = int (arr[mid][0])
         exon_end_value = int (arr[mid][1])
+        regionIdx = withinRegion(reads_position, exon_start_value, exon_end_value )
         # If element is present at the middle itself 
-        if (withinRegion(reads_position, exon_start_value, exon_end_value ) == 1):
+        if (regionIdx == 1):
             return mid 
           
         # If element is smaller than mid, then it can only 
         # be present in left subarray 
-        elif (withinRegion(reads_position, exon_start_value, exon_end_value ) == -1):
+        elif (regionIdx == -1):
             return binarySearch(arr, left, mid-1, reads_position, read_length) 
   
         # Else the element can only be present in right subarray 
-        elif (withinRegion(reads_position, exon_start_value, exon_end_value ) == 0) : 
+        elif (regionIdx == 0) : 
             return binarySearch(arr, mid+1, right, reads_position, read_length) 
   
     else: 
         # Element is not present in the array 
         return -2
 
-Total_interval_dict = {}
+
+### file about CDS interval ###
 with open('G:\\Pan_cancer\\Mapping_source\\Canis_familiaris.CanFam3.1.81.gtf-chr1-38X-CDS-forDepthOfCoverage.interval_list', 'r') as f:
     file = f.read()
 
-
 CDS = file.split('\n')[:-1]
-    
+
+#### create a dictionary ####
+Total_interval_dict = {}
+
 for i in range(len(CDS)):
     chrom = CDS[i].split(':')[0]
     start = int(CDS[i].split(':')[1].split('-')[0])
@@ -95,7 +98,7 @@ unique = 0 #3
 transcript_list =[]    
 total = 0 
 pass_line =0
-with io.open(sam_file,'r',buffering=200000) as f1:   
+with io.open(sam_file,'r') as f1:   
     for line in f1:
         file_lst = line.split('\t')
         if '@' in file_lst[0]:
