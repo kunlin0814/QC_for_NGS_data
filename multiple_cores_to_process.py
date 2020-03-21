@@ -9,7 +9,7 @@ Created on Thu Mar 19 11:16:45 2020
 
 =======
 #### windows system, don't use multiprocessing ###
->>>>>>> 6daed6a91ac9a74623cfd35f848e0ccef180e0fd
+
 
 ### simplified verion
 import multiprocessing as mp
