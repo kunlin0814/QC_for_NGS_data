@@ -18,7 +18,6 @@ import java.util.Collections;
 // The java version of the target_reads.py scripts. Each sample takes around 15 min vs 2 hr in python script
 public class Total_dict_Get_exon_reads {
 
-
 	public static void main(String[] args) throws IOException {
 		
 		String ExonInterval = "/work/szlab/kh31516_Lab_Share_script/Canis_familiaris.CanFam3.1.99.gtf-chr1-38X-CDS-forDepthOfCoverage.interval_list";
@@ -27,8 +26,6 @@ public class Total_dict_Get_exon_reads {
         int read_length = Integer.parseInt(args[3]);
         File file_output = new File(args[2]);	
 		
-		//Map<String, ArrayList<ExonLocationInfo>> small_interval_dict = new TreeMap<>();
-		//Map<String, ArrayList<ExonLocationInfo>> large_interval_dict = new TreeMap<>();
 		Map<String, ArrayList<ExonLocationInfo>> Total_interval_dict = new HashMap<>();
 		
 		BufferedReader objReader = null;
@@ -51,9 +48,7 @@ public class Total_dict_Get_exon_reads {
         		Total_interval_dict.get(chrom).add(new ExonLocationInfo(start, end));
         		
         	}
-        		
-    
-                
+        		      
         }
 		objReader.close();
 		Set <String> Total_chrom_list =  Total_interval_dict.keySet();
