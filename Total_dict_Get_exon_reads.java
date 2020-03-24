@@ -77,12 +77,13 @@ public class Total_dict_Get_exon_reads {
 		//unmapped = 0 #13   
 	    int total = 0 ;
 		int pass_line = 0 ;
-	
+
 		ArrayList <String> transcript_list = new ArrayList<String>(); 
 		ArrayList <String> summary_list = new ArrayList<String>(); 
 		BufferedReader objReader_samfile = null;
 		objReader_samfile = new BufferedReader(new FileReader(SamFile));
 		String strCurrentLine_sam;
+		
 		while ((strCurrentLine_sam = objReader_samfile.readLine()) != null) {
 			
 		if(strCurrentLine_sam.startsWith("@")) {
