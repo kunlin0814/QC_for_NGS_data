@@ -8,6 +8,9 @@ excluded <- read.table("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_res
                        sep='\t',header = T)
 sanger_data <- read_excel("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Mutation_rate/Sanger_melanoma.xlsx",
                           sheet ="Sanger_data")
+
+mutation_comp <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Mutation_rate\\Sanger_melanoma.xlsx",
+                            sheet ="Double_SNP")
 # ele <- Mut_table$Sample
 # 
 # summary <- list()
