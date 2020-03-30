@@ -11,6 +11,20 @@ sanger_data <- read_excel("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_
 
 mutation_comp <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Mutation_rate\\Sanger_melanoma.xlsx",
                             sheet ="Double_SNP")
+
+png("C:\\Users\\abc73_000\\Desktop\\Mutation_comparison.png",width=3000,height=2400,res=300)  
+ggplot(data= mutation_comp, aes(x = mutation_comp$Total_Mutation, y=mutation_comp$Sanger_mutation), shape=23)+
+  geom_point(shape = 1, size =4)+
+  xlab("Our  Data")+
+  ylab("Sanger Data")+
+  theme(
+    #axis.title=element_text(size=18,face="bold"),
+    axis.title.x = element_text(size=20,vjust = -1),
+    axis.title.y = element_text(size=20,vjust = -1),
+    axis.text.x = element_text(size=16),
+    axis.text.y = element_text(size=16))
+
+dev.off()
 # ele <- Mut_table$Sample
 # 
 # summary <- list()
