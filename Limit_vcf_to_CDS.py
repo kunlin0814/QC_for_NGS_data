@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+### this script analyzes the vcf derived from strelka and select the mutations within the CDS region ###  
 import sys
 import glob
 import gzip
