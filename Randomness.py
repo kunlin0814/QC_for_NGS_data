@@ -39,7 +39,7 @@ input_file = "/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Distri
 # "/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
 #sys.argv[1]
 #"/Users/kun-linho/Desktop/Pan_cancer_mapping_result/Distribution/Mammary/Normal/SRR7780741_DepthofCoverage_Distribution.txt"
-file_name = "SRR7780741"
+file_name = sys.argv[1]
 
 #i.split('_')[0]
 #sys.argv[2]
@@ -86,26 +86,27 @@ total_data = pd.DataFrame(list(order_summary.items()),columns=['Position', 'Freq
 
 freq_arr = total_data['Frequency'].values
 pos_arr = total_data['Position'].values
-freq_arr_1000 = freq_arr[0:1000]
-pos_arr_1000 = pos_arr[0:1000]
+#freq_arr_1000 = freq_arr[0:1000]
+#pos_arr_1000 = pos_arr[0:1000]
 
 total_array = np.array(original_list)
 
+"""
 original_list_1000=[]
 for i in range(1000):
     pos = pos_arr[i]
     freq = freq_arr_1000[i]
     for j in range(freq):
         original_list_1000.append(pos)
-
+"""
 
 average = np.mean(np.array(original_list))
-average_1000= np.mean(np.array(original_list_1000))
+#average_1000= np.mean(np.array(original_list_1000))
 std = np.std(np.array(original_list))
-std_1000 = np.std(np.array(original_list_1000))  
+#std_1000 = np.std(np.array(original_list_1000))  
 
 mu = average
-mu_1000= average_1000
+#mu_1000= average_1000
 
 prob_arr= freq_arr/total_line
 
@@ -118,21 +119,24 @@ for i in range(last_pos+1):
     
 poisson_fract_list_1000=[]
 
+"""
 for i in range(1000):
     value = poisson.pmf(i,mu_1000)
     poisson_fract_list_1000.append(value)
 #[poisson.pmf(i,mu) for i in range(last_pos+1)]
-pos_1000_line = len(original_list_1000)
+"""
 
-prob_arr_1000 = freq_arr_1000/ pos_1000_line
+#pos_1000_line = len(original_list_1000)
 
-Prob_data_1000 = pd.DataFrame(data= {'Prob' :prob_arr_1000,'Pos': pos_arr_1000})
+#prob_arr_1000 = freq_arr_1000/ pos_1000_line
+
+#Prob_data_1000 = pd.DataFrame(data= {'Prob' :prob_arr_1000,'Pos': pos_arr_1000})
 pd.DataFrame(list(order_summary.items()),columns=['Position', 'Frequency'])
 rmse = sqrt(mean_squared_error(prob_arr, np.array(poisson_fract_list))) ## compare the proportion
 sumOfSqerror= sqrt(sum((prob_arr-np.array(poisson_fract_list))**2)) ## rmse that didn't divide the N, vs proportion
 
-rmse_1000 = sqrt(mean_squared_error(prob_arr_1000, np.array(poisson_fract_list_1000))) ## compare the proportion
-sumOfSqerror_1000= sqrt(sum((prob_arr_1000-np.array(poisson_fract_list_1000))**2))
+#rmse_1000 = sqrt(mean_squared_error(prob_arr_1000, np.array(poisson_fract_list_1000))) ## compare the proportion
+#sumOfSqerror_1000= sqrt(sum((prob_arr_1000-np.array(poisson_fract_list_1000))**2))
 
 
 poisson_list_count =[]
@@ -141,10 +145,11 @@ for i in range(last_pos+1):
     value = poisson.pmf(i,mu)*total_line
     poisson_list_count.append(value)
 
+"""
 for i in range(1000):
     value = poisson.pmf(i,mu)*pos_1000_line
     poisson_list_count_1000.append(value)
-        
+"""     
 
 rmse_count = sqrt(mean_squared_error(freq_arr, np.array(poisson_list_count)))     
 sumOfSqerror_count= sqrt(sum((freq_arr-np.array(poisson_list_count))**2))
@@ -157,9 +162,7 @@ output = open(file_name+'_randomness_summary.txt','w')
 
 output.write(file_name+'\t'+str(average)+'\t' \
 +str(std)+'\t'+str(rmse)+'\t'+str(sumOfSqerror)+'\t'+str(rmse_count)+'\t'+str(sumOfSqerror_count)+'\t' \
-+str(rmse_1000)+'\t'+str(sumOfSqerror_1000)+'\t'+str(rmse_count_1000)+'\t'+str(sumOfSqerror_count_1000)+'\t' \
-+str(Cancer_type)+'\t' \
-+str(Status)+'\n')
++str(Cancer_type)+'\t'+str(Status)+'\n')
 
 output.close()
 
