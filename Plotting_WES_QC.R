@@ -1,6 +1,5 @@
-library(ggplot2)
+library(tidyverse)
 library(readxl)
-library(dplyr)
 library(wesanderson)
 library(RColorBrewer)
 
@@ -226,12 +225,49 @@ callable %>%
 dev.off()
 
 ### Mean Coverage ###
-plot_result <- png("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\coverage-Mean.png",
+plot_result <- png("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\10X_30X_coverage-Mean.png",
                    width=2800,height=1800,res=450)
 total_file %>% 
   filter(!Total_pairs < 5000000 | Total_pairs==NaN) %>%
   filter(as.numeric(uniq_CDS_region_paris_rates) >=0.3)%>%
-  filter(mean>10) %>%
+  ggplot(aes(x=factor(Cancer_Type,levels = c("Mammary_Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")),
+             y=as.numeric(mean),fill=Status,color=Status)) +
+  geom_point(size=0.01,position = position_jitterdodge(jitter.width = 0.2)) +
+  
+  ylab("Mean Coverage")+
+  #labs(subtitle = "p<0.01")+
+  #stat_compare_means(aes(group=gene),label="p.signif",symnum.args = symnumargs,label.y = c(2.1,2.1,2.1,2.1,3,3)) +
+  #scale_y_log10(limits=c(0.001,1000),breaks=c(0.001,0.01,0.1,1,10,100,1000),labels=c(0,0.01,0.1,1,10,100,1000)) +
+  theme(axis.line = element_line(colour = "black"),
+        #panel.grid.major = element_blank(),
+        #panel.grid.minor = element_blank(),
+        legend.position = "none",
+        legend.title = element_blank(),
+        legend.key=element_blank(),
+        #legend.text =element_text(color = c("firebrick","black")),
+        legend.background = element_rect(fill = "transparent"),
+        panel.border = element_blank(),
+        axis.title.x = element_blank(),
+        #axis.ticks.x = element_blank(),
+        axis.title.y = element_text(colour="black",size=18,margin = margin(1,5,.5,0)),
+        text = element_text(colour="black",size=14),
+        axis.text.x = element_blank(), 
+        #axis.text.x = element_text(colour=c("black"),size=12,vjust=1,hjust = 0.9),
+        axis.text.y = element_text(colour="black",size=18),
+        panel.background = element_blank())+
+  stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median,position = "dodge",
+               geom = "crossbar",size=0.1, width = .8,colour = "black")+
+  #scale_x_discrete(labels=panel2label)+
+  scale_color_manual(values = c("firebrick","darkolivegreen"))+
+  scale_fill_manual(values=c("firebrick","darkolivegreen"))+
+  scale_shape_manual(values = 20)+
+  theme(plot.margin = unit(c(0.5,0.3,1,0.5), "cm")) %>% 
+  geom_hline(yintercept=30, linetype= 'dashed', color = 'red', size =0.5)+
+  geom_hline(yintercept=10, linetype= 'dashed', color = 'blue', size =0.5)
+  
+  dev.off()
+  
+  filter(mean>) %>%
   ggplot(aes(x=factor(Cancer_Type,levels = c("Mammary_Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")),
              y=as.numeric(mean),fill=Status,color=Status)) +
   geom_point(size=0.01,position = position_jitterdodge(jitter.width = 0.2)) +
