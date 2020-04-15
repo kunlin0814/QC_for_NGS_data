@@ -154,14 +154,14 @@ for i in range(1000):
 rmse_count = sqrt(mean_squared_error(freq_arr, np.array(poisson_list_count)))     
 sumOfSqerror_count= sqrt(sum((freq_arr-np.array(poisson_list_count))**2))
 
-rmse_count_1000 = sqrt(mean_squared_error(freq_arr_1000, np.array(poisson_list_count_1000)))     
-sumOfSqerror_count_1000= sqrt(sum((freq_arr_1000-np.array(poisson_list_count_1000))**2))
+#rmse_count_1000 = sqrt(mean_squared_error(freq_arr_1000, np.array(poisson_list_count_1000)))     
+#sumOfSqerror_count_1000= sqrt(sum((freq_arr_1000-np.array(poisson_list_count_1000))**2))
 
   
 output = open(file_name+'_randomness_summary.txt','w')
 
 output.write(file_name+'\t'+str(average)+'\t' \
-+str(std)+'\t'+str(rmse)+'\t'+str(sumOfSqerror)+'\t'+str(rmse_count)+'\t'+str(sumOfSqerror_count)+'\t' \
++str(std)+'\t'+str(rmse)+'\t'+str(sumOfSqerror)+'\t' \
 +str(Cancer_type)+'\t'+str(Status)+'\n')
 
 output.close()
