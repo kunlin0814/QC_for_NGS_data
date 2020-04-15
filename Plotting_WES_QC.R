@@ -10,6 +10,8 @@ library(RColorBrewer)
 #Mean_coverage < 30	
 #Callable bases < 10Mb (samples/cases)
 
+########### Photoshop use res = 450 #################
+
 
 
 total_file <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\V2Supp1_Data.xlsx",
@@ -179,7 +181,7 @@ total_file %>%
   scale_color_manual(values = c("firebrick","darkolivegreen"))+
   scale_fill_manual(values=c("firebrick","darkolivegreen"))+
   scale_shape_manual(values = 20)+
-  coord_cartesian(ylim=c(0,1))+
+  coord_cartesian(ylim=c(0,0.8))+
   theme(plot.margin = unit(c(1,0.3,1.5,0.5), "cm"))
 
 dev.off()
@@ -229,11 +231,12 @@ callable %>%
 dev.off()
 
 ### Mean Coverage ###
-plot_result <- png("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\10X_30X_coverage-Mean.png",
-                   width=2800,height=1800,res=450)
+plot_result <- png("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\gt30X_coverage-Mean.png",
+                   width=2800,height=1800,res=350)
 total_file %>% 
   filter(!Total_pairs < 5000000 | Total_pairs==NaN) %>%
   filter(as.numeric(uniq_CDS_region_paris_rates) >=0.3)%>%
+  filter(mean >30) %>% 
   ggplot(aes(x=factor(Cancer_Type,levels = c("Mammary_Cancer","Melanoma", "Osteosarcoma","Lymphoma","Glioma","Unclassified")),
              y=as.numeric(mean),fill=Status,color=Status)) +
   geom_point(size=0.01,position = position_jitterdodge(jitter.width = 0.2)) +
@@ -264,7 +267,7 @@ total_file %>%
   scale_color_manual(values = c("firebrick","darkolivegreen"))+
   scale_fill_manual(values=c("firebrick","darkolivegreen"))+
   scale_shape_manual(values = 20)+
-  coord_cartesian(ylim=c(0,2*10**8))+
+  coord_cartesian(ylim=c(0,200))+
   theme(plot.margin = unit(c(1,0.3,1.5,0.5), "cm"))
   
  
@@ -273,13 +276,14 @@ dev.off()
 
 
 #### RMSE ####
+
 plot_result <- png("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\Coverage-RMSE.png",
-                   width=2800,height=1800,res=450)
+                   width=2800,height=1800,res=350)
 total_file %>% 
   filter(!Total_pairs < 5000000 | Total_pairs==NaN) %>%
   filter(as.numeric(uniq_CDS_region_paris_rates) >=0.3)%>% 
-  filter(mean>10) %>% 
-  ggplot(aes(x=factor(Cancer_Type,levels = c("Mammary_Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")),
+  filter(mean>30) %>% 
+  ggplot(aes(x=factor(Cancer_Type,levels = c("Mammary_Cancer","Melanoma", "Osteosarcoma","Lymphoma",'Glioma',"Unclassified")),
              y=as.numeric(RMSE),fill=Status,color=Status)) +
   geom_point(size=0.01,position = position_jitterdodge(jitter.width = 0.2)) +
   
@@ -309,7 +313,7 @@ total_file %>%
   scale_color_manual(values = c("firebrick","darkolivegreen"))+
   scale_fill_manual(values=c("firebrick","darkolivegreen"))+
   scale_shape_manual(values = 20)+
-  coord_cartesian(ylim=c(0,2*10**8))+
+  #coord_cartesian(ylim=c(0,2*10**8))+
   theme(plot.margin = unit(c(1,0.3,1.5,0.5), "cm"))
 
 
