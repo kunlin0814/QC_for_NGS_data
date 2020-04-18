@@ -14,7 +14,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.Collections;   
 
-// The java version of the target_reads.py scripts. Each sample takes around 15 min vs 2 hr in python script
+// The java version of the target_reads.py scripts. 
+// Each sample takes around 15 min vs 2 hr in python script
 public class Line_by_line_Total_dict_Get_exon_reads {
 
 	public static void main(String[] args) throws IOException {
@@ -64,8 +65,20 @@ public class Line_by_line_Total_dict_Get_exon_reads {
 	
 	FileWriter fw = new FileWriter(file_output);
 	bw = new BufferedWriter(fw);
-	//bw.write("File_name\t"+ "Total_reads\t"+"Total_uniq\t"+"uniq_mapped_rate\t"+"Total_read_pairs\t"+"uniq_Exonic_region\t"+"uniq_Exonic_region_paris_rates\t"+'\n');
-	bw.write(file_name+'\t'+ summary.get(0)+'\t'+summary.get(1)+'\t'+summary.get(2)+'\t'+summary.get(3)+'\t'+summary.get(4)+'\t'+summary.get(5)+'\n');
+	
+	
+	bw.write("File_name\t"+ "Total_Pairs\t"+"Uniq_mapped_rate\t"
+	+"Uniq_Exonic_region_mapped_rate\t"+"UnmappedRate\t"+"DuplicateMapped_rate\t"
+	+"Onemapped_rate\t"+"IncorrectMapped_rate\t"+"Total_line\t"
+	+"Total_unique\t"+"Total_pass\t"+"Total_Unmapped\t"
+	+"Total_Duplicate\t"+"Total_Onemapped\t"+"Total_Incorrect\t"
+	+'\n');
+	
+	bw.write(file_name+'\t'+ summary.get(0)+'\t'+summary.get(1)+'\t'+summary.get(2)+'\t'
+			+summary.get(3)+'\t'+summary.get(4)+'\t'+summary.get(5)+'\t'+summary.get(6)
+			+'\t'+summary.get(7)+'\t'+summary.get(8)+'\t'+summary.get(9)
+			+'\t'+summary.get(10)+'\t'+summary.get(11)+'\t'+summary.get(12)
+			+'\t'+summary.get(13)+'\n');
 	bw.close();
 	}
 	
@@ -74,10 +87,10 @@ public class Line_by_line_Total_dict_Get_exon_reads {
 		int total_unique = 0 ;// 3 is the remainder of 16 in the flag  
 	    int total_pass = 0 ;
 		int total_line = 0 ;
-		//duplicate = 0 #3
-		//Onemapped = 0 #5,9
-		//incorrect = 0 #1
-		//unmapped = 0 #13 
+		int total_Duplicate = 0 ;// flag%16 = 3
+		int total_Onemapped = 0 ;// flag%16 = 5,9
+		int total_Incorrect = 0 ;// flag%16 =1
+		int total_Unmapped = 0 ;//  flag%16 =13 
 
 		ArrayList <String> summary_list = new ArrayList<String>(); 
 		try (FileReader fileReader = new FileReader(SamFile)){
@@ -91,21 +104,40 @@ public class Line_by_line_Total_dict_Get_exon_reads {
 		total_line += summary[0];
 		total_unique +=summary[1];
 		total_pass += summary[2];
+		total_Unmapped += summary[3];
+		total_Duplicate += summary[4];
+		total_Onemapped += summary[5];
+		total_Incorrect += summary[6];
+		
+		
 		}
-	}
+	
+		bufferedReader.close();}
 	}
 		double uniq_mapped_rate = Double.valueOf(total_unique)/Double.valueOf(total_line);
 		double uniq_Exonic_region_mapped_rate = Double.valueOf(total_pass)/Double.valueOf(total_unique);
+		double unmappedRate = Double.valueOf(total_Unmapped)/Double.valueOf(total_line);
+		double DuplicateMapped_rate = Double.valueOf(total_Duplicate)/Double.valueOf(total_line);
+		double Onemapped_rate = Double.valueOf(total_Onemapped)/Double.valueOf(total_line);
+		double IncorrectMapped_rate = Double.valueOf(total_Incorrect)/Double.valueOf(total_line);
 		
 		int pairs = total_line/2;
-		summary_list.add(Integer.toString(total_line));
-		summary_list.add(Integer.toString(total_unique));
+		summary_list.add(String.valueOf(pairs));
 		summary_list.add(String.valueOf(uniq_mapped_rate));
-		summary_list.add(Integer.toString(pairs));
-		summary_list.add(Integer.toString(total_pass));
 		summary_list.add(String.valueOf(uniq_Exonic_region_mapped_rate));
-		
+		summary_list.add(String.valueOf(unmappedRate));
+		summary_list.add(String.valueOf(DuplicateMapped_rate));
+		summary_list.add(String.valueOf(Onemapped_rate));
+		summary_list.add(String.valueOf(IncorrectMapped_rate));
+		summary_list.add(String.valueOf(total_line));
+		summary_list.add(String.valueOf(total_unique));
+		summary_list.add(String.valueOf(total_pass));
+		summary_list.add(String.valueOf(total_Unmapped));
+		summary_list.add(String.valueOf(total_Duplicate));
+		summary_list.add(String.valueOf(total_Onemapped));
+		summary_list.add(String.valueOf(total_Incorrect));
 		return summary_list;
+		
 		
 	}
 			
@@ -117,7 +149,11 @@ public class Line_by_line_Total_dict_Get_exon_reads {
 		int numberOfline = 0;
 		int pass_line = 0;
 		int unique = 0 ;
-		int [] summary = new int[3];
+		int duplicate = 0 ;// flag%16 = 3
+		int onemapped = 0 ;// flag%16 = 5,9
+		int incorrect = 0 ;// flag%16 =1
+		int unmapped = 0 ;//  flag%16 =13 
+		int [] summary = new int[6];
 		ArrayList <String> transcript_list = new ArrayList<String>(); 
 		if(strCurrentLine_sam.startsWith("@")) {
 			 ;}
@@ -134,19 +170,41 @@ public class Line_by_line_Total_dict_Get_exon_reads {
             String status2 = file_lst[11].split(":")[2];
         if (status2.equals("U") || status2.equals("M")) {
             unique += 1 ;
-       
+            
         ArrayList<ExonLocationInfo> Total_exome_loc = Total_interval_dict.get(reads_chr);
         
         int location_status = binarySearch(Total_exome_loc, 0, (Total_exome_loc.size()-1),reads_position,read_length);
+        
         if (location_status != -2) {
           //transcript_list.add(reads_name);
-          pass_line+=1;}
-           }        
-		  }
-	}
+          pass_line+=1; }
+          
+        }
+        
+        else if (status2.equals("R")){
+        	duplicate += 1; }
+		 }
+            }
+            
+            else if (status ==5 || status ==9) {
+            	onemapped+=1 ;
+            }
+            else if (status ==1) {
+            	incorrect+=1;
+            }
+            
+            else if (status == 13) {
+            	unmapped+=1;
+            }
+            
             summary[0]= numberOfline;
             summary[1]= unique;
-            summary[2]= pass_line;     }   
+            summary[2]= duplicate;
+            summary[3]= onemapped;
+            summary[4]= incorrect;
+            summary[5]= unmapped;
+            
+		}   
                      
 			return summary;
 	
