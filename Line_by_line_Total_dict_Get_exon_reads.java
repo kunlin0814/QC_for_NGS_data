@@ -108,11 +108,10 @@ public class Line_by_line_Total_dict_Get_exon_reads {
 		total_Duplicate += summary[4];
 		total_Onemapped += summary[5];
 		total_Incorrect += summary[6];
-		
-		
+		bufferedReader.close();
 		}
 	
-		bufferedReader.close();}
+		}
 	}
 		double uniq_mapped_rate = Double.valueOf(total_unique)/Double.valueOf(total_line);
 		double uniq_Exonic_region_mapped_rate = Double.valueOf(total_pass)/Double.valueOf(total_unique);
@@ -153,7 +152,7 @@ public class Line_by_line_Total_dict_Get_exon_reads {
 		int onemapped = 0 ;// flag%16 = 5,9
 		int incorrect = 0 ;// flag%16 =1
 		int unmapped = 0 ;//  flag%16 =13 
-		int [] summary = new int[6];
+		int [] summary = new int[7];
 		ArrayList <String> transcript_list = new ArrayList<String>(); 
 		if(strCurrentLine_sam.startsWith("@")) {
 			 ;}
@@ -199,11 +198,13 @@ public class Line_by_line_Total_dict_Get_exon_reads {
             
             summary[0]= numberOfline;
             summary[1]= unique;
-            summary[2]= duplicate;
-            summary[3]= onemapped;
-            summary[4]= incorrect;
-            summary[5]= unmapped;
+            summary[2]= pass_line;
+            summary[3]= unmapped;
+            summary[4]= duplicate;
+            summary[5]= onemapped;
+            summary[6]= incorrect;
             
+    
 		}   
                      
 			return summary;
