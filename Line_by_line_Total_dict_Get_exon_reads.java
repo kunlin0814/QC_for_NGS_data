@@ -14,8 +14,11 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.Collections;   
 
-// The java version of the target_reads.py scripts. 
+// The java version of the target_reads.py scripts.
+// The script include BWA analysis result
+// The script analyzed line by line
 // Each sample takes around 15 min vs 2 hr in python script
+// For WGS level data, it took 1hr vs 8hr in python script
 public class Line_by_line_Total_dict_Get_exon_reads {
 
 	public static void main(String[] args) throws IOException {
@@ -71,7 +74,7 @@ public class Line_by_line_Total_dict_Get_exon_reads {
 	+"Uniq_Exonic_region_mapped_rate\t"+"UnmappedRate\t"+"DuplicateMapped_rate\t"
 	+"Onemapped_rate\t"+"IncorrectMapped_rate\t"+"Total_line\t"
 	+"Total_unique\t"+"Total_pass\t"+"Total_Unmapped\t"
-	+"Total_Duplicate\t"+"Total_Onemapped\t"+"Total_Incorrect\t"
+	+"Total_Duplicate\t"+"Total_Onemapped\t"+"Total_Incorrect"
 	+'\n');
 	
 	bw.write(file_name+'\t'+ summary.get(0)+'\t'+summary.get(1)+'\t'+summary.get(2)+'\t'
@@ -108,9 +111,9 @@ public class Line_by_line_Total_dict_Get_exon_reads {
 		total_Duplicate += summary[4];
 		total_Onemapped += summary[5];
 		total_Incorrect += summary[6];
-		bufferedReader.close();
+		
 		}
-	
+		bufferedReader.close();
 		}
 	}
 		double uniq_mapped_rate = Double.valueOf(total_unique)/Double.valueOf(total_line);
