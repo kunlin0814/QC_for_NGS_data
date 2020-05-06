@@ -34,7 +34,7 @@ total_file %>%
   #filter(!Total_pairs < 5000000 | Total_pairs==NaN) %>% 
   ggplot(aes(x=factor(Cancer_Type,levels = c("Mammary_Cancer","Melanoma", "Osteosarcoma","Lymphoma","Glioma","Hemangiosarcoma","Unclassified")),
              y=as.numeric(Total_pairs),fill=Status,color=Status)) +
-  geom_point(size=0.01,position = position_jitterdodge(jitter.width = 0.2)) +
+  geom_point(size=0.5,position = position_jitterdodge(jitter.width = 0.2)) +
   ylab("Sequence Read Pairs")+
   #labs(subtitle = "p<0.01")+
   #stat_compare_means(aes(group=gene),label="p.signif",symnum.args = symnumargs,label.y = c(2.1,2.1,2.1,2.1,3,3)) +
@@ -52,15 +52,16 @@ total_file %>%
         #axis.ticks.x = element_blank(),
         axis.title.y = element_text(colour="black",size=26,margin = margin(1,5,.5,0)),
         text = element_text(colour="black",size=14),
-        axis.text.x = element_blank(),
-        #axis.text.x = element_text(colour=c("black"),size=14,vjust=1,hjust = 0.9, angle = 45),
+        #axis.text.x = element_blank(),
+        axis.text.x = element_text(colour=c("black"),size=14,vjust=1,hjust = 0.9, angle = 30),
         axis.text.y = element_text(colour="black",size=18),
         panel.background = element_blank())+
   stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median,position = "dodge",
                geom = "crossbar",size=0.1, width = .8,colour = "black")+
   #scale_x_discrete(labels=panel2label)+
-  scale_color_manual(values = c("firebrick","darkolivegreen"))+
-  scale_fill_manual(values=c("firebrick","darkolivegreen"))+
+  scale_color_manual(values = c("green","red"))+
+  scale_fill_manual(values=c("green","red"))+
+  #scale_fill_manual(values=c("firebrick","darkolivegreen"))+
   scale_shape_manual(values = 20)+
   coord_cartesian(ylim=c(0,2*10**8))+
   theme(plot.margin = unit(c(1,0.3,1.5,0.5), "cm"))
