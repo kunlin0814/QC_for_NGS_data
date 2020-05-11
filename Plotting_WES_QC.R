@@ -319,7 +319,7 @@ callable %>%
   filter(Status=='Non-Retro') %>% 
   filter(!Case_ID %in% exclude$Cases) %>% 
   ggplot(aes(x=factor(Cancer_Type,
-        levels = c("Mammary_Cancer","Melanoma", "Osteosarcoma","Lymphoma","Glioma","Hemangiosarcoma","Unclassified")),
+        levels = c("Mammary Cancer","Melanoma", "Osteosarcoma","Lymphoma","Glioma","Hemangiosarcoma","Unclassified")),
         y=as.numeric( Callable_bases), colour = 'black'))+
   geom_point(size=0.3,aes(color='black'),position = position_jitterdodge(jitter.width = 0.1))+
   ylab("Callable bases in Millions")+
@@ -357,4 +357,5 @@ callable %>%
 #scale_fill_manual(values=wes_palette(n=5, name="Royal2")) ## for box plot, bar plot Wes Anderson color palettes
 #scale_shape_manual(values = 20)
 dev.off()
+
 
