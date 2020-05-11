@@ -1,10 +1,12 @@
+library("DESeq2")
 library(ggplot2)
 library(readxl)
 library(dplyr)
 library(wesanderson)
 library(RColorBrewer)
 
-total_file <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\V2Supp1_Data.xlsx",
+
+total_file <- read_excel("/Volumes/Research_Data/MAC_Research_Data/Pan_cancer/Pan_cancer_mapping_result/Supplement_Figure1/V2Supp1_Data.xlsx",
                          sheet ="Total")
 PAIR <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\V2Supp1_Data.xlsx",
                    sheet ="PAIRS")
@@ -231,7 +233,11 @@ plot_result <- png("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result
 total_file %>% 
   filter(!Total_pairs < 5000000 | Total_pairs==NaN) %>%
   filter(as.numeric(uniq_CDS_region_paris_rates) >=0.3)%>%
-  filter(mean>10) %>%
+  filter(!mean>30) %>% 
+  write.table("/Volumes/Research_Data/MAC_Research_Data/Pan_cancer/Pan_cancer_mapping_result/Supplement_Figure1/mean_coverage_lt30.txt",
+              quote =F,seq='\t',col.names = T, row.names = F)
+
+%>%
   ggplot(aes(x=factor(Cancer_Type,levels = c("Mammary_Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")),
              y=as.numeric(mean),fill=Status,color=Status)) +
   geom_point(size=0.01,position = position_jitterdodge(jitter.width = 0.2)) +

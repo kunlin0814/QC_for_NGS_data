@@ -7,15 +7,9 @@ library(RColorBrewer)
 # new_glioma <- na.omit(glioma)
 # mean(new_glioma$`0...2`[!new_glioma$`0...2`==0])
 
-<<<<<<< HEAD
 total_file <- read_excel("/Volumes/Research_Data/MAC_Research_Data/Pan_cancer/Pan_cancer_mapping_result/Supplement_Figure1/V2Supp1_Data.xlsx",
                          sheet ="Total")
-PAIR <- read_excel("/Volumes/Research_Data/MAC_Research_Data/Pan_cancer/Pan_cancer_mapping_result/Supplement_Figure1/V2Supp1_Data.xlsx",
-=======
-total_file <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\V2Supp1_Data.xlsx",
-                         sheet ="Total")
 PAIR <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\V2Supp1_Data.xlsx",
->>>>>>> d5259b74415eceefb344f2f7e4bf2619c98a9035
                    sheet ="PAIRS")
 #callable <- read_excel("/Volumes/Research_Data/Pan_cancer/Pan_cancer_mapping_result/Supplement_Figure1/V2Supp1_Data.xlsx",
 #                       sheet ="Callable_Bases")

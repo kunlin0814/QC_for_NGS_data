@@ -4,17 +4,13 @@
 Created on Mon Mar  2 12:33:48 2020
 
 @author: kun-linho
-"""
 
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Feb  5 18:53:41 2020
 
 The script take the depth of coverage as input file 
 to identify the frequency of the coverage of depth for all of the base
 position for each sample 
 
-@author: abc73_000
+
 """
 ## look at all the positions to the end of the bases
 
