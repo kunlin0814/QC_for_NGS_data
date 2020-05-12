@@ -1,17 +1,9 @@
-<<<<<<< HEAD
-library("DESeq2")
-library(ggplot2)
-=======
 library(tidyverse)
->>>>>>> 07785971abca256b1cb8b37099650e2f4a7ddd10
 library(readxl)
 library(wesanderson)
 library(RColorBrewer)
+colors <- brewer.pal(3, "Set1"); # red, blue, green
 
-
-<<<<<<< HEAD
-total_file <- read_excel("/Volumes/Research_Data/MAC_Research_Data/Pan_cancer/Pan_cancer_mapping_result/Supplement_Figure1/V2Supp1_Data.xlsx",
-=======
 ## whole criteria 
 #Sequence read pairs < 5M	
 #Unique CDS mapping rate < 0.3	
@@ -23,7 +15,6 @@ total_file <- read_excel("/Volumes/Research_Data/MAC_Research_Data/Pan_cancer/Pa
 
 
 total_file <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\Data_summary.xlsx",
->>>>>>> 07785971abca256b1cb8b37099650e2f4a7ddd10
                          sheet ="Total")
 
 PAIR <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\Data_summary.xlsx",
@@ -44,9 +35,9 @@ tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Suppl
      width = 2800, height =1800, units = "px", res = 400)
 total_file %>% 
   #filter(!Total_pairs < 5000000 | Total_pairs==NaN) %>% 
-  ggplot(aes(x=factor(Cancer_Type,levels = c("Mammary_Cancer","Melanoma", "Osteosarcoma","Lymphoma","Glioma","Hemangiosarcoma","Unclassified")),
+  ggplot(aes(x=factor(Cancer_Type,levels = c("Mammary_Cancer","Glioma","Melanoma", "Osteosarcoma","Lymphoma","Hemangiosarcoma","Unclassified")),
              y=as.numeric(Total_pairs),fill=Status,color=Status)) +
-  geom_point(size=0.2,position = position_jitterdodge(jitter.width = 0.2)) +
+  geom_point(size=0.2,position = position_jitterdodge(jitter.width = 0.3)) +
   ylab("Sequence Read Pairs in Millions")+
   #labs(subtitle = "p<0.01")+
   #stat_compare_means(aes(group=gene),label="p.signif",symnum.args = symnumargs,label.y = c(2.1,2.1,2.1,2.1,3,3)) +
@@ -71,9 +62,9 @@ total_file %>%
         #axis.text.y = element_text(colour="black",size=20),
         panel.background = element_blank())+
   stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median,position = "dodge",
-               geom = "crossbar",size=0.1, width = .8,colour = "black")+
+               geom = "crossbar",size=0.3, width = .7,colour = "black")+
   #scale_x_discrete(labels=panel2label)+
-  scale_color_manual(values = c("green","red"))+
+  scale_color_manual(values = c("blue3","red3"))+
   scale_fill_manual(values=c("green","red"))+
   #scale_fill_manual(values=c("firebrick","darkolivegreen"))+
   scale_shape_manual(values = 20)+
@@ -276,22 +267,11 @@ tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Suppl
 
 total_file %>% 
   filter(!Total_pairs < 5000000 | Total_pairs==NaN) %>%
-<<<<<<< HEAD
-  filter(as.numeric(uniq_CDS_region_paris_rates) >=0.3)%>%
-  filter(!mean>30) %>% 
-  write.table("/Volumes/Research_Data/MAC_Research_Data/Pan_cancer/Pan_cancer_mapping_result/Supplement_Figure1/mean_coverage_lt30.txt",
-              quote =F,seq='\t',col.names = T, row.names = F)
-
-%>%
-  ggplot(aes(x=factor(Cancer_Type,levels = c("Mammary_Cancer","Melanoma", "Osteosarcoma","Lymphoma","Unclassified")),
-             y=as.numeric(mean),fill=Status,color=Status)) +
-=======
   filter(as.numeric(Uniquely_mapped_rate) >=0.6) %>% 
   filter(as.numeric(uniq_CDS_region_paris_rates) >=0.3)%>% 
   filter(mean>30) %>% 
   ggplot(aes(x=factor(Cancer_Type,levels = c("Mammary_Cancer","Melanoma", "Osteosarcoma","Lymphoma","Glioma","Hemangiosarcoma","Unclassified")),
              y=as.numeric(RMSE),fill=Status,color=Status)) +
->>>>>>> 07785971abca256b1cb8b37099650e2f4a7ddd10
   geom_point(size=0.01,position = position_jitterdodge(jitter.width = 0.2)) +
   
   ylab("RMSE of Sequence Coverage")+
