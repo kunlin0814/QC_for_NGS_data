@@ -1,9 +1,9 @@
 library(tidyverse)
 library(readxl)
-library(wesanderson)
+#library(wesanderson)
 library(RColorBrewer)
 
-which(Final_table$Case_ID=='BluKim')
+which (Final_table =='SAMN03732738')
 
 
 Final_table <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\Summary_of_public_data.xlsx",
