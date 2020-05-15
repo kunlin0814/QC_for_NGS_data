@@ -1,6 +1,6 @@
 #!/bin/bash
 #PBS -q batch
-#PBS -N new-bwa-java
+#PBS -N new-bwa-java-i_03A6
 #PBS -l nodes=1:ppn=1
 #PBS -l walltime=50:00:00
 #PBS -l mem=55gb
