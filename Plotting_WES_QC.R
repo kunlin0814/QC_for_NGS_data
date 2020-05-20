@@ -15,23 +15,23 @@ colors <- brewer.pal(3, "Set1"); # red, blue, green
 
 
 
-PAIR <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\Data_summary.xlsx",
+PAIR <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Figure1\\Original_Data_summary.xlsx",
                    sheet ="PAIRS")
 
 callable <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Mutation_rate\\Mutation_rate.xlsx",
                     sheet ='All_samples_Retro_non_retro')
 
 
-exclude <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\Data_summary.xlsx",
+exclude <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\Original_Data_summary.xlsx",
                       sheet ="Before_Matching_excluded")
 
-total_file <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\Summary_of_public_data.xlsx",
-                          sheet ='NGS_Data_summary')
+total_file <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\Methods_legends_tables\\Summary_of_public_data.xlsx",
+                          sheet ='NGS_Data_summary', skip =1)
 
 #plot_result <- png("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\sequence_pairs.png",
 #                   width=2800,height=1800,res=450)
 
-tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\sequence_pairs.tiff", 
+tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\sequence_pairs.tiff", 
      width = 3500, height =1900, units = "px", res = 400)
 total_file %>% 
   #filter(!Total_pairs < 5000000 | Total_pairs==NaN) %>% 
@@ -70,7 +70,8 @@ total_file %>%
   #scale_fill_manual(values=c("firebrick","darkolivegreen"))+
   scale_shape_manual(values = 19)+
   coord_cartesian(ylim=c(0,200))+
-  theme(plot.margin = unit(c(1,0.3,1.5,0.5), "cm"))
+  theme(plot.margin = unit(c(1,0.3,1.5,0.5), "cm"))+
+  geom_hline(yintercept=5, linetype="dashed", color = "yellow4", size = 1.5)
  
 dev.off()
 
@@ -78,7 +79,7 @@ dev.off()
 #plot_result <- png("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\unique-mapping_pairs.png",
 #                   width=2800,height=1800,res=350)
 
-tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\unique-mapping_pairs.tiff", 
+tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\unique-mapping_pairs.tiff", 
      width = 3500, height =1900, units = "px", res = 400)
 
 total_file %>% 
@@ -116,13 +117,14 @@ total_file %>%
   #scale_fill_manual(values=c("firebrick","darkolivegreen"))+
   scale_shape_manual(values = 19)+
   coord_cartesian(ylim=c(0.3,1))+
-  theme(plot.margin = unit(c(1,0.3,1.5,0.5), "cm"))
+  theme(plot.margin = unit(c(1,0.3,1.5,0.5), "cm"))+
+  geom_hline(yintercept=0.6, linetype="dashed", color = "yellow4", size = 1.5)
   
 
 dev.off()
 ###### gt 30 #####
 
-tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\gt-30.tiff", 
+tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\gt-30.tiff", 
      width = 3500, height =1900, units = "px", res = 400)
 
 total_file %>% 
@@ -169,7 +171,7 @@ dev.off()
 
 
 #### Unique CDS ####
-tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\unique-CDS-mapping.tiff", 
+tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\unique-CDS-mapping.tiff", 
      width = 3500, height =1900, units = "px", res = 400)
 
 total_file %>% 
@@ -209,13 +211,14 @@ total_file %>%
   #scale_fill_manual(values=c("firebrick","darkolivegreen"))+
   scale_shape_manual(values = 19)+
   coord_cartesian(ylim=c(0,0.8))+
-  theme(plot.margin = unit(c(1,0.3,1.5,0.5), "cm"))
+  theme(plot.margin = unit(c(1,0.3,1.5,0.5), "cm"))+
+  geom_hline(yintercept=0.3, linetype="dashed", color = "yellow4", size = 1.5)
 
 dev.off()
 
 ### Mean Coverage ###
 
-tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\coverage-Mean.tiff"
+tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\coverage-Mean.tiff"
      ,width = 3500, height =1900, units = "px", res = 400)
 
 total_file %>% 
@@ -256,7 +259,8 @@ total_file %>%
   #scale_fill_manual(values=c("firebrick","darkolivegreen"))+
   scale_shape_manual(values = 19)+
   coord_cartesian(ylim=c(0,200))+
-  theme(plot.margin = unit(c(1,0.3,1.5,0.5), "cm"))
+  theme(plot.margin = unit(c(1,0.3,1.5,0.5), "cm"))+
+  geom_hline(yintercept=30, linetype="dashed", color = "yellow4", size = 1.5)
 
 
 dev.off()
@@ -265,7 +269,7 @@ dev.off()
 
 #### RMSE ####
 
-tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\Coverage-RMSE.tiff", 
+tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\Coverage-RMSE.tiff", 
      width = 3500, height =1900, units = "px", res = 400)
 
 total_file %>% 
@@ -313,7 +317,7 @@ dev.off()
 
 
 ### change the color of the point ###
-tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\callable-bases.tiff", 
+tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\callable-bases.tiff", 
      width = 3500, height =1900, units = "px", res = 400)
 
 
@@ -346,7 +350,8 @@ total_file %>%
   scale_shape_manual(values = 19)+
   scale_color_manual(values = 'black')+
   theme(plot.margin = unit(c(0.5,0.3,1,0.5), "cm"))+
-  coord_cartesian(ylim=c(5,30))
+  coord_cartesian(ylim=c(5,30))+
+  geom_hline(yintercept=10, linetype="dashed", color = "yellow4", size = 1.5)
 dev.off()
 #scale_x_discrete(labels=panel2label)+
 #scale_color_manual(values=wes_palette(n=5, name="Set3")) ## for scatter plot Wes Anderson color palettes
