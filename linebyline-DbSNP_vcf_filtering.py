@@ -38,7 +38,8 @@ out = open(output, 'w')
 lst = file.split('\n')[:-1]
 for i in range(len(lst)):
     if lst[i][0] == '#':
-        out.write(lst[i] + '\n')
+        #out.write(lst[i] + '\n')
+        pass
     else:
         info = lst[i].split('\t')
         chrom = info[0]
