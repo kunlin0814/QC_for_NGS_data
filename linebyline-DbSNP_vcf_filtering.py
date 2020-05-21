@@ -16,8 +16,11 @@ def dbsnp_dic(dbsnp):
                 ref = info[3]
                 alt = info[4]
                 Key = chrom+":"+pos
+                value = ref+":"+alt
                 if Key not in result.keys():
-                    result[Key] = [ref+":"+alt]
+                    result[Key] = [value]
+                else:
+                    result[Key].append(value)
 
     return result
 
