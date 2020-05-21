@@ -27,13 +27,14 @@ def dbsnp_dic(dbsnp):
 
 file_name = sys.argv[1]
 dbsnp = sys.argv[2]
+output = sys.argv[3]
 # dbsnp dic
 dbsnpDic = dbsnp_dic(dbsnp)
 # filter vcf files
 with open(file_name,'r') as f:
     file = f.read()
 
-out = open(file_name.split('.vcf')[0] + 'Line_to_line_tuple_dbSNPfiltered.vcf', 'w')
+out = open(output, 'w')
 lst = file.split('\n')[:-1]
 for i in range(len(lst)):
     if lst[i][0] == '#':
