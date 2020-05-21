@@ -45,11 +45,12 @@ for i in range(len(lst)):
         ref = info[3]
         alt = info[4]
         Key = chrom+":"+pos
+        Value = ref+":"+alt
         #status = info[6]
         if Key not in dbsnpDic.keys():
             out.write(lst[i] + '\n')
         else:
-            if dbsnpDic[Key] != [ref+":"+alt]:
+            if Value not in dbsnpDic[Key]:
                 out.write(lst[i] + '\n')
 
        
