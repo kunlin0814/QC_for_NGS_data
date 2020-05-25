@@ -282,6 +282,8 @@ total_file %>%
 ### change the color of the point ###
 # tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\callable-bases.tiff", 
 #      width = 3500, height =1900, units = "px", res = 400)
+pdf("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\callablebases.pdf"
+    , height=3.6, width=6.2);
 
 
 total_file %>% 
