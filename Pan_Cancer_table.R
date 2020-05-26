@@ -58,6 +58,15 @@ check_breed_cluster <- function(x){
   }
 }
 
+check_breed_table <- function(x){
+  value <- match(x, breeds_info$Sample_id,nomatch=0)
+  if (value!=0){
+    return (breeds_info[value, ])
+  }
+  else{
+    return ("NaN")
+  }
+}
 
 
 origin_breeds <- sapply(total_file$Sample_ID,check_CaseID)
@@ -66,6 +75,23 @@ breeds_QC <- sapply(total_file$Sample_ID,check_breeds_QC)
 total_file$Breeds= origin_breeds
 total_file$Breeds_cluster <- breeds_cluster
 total_file$Breeds_QC <- breeds_QC
+
+test <- lapply(total_file$Sample_ID,check_breed_table)
+
+name = names(test[[1000]])
+
+data.frame(matrix(unlist(test),nrow=length(test),byrow=TRUE))
+
+a = data.frame(matrix(unlist(test),nrow=length(test),byrow=TRUE))
+
+b <- matrix(unlist(test), nrow = length(test), byrow = T)
+
+
+length(unlist(test))
+
+a = as.data.frame(test, col.names = name)
+
+mylist = do.call(rbind,test)
 
 write.table(total_file,"C:\\Users\\abc73_000\\Desktop\\final_table.txt",
             quote = F,sep = '\t',col.names = T, row.names = F)
