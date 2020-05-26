@@ -2,72 +2,80 @@ library(tidyverse)
 library(readxl)
 #library(wesanderson)
 library(RColorBrewer)
+library(data.table)
 
-which (Final_table =='SAMN03732738')
 
+total_file <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\Methods_legends_tables\\Ploting_table.xlsx",
+                         sheet ='NGS_Data_summary', skip =0)
 
-Final_table <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\Summary_of_public_data.xlsx",
-                          sheet ='NGS_Data_summary')
-
-Mut_data <- read_excel("G:/MAC_Research_Data/Pan_cancer/Pan_cancer_mapping_result/Mutation_rate/Mutation_rate.xlsx",
+Mut_data <- read_excel("G:/MAC_Research_Data/Pan_cancer/Pan_cancer-analysis/Mutation_rate/Mutation_rate.xlsx",
                        sheet ='All_samples_Retro+indel' )
 
-total_file <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\Data_summary.xlsx",
-                         sheet ='Total')
-
-PAIR <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\Data_summary.xlsx",
-                   sheet ='PAIRS')
-
-callable <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\Data_summary.xlsx",
+callable <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\Original_Data_summary.xlsx",
                        sheet ='non-retro-mut')
 
-Lymphoma_subtype <- read.table("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Meta\\Pancancer_metadata_05_11_2020.txt",
-                               sep ='\t',header =T, stringsAsFactors =F)
-
-match_data <- read.table("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Meta\\Tumor_normal_pair_metadata.txt",
-                         sep ='\t',header =T, stringsAsFactors =F)
-
-exclude <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\V2_Data_summary.xlsx",
+exclude <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\Original_Data_summary.xlsx",
                       sheet ="Total_excluded")
 
-Lym <- Lymphoma_subtype %>%
-  filter(CancerType=='Lymphoma') %>% 
-  select(SampleName,Sample_id,DiseaseAcr)
+
+breeds <- fread("C:\\Users\\abc73_000\\Desktop\\Breeds_info.txt")
+breeds_info <- breeds[, c("Sample_id","SampleName","Breed","QC_result","BreedCluster")]
 
 
-
-Lym_final <- Final_table %>% 
-  filter(Cancer_Type=='Lymphoma') %>% 
-  select(Sample_ID)
-
-Lym_final <- Lym_final$Sample_ID
 
 # we can use which function to look at the position and we can use match
-# Match will be faster match('CMT-100',non_retro$file_name)
+# Match will be faster , but
+# eg. match('CMT-100',non_retro$file_name)
 
-check_nonretro_mut <- function(x){
-  non_retro <- Mut_data %>% 
-    filter(status=="Non-Retro")
-    value <- which(non_retro$file_name==x)
-  if (length(value)>0){
-  return (non_retro$Mutation_rate[value])
+check_origin_breeds <- function(x){
+    value <- match(x, breeds$Sample_id,nomatch=0)
+  if (value!=0){
+  return (breeds[value, Breed])
   }
     else{
-      return ("Non-Pair")
+      return ("NaN")
     }
 }
 
-Non_retro <- sapply(Final_table$Case_ID,check_nonretro_mut)
+check_breeds_QC <- function(x){
+  value <- match(x, breeds$Sample_id,nomatch=0)
+  if (value!=0){
+    return (breeds[value, BreedQC])
+  }
+  else{
+    return ("NaN")
+  }
+}
+
+
+check_breed_cluster <- function(x){
+  value <- match(x, breeds$Sample_id,nomatch=0)
+  if (value!=0){
+    return (breeds[value, BreedCluster])
+  }
+  else{
+    return ("NaN")
+  }
+}
 
 
 
-non_retro <- Mut_data %>% 
-  filter(status=="Non-Retro")
+origin_breeds <- sapply(total_file$Sample_ID,check_CaseID)
+breeds_cluster <- sapply(total_file$Sample_ID,check_breed_cluster)
+breeds_QC <- sapply(total_file$Sample_ID,check_breeds_QC)
+total_file$Breeds= origin_breeds
+total_file$Breeds_cluster <- breeds_cluster
+total_file$Breeds_QC <- breeds_QC
+
+write.table(total_file,"C:\\Users\\abc73_000\\Desktop\\final_table.txt",
+            quote = F,sep = '\t',col.names = T, row.names = F)
+
+
 
 
 a <- which(non_retro$file_name=='CMT-100')
 
-match('DD0001',non_retro$file_name)
+#match('DD0001',total_file$Case_ID)
 
 length(a)
 
