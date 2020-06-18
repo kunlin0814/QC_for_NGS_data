@@ -12,14 +12,11 @@ library(RColorBrewer)
 
 ########### Photoshop use res = 450 #################
 
-
-
-
-PAIR <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Figure1\\Original_Data_summary.xlsx",
-                   sheet ="PAIRS")
-
-callable <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Mutation_rate\\Mutation_rate.xlsx",
-                    sheet ='All_samples_Retro_non_retro')
+# PAIR <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Figure1\\Original_Data_summary.xlsx",
+#                    sheet ="PAIRS")
+# 
+# callable <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Mutation_rate\\Mutation_rate.xlsx",
+#                     sheet ='All_samples_Retro_non_retro')
 
 
 exclude <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\Original_Data_summary.xlsx",
@@ -30,21 +27,24 @@ total_file <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis
 
 #plot_result <- png("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\sequence_pairs.png",
 #                   width=2800,height=1800,res=450)
-regular.text <- element_text(colour="black",size=20);
-
-# tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\sequence_pairs.tiff", 
-#      width = 3500, height =1900, units = "px", res = 400)
+regular.text <- element_text(colour="black",size=26);
 
 
 pdf("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\F1_and_supplementaryF1.pdf"
 , height=4.8, width=6.2);
+
+
+
+tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\square-sequence_pairs.tiff", 
+     width = 3500, height =3000, units = "px", res = 400)
+
 
 total_file %>% 
   #filter(!Total_pairs < 5000000 | Total_pairs==NaN) %>% 
   ggplot(aes(x=factor(Cancer_Type,levels = c("MC","GLM","BCL","TCL","OM", "OSA","HSA","Unclassified")),
              y=as.numeric(Total_pairs)/1000000,fill=Status,color=Status)) +
   
-  geom_point(size=1.6,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
+  geom_point(size=3,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
   ylab("Sequence Read Pairs in Millions")+
   scale_y_continuous(breaks = c(0,100,200))+
   #labs(subtitle = "p<0.01")+
@@ -69,9 +69,9 @@ total_file %>%
   #scale_shape_manual(values = 20)+
   coord_cartesian(ylim=c(0,200))+
   theme(plot.margin = unit(c(1,0.3,1.5,0.5), "cm"))+
-  geom_hline(yintercept=5, linetype="longdash", color = "yellow4", size = 0.7)
+  geom_hline(yintercept=5, linetype="longdash", color = "yellow4", size = 1)
  
-# dev.off()
+ dev.off()
 
 ### Unique Mapping Rates ###
 #plot_result <- png("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\unique-mapping_pairs.png",
@@ -79,12 +79,14 @@ total_file %>%
 # 
 # tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\unique-mapping_pairs.tiff", 
 #      width = 3500, height =1900, units = "px", res = 400)
+tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\unique-mapping_pairs.tiff", 
+    width = 3500, height =3000, units = "px", res = 400)
 
 total_file %>% 
   filter(!Total_pairs < 5000000 | Total_pairs==NaN) %>% 
   ggplot(aes(x=factor(Cancer_Type,levels = c("MC","GLM","BCL","TCL","OM", "OSA","HSA","Unclassified")),
              y=as.numeric(Uniquely_mapped_rate),fill=Status,color=Status)) +
-  geom_point(size=1.6,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
+  geom_point(size=3,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
   ylab("Uniquely Mapping Rate")+
   scale_y_continuous(breaks = c(0,0.5,0.75,1.0))+
   #labs(subtitle = "p<0.01")+
@@ -109,21 +111,21 @@ total_file %>%
   #scale_shape_manual(values = 19)+
   coord_cartesian(ylim=c(0.3,1))+
   theme(plot.margin = unit(c(1,0.3,1.5,0.5), "cm"))+
-  geom_hline(yintercept=0.6, linetype="longdash", color = "yellow4", size = 0.7)
+  geom_hline(yintercept=0.6, linetype="longdash", color = "yellow4", size = 1)
   
 
-# dev.off()
+dev.off()
 ###### gt 30 #####
 
-# tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\gt-30.tiff", 
-#      width = 3500, height =1900, units = "px", res = 400)
+tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\gt-30.tiff", 
+      width = 3500, height =3000, units = "px", res = 400)
 
 total_file %>% 
   filter(!Total_pairs < 5000000 | Total_pairs==NaN)  %>% 
   #filter(!gt_30_fraction < 0.25 |gt_30_fraction ==NaN) %>% 
   ggplot(aes(x=factor(Cancer_Type,levels = c("MC","GLM","BCL","TCL","OM", "OSA","HSA","Unclassified")),
              y=as.numeric(gt_30_fraction),fill=Status,color=Status)) +
-  geom_point(size=1.6,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
+  geom_point(size=3,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
   ylab("Fraction of mapping quality >30")+
   scale_y_continuous(breaks = c(0,0.5,0.75,1.0))+
   #labs(subtitle = "p<0.01")+
@@ -150,7 +152,7 @@ total_file %>%
   theme(plot.margin = unit(c(1,0.3,1.5,0.5), "cm"))
 
 
-#dev.off()
+dev.off()
 
 
 
