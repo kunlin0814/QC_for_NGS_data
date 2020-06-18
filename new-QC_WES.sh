@@ -108,4 +108,4 @@ rm ${file_output}/Normal-SRR10351810-CDS_Mapping_summary.txt
 rm ${file_output}/Tumor-SRR10351811-CDS_Mapping_summary.txt
 rm ${file_output}/SRR10351810-mapping_quality ${file_output}/SRR10351811-mapping_quality
 rm ${file_output}/SRR10351810_DepthofCoverage_Distribution.txt
-${file_output}/SRR10351811_DepthofCoverage_Distribution.txt
+rm ${file_output}/SRR10351811_DepthofCoverage_Distribution.txt
