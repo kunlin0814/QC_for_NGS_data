@@ -18,6 +18,16 @@ exclude <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\F
                       sheet ="Total_excluded")
 
 
+library(readxl)
+total_breeds <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan-Cancer-Manuscript\\Methods_legends_tables\\Combined_Summary_Public_Data.xlsx",
+                    sheet = "Sheet1")  
+
+sort(unique(total_breeds$Breed)) %>% 
+  write.table("C:\\Users\\abc73_000\\Desktop\\Pan_Cancer_Breed.txt",
+              sep ='\t',row.names = F,quote = F)
+
+
+
 breeds <- fread("C:\\Users\\abc73_000\\Desktop\\Breeds_info.txt")
 breeds_info <- breeds[, c("Sample_id","SampleName","Breed","QC_result","BreedCluster")]
 
