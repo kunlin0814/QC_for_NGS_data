@@ -32,6 +32,17 @@ breeds <- fread("C:\\Users\\abc73_000\\Desktop\\Breeds_info.txt")
 breeds_info <- breeds[, c("Sample_id","SampleName","Breed","QC_result","BreedCluster")]
 
 
+## This function is used to identify the case name
+## the input file needs case normal-tsumor file
+check_sample_name <- function(x){
+  total_row <- nrow(sample_pair)
+  for (i in 1:total_row){
+    if (x %in% sample_pair[i,]){
+      return (sample_pair$Cases[i])
+    }
+  }
+  return ("NaN")
+}
 
 # we can use which function to look at the position and we can use match
 # Match will be faster , but
