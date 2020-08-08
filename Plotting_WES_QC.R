@@ -22,11 +22,13 @@ library(RColorBrewer)
 exclude <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\Original_Data_summary.xlsx",
                       sheet ="Before_Matching_excluded")
 
-total_file <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Pan-Cancer-Manuscript\\Methods_legends_tables\\Combined_Summary_Public_Data.xlsx",
-                          sheet ='NGS_Data_summary', skip =3)
+total_file <- read_excel("G:/MAC_Research_Data/Pan_cancer/Pan-Cancer-Manuscript/Methods_legends_tables/V6Combined_Summary_Public_Data.xlsx",
+                         sheet ='NGS_Data_summary', skip = 3)
 
-Combined_total_file <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Pan-Cancer-Manuscript\\Combined_Summary_Public_Data.xlsx",
-                         sheet ='NGS_Data_summary', skip =0)
+
+# 
+# Combined_total_file <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Pan-Cancer-Manuscript\\Combined_Summary_Public_Data.xlsx",
+#                                   sheet ='NGS_Data_summary', skip =0)
 
 Mut_rate <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Mutation_rate\\final_mut_rate.xlsx",
                        sheet ='Sheet1')
@@ -39,7 +41,7 @@ Mut_rate <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\
 
 
 # Mut_rate %>% 
-#   ggplot(aes(x=factor(Cancer_type,levels = c("MC","GLM","LYM","OM", "OSA","HSA","Unclassified")),
+#   ggplot(aes(x=factor(Tumor_Type,levels = c("MC","GLM","LYM","OM", "OSA","HSA","UCL")),
 #              y=as.numeric(Mutation_rate),fill=status,color=status)) +
 #   
 #   geom_point(size=1.6,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
@@ -50,7 +52,7 @@ Mut_rate <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\
 #   theme(axis.text=regular.text, 
 #         axis.title.y=regular.text,
 #         axis.title.x =element_blank(),
-#         axis.text.x = element_text(angle=0, hjust=0.5), 
+#         axis.text.x = element_text(angle=30, hjust=1), 
 #         panel.background=element_blank(), 
 #         axis.line=element_line(color="black"),
 #         legend.title=regular.text, 
@@ -69,10 +71,11 @@ Mut_rate <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\
 #  
 
 
+# height = 4.8, width = 6.2
 
+pdf("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\V7F1_and_supplementaryF1.pdf"
+    , height=4.98, width=4.84);
 
-pdf("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\F1_and_supplementaryF1.pdf"
-, height=4.8, width=6.2);
 regular.text <- element_text(colour="black",size=20);
 
 # # 
@@ -82,7 +85,7 @@ regular.text <- element_text(colour="black",size=20);
 
 total_file %>% 
   #filter(!Total_pairs < 5000000 | Total_pairs==NaN) %>% 
-  ggplot(aes(x=factor(Cancer_Type,levels = c("MC","GLM","LYM","OM", "OSA","HSA","Unclassified")),
+  ggplot(aes(x=factor(Tumor_Type,levels = c("MT","GLM","LYM","OM", "OSA","HSA","UCL")),
              y=as.numeric(Total_pairs)/1000000,fill=Status,color=Status)) +
   
   geom_point(size=1.6,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
@@ -94,7 +97,7 @@ total_file %>%
   theme(axis.text=regular.text, 
         axis.title.y=regular.text,
         axis.title.x =element_blank(),
-        axis.text.x = element_text(angle=0, hjust=0.5), 
+        axis.text.x = element_text(angle=30, hjust=1), 
         panel.background=element_blank(), 
         axis.line=element_line(color="black"),
         legend.title=regular.text, 
@@ -102,7 +105,7 @@ total_file %>%
         legend.text=regular.text, 
         legend.key=element_blank())+
   stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median,position = "dodge",
-  geom = "crossbar",size=0.5, width = .7,colour = "black")+
+               geom = "crossbar",size=0.5, width = .7,colour = "black")+
   #scale_x_discrete(labels=panel2label)+
   scale_color_manual(values = c("darkblue","red3"))+
   scale_fill_manual(values=c("darkblue","red3"))+
@@ -111,8 +114,8 @@ total_file %>%
   coord_cartesian(ylim=c(0,200))+
   theme(plot.margin = unit(c(1,0.3,1.5,0.5), "cm"))+
   geom_hline(yintercept=5, linetype="longdash", color = "yellow4", size = 0.7)
- 
- # dev.off()
+
+# dev.off()
 
 ### Unique Mapping Rates ###
 #plot_result <- png("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\unique-mapping_pairs.png",
@@ -124,7 +127,7 @@ total_file %>%
 
 total_file %>% 
   filter(!Total_pairs < 5000000 | Total_pairs==NaN) %>% 
-  ggplot(aes(x=factor(Cancer_Type,levels = c("MC","GLM","LYM","OM", "OSA","HSA","Unclassified")),
+  ggplot(aes(x=factor(Tumor_Type,levels = c("MT","GLM","LYM","OM", "OSA","HSA","UCL")),
              y=as.numeric(Uniquely_mapped_rate),fill=Status,color=Status)) +
   geom_point(size=1.6,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
   ylab("Uniquely Mapping Rate")+
@@ -135,7 +138,7 @@ total_file %>%
   theme(axis.text=regular.text, 
         axis.title.y=regular.text,
         axis.title.x =element_blank(),
-        axis.text.x = element_text(angle=0, hjust=0.5), 
+        axis.text.x = element_text(angle=30, hjust=1), 
         panel.background=element_blank(), 
         axis.line=element_line(color="black"),
         legend.title=regular.text, 
@@ -163,7 +166,7 @@ total_file %>%
 total_file %>% 
   filter(!Total_pairs < 5000000 | Total_pairs==NaN)  %>% 
   #filter(!gt_30_fraction < 0.25 |gt_30_fraction ==NaN) %>% 
-  ggplot(aes(x=factor(Cancer_Type,levels = c("MC","GLM","LYM","OM", "OSA","HSA","Unclassified")),
+  ggplot(aes(x=factor(Tumor_Type,levels = c("MT","GLM","LYM","OM", "OSA","HSA","UCL")),
              y=as.numeric(gt_30_fraction),fill=Status,color=Status)) +
   geom_point(size=1.6,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
   ylab("Fraction of mapping quality >30")+
@@ -174,7 +177,7 @@ total_file %>%
   theme(axis.text=regular.text, 
         axis.title.y=regular.text,
         axis.title.x =element_blank(),
-        axis.text.x = element_text(angle=0, hjust=0.5), 
+        axis.text.x = element_text(angle=30, hjust=1), 
         panel.background=element_blank(), 
         axis.line=element_line(color="black"),
         legend.title=regular.text, 
@@ -203,7 +206,7 @@ total_file %>%
 total_file %>% 
   filter(!Total_pairs < 5000000 | Total_pairs==NaN) %>%
   filter(as.numeric(Uniquely_mapped_rate) >=0.6)%>% 
-  ggplot(aes(x=factor(Cancer_Type,levels = c("MC","GLM","LYM","OM", "OSA","HSA","Unclassified")),
+  ggplot(aes(x=factor(Tumor_Type,levels = c("MT","GLM","LYM","OM", "OSA","HSA","UCL")),
              y=as.numeric(uniq_CDS_region_paris_rates),fill=Status,color=Status)) +
   geom_point(size=1.6,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
   
@@ -215,7 +218,7 @@ total_file %>%
   theme(axis.text=regular.text, 
         axis.title.y=regular.text,
         axis.title.x =element_blank(),
-        axis.text.x = element_text(angle=0, hjust=0.5), 
+        axis.text.x = element_text(angle=30, hjust=1), 
         panel.background=element_blank(), 
         axis.line=element_line(color="black"),
         legend.title=regular.text, 
@@ -245,7 +248,7 @@ total_file %>%
   filter(as.numeric(Uniquely_mapped_rate) >=0.6) %>% 
   filter(as.numeric(uniq_CDS_region_paris_rates) >=0.3)%>%
   #filter(mean >30) %>% 
-  ggplot(aes(x=factor(Cancer_Type,levels = c("MC","GLM","LYM","OM", "OSA","HSA","Unclassified")),
+  ggplot(aes(x=factor(Tumor_Type,levels = c("MT","GLM","LYM","OM", "OSA","HSA","UCL")),
              y=as.numeric(mean),fill=Status,color=Status)) +
   geom_point(size=1.6,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
   scale_y_continuous(breaks = c(0,100,200))+
@@ -256,7 +259,7 @@ total_file %>%
   theme(axis.text=regular.text, 
         axis.title.y=regular.text,
         axis.title.x =element_blank(),
-        axis.text.x = element_text(angle=0, hjust=0.5), 
+        axis.text.x = element_text(angle=30, hjust=1), 
         panel.background=element_blank(), 
         axis.line=element_line(color="black"),
         legend.title=regular.text, 
@@ -289,7 +292,7 @@ total_file %>%
   filter(as.numeric(Uniquely_mapped_rate) >=0.6) %>% 
   filter(as.numeric(uniq_CDS_region_paris_rates) >=0.3)%>% 
   filter(mean>30) %>% 
-  ggplot(aes(x=factor(Cancer_Type,levels = c("MC","GLM","LYM","OM", "OSA","HSA","Unclassified")),
+  ggplot(aes(x=factor(Tumor_Type,levels = c("MT","GLM","LYM","OM", "OSA","HSA","UCL")),
              y=as.numeric(RMSE),fill=Status,color=Status)) +
   geom_point(size=1.6,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
   scale_y_continuous(breaks = c(0,0.005,0.01))+
@@ -300,7 +303,7 @@ total_file %>%
   theme(axis.text=regular.text, 
         axis.title.y=regular.text,
         axis.title.x =element_blank(),
-        axis.text.x = element_text(angle=0, hjust=0.5), 
+        axis.text.x = element_text(angle=30, hjust=1), 
         panel.background=element_blank(), 
         axis.line=element_line(color="black"),
         legend.title=regular.text, 
@@ -327,22 +330,22 @@ dev.off()
 # pdf("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\callablebases.pdf"
 #     , height=3.6, width=6.2);
 
-pdf("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\callable_bases.pdf"
-    , height=3.6, width=6.2);
+pdf("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\V7callable_bases.pdf"
+    , height=4.0, width=4.84);
 
 total_file %>% 
   filter(Status=='Tumor') %>% 
   filter(!Case_ID %in% exclude$Cases) %>% 
   filter(!Callable_bases =='No-Pair')%>% 
-  ggplot(aes(x=factor(Cancer_Type,levels = c("MC","GLM","LYM","OM", "OSA","HSA","Unclassified")),
+  ggplot(aes(x=factor(Tumor_Type,levels = c("MT","GLM","LYM","OM", "OSA","HSA","UCL")),
              y=as.numeric(Callable_bases)/1000000,color='black')) +
   geom_point(size=1.6,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
   ylab("Callable bases in Millions")+
   scale_y_continuous(breaks = c(0,10,20,30))+
   theme(axis.text=regular.text, 
-        axis.title.y=regular.text,
+        axis.title.y=element_text(colour="black",size=18, margin = margin(t = 0, r = 0, b = 0, l = 0)),
         axis.title.x =element_blank(),
-        axis.text.x = element_text(angle=0, hjust=0.5), 
+        axis.text.x = element_text(angle=30, hjust=1), 
         panel.background=element_blank(), 
         axis.line=element_line(color="black"),
         legend.title=regular.text, 
