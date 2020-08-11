@@ -73,7 +73,7 @@ Mut_rate <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\
 
 # height = 4.8, width = 6.2
 
-pdf("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\V7F1_and_supplementaryF1.pdf"
+pdf("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\V8F1_and_supplementaryF1.pdf"
     , height=4.98, width=4.84);
 
 regular.text <- element_text(colour="black",size=20);
@@ -210,7 +210,7 @@ total_file %>%
              y=as.numeric(uniq_CDS_region_paris_rates),fill=Status,color=Status)) +
   geom_point(size=1.6,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
   
-  ylab("Unique CDS Mapping Rates")+
+  ylab("CDS Mapping Rates")+
   scale_y_continuous(breaks = c(0,0.4,0.8))+
   #labs(subtitle = "p<0.01")+
   #stat_compare_means(aes(group=gene),label="p.signif",symnum.args = symnumargs,label.y = c(2.1,2.1,2.1,2.1,3,3)) +
