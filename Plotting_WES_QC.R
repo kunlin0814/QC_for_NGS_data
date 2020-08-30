@@ -2,6 +2,7 @@ library(tidyverse)
 library(readxl)
 library(wesanderson)
 library(RColorBrewer)
+library(data.table)
 #colors <- brewer.pal(3, "Set1"); # red, blue, green
 
 ## whole criteria 
@@ -35,53 +36,20 @@ Mut_rate <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\
 
 
 
-#plot_result <- png("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Supplement_Figure1\\sequence_pairs.png",
-#                   width=2800,height=1800,res=450)
-
-
-
-# Mut_rate %>% 
-#   ggplot(aes(x=factor(Tumor_Type,levels = c("MC","GLM","LYM","OM", "OSA","HSA","UCL")),
-#              y=as.numeric(Mutation_rate),fill=status,color=status)) +
-#   
-#   geom_point(size=1.6,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
-#   ylab("Mutation Rates")+
-#   #labs(subtitle = "p<0.01")+
-#   #stat_compare_means(aes(group=gene),label="p.signif",symnum.args = symnumargs,label.y = c(2.1,2.1,2.1,2.1,3,3)) +
-#   #scale_y_log10(limits=c(0.001,1000),breaks=c(0.001,0.01,0.1,1,10,100,1000),labels=c(0,0.01,0.1,1,10,100,1000)) +
-#   theme(axis.text=regular.text, 
-#         axis.title.y=regular.text,
-#         axis.title.x =element_blank(),
-#         axis.text.x = element_text(angle=30, hjust=1), 
-#         panel.background=element_blank(), 
-#         axis.line=element_line(color="black"),
-#         legend.title=regular.text, 
-#         legend.position="top", 
-#         legend.text=regular.text, 
-#         legend.key=element_blank())+
-#   stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median,position = "dodge",
-#                geom = "crossbar",size=0.5, width = .7,colour = "black")+
-#   #scale_x_discrete(labels=panel2label)+
-#   scale_color_manual(values = c("darkblue","red3"))+
-#   scale_fill_manual(values=c("darkblue","red3"))+
-#   #scale_fill_manual(values=c("firebrick","darkolivegreen"))+
-#   #scale_shape_manual(values = 20)+
-#   theme(plot.margin = unit(c(1,0.3,1.5,0.5), "cm"))+
-#   coord_cartesian(ylim=c(0,100))
-#  
-
-
-# height = 4.8, width = 6.2
-
-pdf("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\V8F1_and_supplementaryF1.pdf"
+pdf("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\V11F1_and_supplementaryF1.pdf"
     , height=4.98, width=4.84);
 
 regular.text <- element_text(colour="black",size=20);
+file_color <- c("darkblue","red3")
 
 # # 
 # tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\square-sequence_pairs.tiff",
 #      width = 3500, height =3000, units = "px", res = 400)
-
+total_file <- data.table(total_file)
+PairMedian <- total_file[,.(Median=median(Total_pairs)),by = .(Tumor_Type)]
+UniqMapMedian <- total_file[,.(Median=median(Uniquely_mapped_rate)),by = .(Tumor_Type)]
+CDSMedian <- total_file[,.(Median=median(uniq_CDS_region_paris_rates)),by = .(Tumor_Type)]
+meanMedian <- total_file[,.(Median=median(mean)),by = .(Tumor_Type)]
 
 total_file %>% 
   #filter(!Total_pairs < 5000000 | Total_pairs==NaN) %>% 
@@ -89,7 +57,7 @@ total_file %>%
              y=as.numeric(Total_pairs)/1000000,fill=Status,color=Status)) +
   
   geom_point(size=1.6,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
-  ylab("Sequence Read Pairs in Millions")+
+  ylab("Sequence read pairs\nin millions")+
   scale_y_continuous(breaks = c(0,100,200))+
   #labs(subtitle = "p<0.01")+
   #stat_compare_means(aes(group=gene),label="p.signif",symnum.args = symnumargs,label.y = c(2.1,2.1,2.1,2.1,3,3)) +
@@ -104,11 +72,11 @@ total_file %>%
         legend.position="top", 
         legend.text=regular.text, 
         legend.key=element_blank())+
-  stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median,position = "dodge",
+  stat_summary(fun = median, fun.min = median, fun.max = median,position = "dodge",
                geom = "crossbar",size=0.5, width = .7,colour = "black")+
   #scale_x_discrete(labels=panel2label)+
-  scale_color_manual(values = c("darkblue","red3"))+
-  scale_fill_manual(values=c("darkblue","red3"))+
+  scale_color_manual(values = file_color)+
+  scale_fill_manual(values=file_color)+
   #scale_fill_manual(values=c("firebrick","darkolivegreen"))+
   #scale_shape_manual(values = 20)+
   coord_cartesian(ylim=c(0,200))+
@@ -125,80 +93,6 @@ total_file %>%
 # tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\unique-mapping_pairs.tiff",
 #     width = 3500, height =3000, units = "px", res = 400)
 
-total_file %>% 
-  filter(!Total_pairs < 5000000 | Total_pairs==NaN) %>% 
-  ggplot(aes(x=factor(Tumor_Type,levels = c("MT","GLM","LYM","OM", "OSA","HSA","UCL")),
-             y=as.numeric(Uniquely_mapped_rate),fill=Status,color=Status)) +
-  geom_point(size=1.6,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
-  ylab("Uniquely Mapping Rate")+
-  scale_y_continuous(breaks = c(0,0.5,0.75,1.0))+
-  #labs(subtitle = "p<0.01")+
-  #stat_compare_means(aes(group=gene),label="p.signif",symnum.args = symnumargs,label.y = c(2.1,2.1,2.1,2.1,3,3)) +
-  #scale_y_log10(limits=c(0.001,1000),breaks=c(0.001,0.01,0.1,1,10,100,1000),labels=c(0,0.01,0.1,1,10,100,1000)) +
-  theme(axis.text=regular.text, 
-        axis.title.y=regular.text,
-        axis.title.x =element_blank(),
-        axis.text.x = element_text(angle=30, hjust=1), 
-        panel.background=element_blank(), 
-        axis.line=element_line(color="black"),
-        legend.title=regular.text, 
-        legend.position="top", 
-        legend.text=regular.text, 
-        legend.key=element_blank())+
-  stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median,position = "dodge",
-               geom = "crossbar",size=0.5, width = .7,colour = "black")+
-  #scale_x_discrete(labels=panel2label)+
-  scale_color_manual(values = c("darkblue","red3"))+
-  scale_fill_manual(values=c("darkblue","red3"))+
-  #scale_fill_manual(values=c("firebrick","darkolivegreen"))+
-  #scale_shape_manual(values = 19)+
-  coord_cartesian(ylim=c(0.3,1))+
-  theme(plot.margin = unit(c(1,0.3,1.5,0.5), "cm"))+
-  geom_hline(yintercept=0.6, linetype="longdash", color = "yellow4", size = 0.7)
-
-
-# dev.off()
-###### gt 30 #####
-
-# tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\gt-30.tiff",
-#       width = 3500, height =3000, units = "px", res = 400)
-
-total_file %>% 
-  filter(!Total_pairs < 5000000 | Total_pairs==NaN)  %>% 
-  #filter(!gt_30_fraction < 0.25 |gt_30_fraction ==NaN) %>% 
-  ggplot(aes(x=factor(Tumor_Type,levels = c("MT","GLM","LYM","OM", "OSA","HSA","UCL")),
-             y=as.numeric(gt_30_fraction),fill=Status,color=Status)) +
-  geom_point(size=1.6,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
-  ylab("Fraction of mapping quality >30")+
-  scale_y_continuous(breaks = c(0,0.5,0.75,1.0))+
-  #labs(subtitle = "p<0.01")+
-  #stat_compare_means(aes(group=gene),label="p.signif",symnum.args = symnumargs,label.y = c(2.1,2.1,2.1,2.1,3,3)) +
-  #scale_y_log10(limits=c(0.001,1000),breaks=c(0.001,0.01,0.1,1,10,100,1000),labels=c(0,0.01,0.1,1,10,100,1000)) +
-  theme(axis.text=regular.text, 
-        axis.title.y=regular.text,
-        axis.title.x =element_blank(),
-        axis.text.x = element_text(angle=30, hjust=1), 
-        panel.background=element_blank(), 
-        axis.line=element_line(color="black"),
-        legend.title=regular.text, 
-        legend.position="top", 
-        legend.text=regular.text, 
-        legend.key=element_blank())+
-  stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median,position = "dodge",
-               geom = "crossbar",size=0.5, width = .7,colour = "black")+
-  #scale_x_discrete(labels=panel2label)+
-  scale_color_manual(values = c("darkblue","red3"))+
-  scale_fill_manual(values=c("darkblue","red3"))+
-  #scale_fill_manual(values=c("firebrick","darkolivegreen"))+
-  #scale_shape_manual(values = 19)+
-  coord_cartesian(ylim=c(0.3,1))+
-  theme(plot.margin = unit(c(1,0.3,1.5,0.5), "cm"))
-
-
-# dev.off()
-
-
-
 #### Unique CDS ####
 # tiff(file = "G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\unique-CDS-mapping.tiff",
 #      width = 3500, height =1900, units = "px", res = 400)
@@ -210,7 +104,7 @@ total_file %>%
              y=as.numeric(uniq_CDS_region_paris_rates),fill=Status,color=Status)) +
   geom_point(size=1.6,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
   
-  ylab("CDS Mapping Rates")+
+  ylab("Fraction of reads \nmapped to CDS")+
   scale_y_continuous(breaks = c(0,0.4,0.8))+
   #labs(subtitle = "p<0.01")+
   #stat_compare_means(aes(group=gene),label="p.signif",symnum.args = symnumargs,label.y = c(2.1,2.1,2.1,2.1,3,3)) +
@@ -225,13 +119,13 @@ total_file %>%
         legend.position="top", 
         legend.text=regular.text, 
         legend.key=element_blank())+
-  stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median,position = "dodge",
+  stat_summary(fun = median, fun.min = median, fun.max = median,position = "dodge",
                geom = "crossbar",size=0.5, width = .7,colour = "black")+
   #scale_x_discrete(labels=panel2label)+
-  scale_color_manual(values = c("darkblue","red3"))+
-  scale_fill_manual(values=c("darkblue","red3"))+
+  scale_color_manual(values = file_color)+
+  scale_fill_manual(values=file_color)+
   #scale_fill_manual(values=c("firebrick","darkolivegreen"))+
-  #scale_shape_manual(values = 19)+
+  #scale_shape_manual(values = 20)+
   coord_cartesian(ylim=c(0,0.8))+
   theme(plot.margin = unit(c(1,0.3,1.5,0.5), "cm"))+
   geom_hline(yintercept=0.3, linetype="longdash", color = "yellow4", size = 0.7)
@@ -252,7 +146,7 @@ total_file %>%
              y=as.numeric(mean),fill=Status,color=Status)) +
   geom_point(size=1.6,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
   scale_y_continuous(breaks = c(0,100,200))+
-  ylab("Mean Coverage")+
+  ylab("Mean coverage")+
   #labs(subtitle = "p<0.01")+
   #stat_compare_means(aes(group=gene),label="p.signif",symnum.args = symnumargs,label.y = c(2.1,2.1,2.1,2.1,3,3)) +
   #scale_y_log10(limits=c(0.001,1000),breaks=c(0.001,0.01,0.1,1,10,100,1000),labels=c(0,0.01,0.1,1,10,100,1000)) +
@@ -266,11 +160,11 @@ total_file %>%
         legend.position="top", 
         legend.text=regular.text, 
         legend.key=element_blank())+
-  stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median,position = "dodge",
+  stat_summary(fun = median, fun.min = median, fun.max = median,position = "dodge",
                geom = "crossbar",size=0.5, width = .7,colour = "black")+
   #scale_x_discrete(labels=panel2label)+
-  scale_color_manual(values = c("darkblue","red3"))+
-  scale_fill_manual(values=c("darkblue","red3"))+
+  scale_color_manual(values = file_color)+
+  scale_fill_manual(values=file_color)+
   #scale_fill_manual(values=c("firebrick","darkolivegreen"))+
   #scale_shape_manual(values = 19)+
   coord_cartesian(ylim=c(0,200))+
@@ -296,7 +190,7 @@ total_file %>%
              y=as.numeric(RMSE),fill=Status,color=Status)) +
   geom_point(size=1.6,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
   scale_y_continuous(breaks = c(0,0.005,0.01))+
-  ylab("RMSE of Sequence Coverage")+
+  ylab("RMSE of \nsequence coverage")+
   #labs(subtitle = "p<0.01")+
   #stat_compare_means(aes(group=gene),label="p.signif",symnum.args = symnumargs,label.y = c(2.1,2.1,2.1,2.1,3,3)) +
   #scale_y_log10(limits=c(0.001,1000),breaks=c(0.001,0.01,0.1,1,10,100,1000),labels=c(0,0.01,0.1,1,10,100,1000)) +
@@ -310,11 +204,11 @@ total_file %>%
         legend.position="top", 
         legend.text=regular.text, 
         legend.key=element_blank())+
-  stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median,position = "dodge",
+  stat_summary(fun = median, fun.min = median, fun.max = median,position = "dodge",
                geom = "crossbar",size=0.4, width = .7,colour = "black")+
   #scale_x_discrete(labels=panel2label)+
-  scale_color_manual(values = c("darkblue","red3"))+
-  scale_fill_manual(values=c("darkblue","red3"))+
+  scale_color_manual(values = file_color)+
+  scale_fill_manual(values=file_color)+
   #scale_fill_manual(values=c("firebrick","darkolivegreen"))+
   #scale_shape_manual(values = 19)+
   coord_cartesian(ylim=c(0,0.01))+
@@ -330,7 +224,7 @@ dev.off()
 # pdf("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\callablebases.pdf"
 #     , height=3.6, width=6.2);
 
-pdf("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\V7callable_bases.pdf"
+pdf("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\V10callable_bases.pdf"
     , height=4.0, width=4.84);
 
 total_file %>% 
@@ -340,10 +234,10 @@ total_file %>%
   ggplot(aes(x=factor(Tumor_Type,levels = c("MT","GLM","LYM","OM", "OSA","HSA","UCL")),
              y=as.numeric(Callable_bases)/1000000,color='black')) +
   geom_point(size=1.6,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
-  ylab("Callable bases in Millions")+
+  ylab("Callable bases in millions")+
   scale_y_continuous(breaks = c(0,10,20,30))+
   theme(axis.text=regular.text, 
-        axis.title.y=element_text(colour="black",size=18, margin = margin(t = 0, r = 0, b = 0, l = 0)),
+        axis.title.y=element_text(colour="black",size=20, margin = margin(t = 0, r = 0, b = 0, l = 0)),
         axis.title.x =element_blank(),
         axis.text.x = element_text(angle=30, hjust=1), 
         panel.background=element_blank(), 
@@ -352,7 +246,7 @@ total_file %>%
         legend.position="none", 
         legend.text=regular.text, 
         legend.key=element_blank())+
-  stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median,position = "dodge",
+  stat_summary(fun = median, fun.min = median, fun.max = median,position = "dodge",
                geom = "crossbar",size=0.4, width = .7,colour = "black")+
   #scale_shape_manual(values = 19)+
   scale_color_manual(values = 'black')+
