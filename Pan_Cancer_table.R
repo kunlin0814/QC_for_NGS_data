@@ -5,8 +5,29 @@ library(RColorBrewer)
 library(data.table)
 
 
-total_file <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\Methods_legends_tables\\Ploting_table.xlsx",
-                         sheet ='NGS_Data_summary', skip =0)
+total_file <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan-Cancer-Manuscript\\Methods_legends_tables\\TableS1_8-28-20.xlsx",
+                         sheet ='DiscoveryWESQCdata', skip =1)
+location <- "G:\\MAC_Research_Data\\MHC_ANN\\Somatic_Germline"
+#"C:\\Users\\abc73_000\\Desktop\\Bioproject_check"
+#"G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Grant_table\\Cancer_Sample\\MC\\WXS\\"
+file <- "CMT-100_sINDEL_VEP.vcf"
+#"PRJNA489159.txt"
+
+#data <- fread(paste(location,file,sep = "\\"))
+
+data <- fread("C:/Users/abc73_000/Desktop/Meta/PRJNA247493_LYM_Unclasified.txt")
+
+data[,c(Age)]
+
+strsplit(data$`Library Name`,"_")
+#1.
+glm <- glm_Meta_data[,c("Sample Name","Age")]
+mc <- data[,c("Sample_ID","Age")]
+hsa <- data[,c("Run","Age")]
+
+rbind(glm,mc, fill = T)
+
+
 
 Mut_data <- read_excel("G:/MAC_Research_Data/Pan_cancer/Pan_cancer-analysis/Mutation_rate/Mutation_rate.xlsx",
                        sheet ='All_samples_Retro+indel' )
