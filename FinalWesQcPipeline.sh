@@ -21,9 +21,9 @@ Cancer_Type='MC'
 Normal_Sample='SRR9911361'
 Tumor_Sample='SRR9911362'
 
-module load SAMtools/1.9-foss-2016b
-module load Anaconda3/2018.12
-source activate py35
+module load SAMtools/1.9-GCC-8.3.0
+ml Anaconda3/2020.02
+#source activate py35
 
 
 ## Convert the bam file into sam file
