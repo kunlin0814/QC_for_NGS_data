@@ -20,7 +20,7 @@ sam_file_output='/scratch/kh31516/Pan_cancer/glioma/results/store/WGS/results/i_
 script='/home/kh31516/kh31516_Lab_Share_script'
 summary_output='/scratch/kh31516/Pan_cancer/glioma/results/store/WGS/'
 DepthOfCoverage='/scratch/kh31516/Pan_cancer/glioma/results/store/WGS/DepthOfCoverage/i_FECA'
-#Mutect='/scratch/kh31516/Original_Mammary/store/PRJNA552905/Mutect/007'
+Mutect='/scratch/kh31516/Pan_cancer/glioma/results/store/WGS/Mutect/i_FECA'
 Sequence_length=100
 Cancer_Type='GLM'
 Normal_Sample='SRR10351812'
@@ -100,8 +100,24 @@ cat ${DepthOfCoverage}/${Tumor_Sample}_DepthofCoverage_CDS.bed | cut -f2 | sort 
 
 #cat ${Tumor_Sample}_DepthofCoverage_Distribution.txt | awk '{ print $1, $1 * $2 }'| awk '{print $2}' | paste -sd+ - | bc
 #cat ${Normal_Sample}_DepthofCoverage_Distribution.txt | awk '{ print $1, $1 * $2 }'| awk '{print $2}' | paste -sd+ - | bc
-python ${script}/Randomness.py ${DepthOfCoverage}/${Normal_Sample}_DepthofCoverage_Distribution.txt ${Normal_Sample} ${Cancer_Type} Normal
-python ${script}/Randomness.py ${DepthOfCoverage}/${Tumor_Sample}_DepthofCoverage_Distribution.txt ${Tumor_Sample} ${Cancer_Type} Tumor
+
+# V2 python randomness scripts input parameters
+# input_file = sys.argv[1]
+# file_name = sys.argv[2]
+# Cancer_type = sys.argv[3]
+# Status = sys.argv[4]
+
+python ${script}/V2_randomness.py \
+${DepthOfCoverage}/${Normal_Sample}_DepthofCoverage_Distribution.txt \
+${Normal_Sample} \
+${Cancer_Type} \
+Normal
+
+python ${script}/V2_randomness.py \
+${DepthOfCoverage}/${Tumor_Sample}_DepthofCoverage_Distribution.txt \
+${Tumor_Sample} \
+${Cancer_Type} \
+Tumor
 
 cat ${DepthOfCoverage}/${Normal_Sample}_randomness_summary.txt >> $summary_output/Total_WGS_${Cancer_Type}_Randomness_Summary.txt
 cat ${DepthOfCoverage}/${Tumor_Sample}_randomness_summary.txt >> $summary_output/Total_WGS_${Cancer_Type}_Randomness_Summary.txt
