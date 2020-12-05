@@ -8,8 +8,7 @@
 #SBATCH --time=40:00:00              # Time limit hrs:min:sec or days-hours:minutes:seconds
 #SBATCH --output=i_FECA_Summarized_BWA_WGS.%j.out    # Standard output log
 #SBATCH --error=i_FECA_Summarized_BWA_WGS.%j.err     # Standard error log
-#SBATCH --mail-user=kh31516@uga.edu
-#SBATCH --mail-type=END
+
 
 # WGS 100 bps 
 # WGS 76 bps
@@ -31,7 +30,7 @@ module load SAMtools/1.9-GCC-8.3.0
 ml Anaconda3/2020.02
 #source activate py35
 ml Java/1.8.0_241
-mkdir $sam_file_output
+mkdir -p $sam_file_output
 ## Convert the bam file into sam file
 cd ${source_folder}/
 
