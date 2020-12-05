@@ -107,7 +107,7 @@ output.write('file_name'+'\t'+'average'+ \
 
 output.write(file_name+'\t'+str(mean_coverage)+ \
 '\t'+str(rmse)+'\t'+ \
-+str(Cancer_type)+'\t' \
+str(Cancer_type)+'\t' \
 +str(Status)+'\n')
 
 output.close()
