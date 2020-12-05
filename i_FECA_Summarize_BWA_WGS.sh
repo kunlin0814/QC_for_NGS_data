@@ -107,6 +107,7 @@ cat ${DepthOfCoverage}/${Tumor_Sample}_DepthofCoverage_CDS.bed | cut -f2 | sort 
 # Cancer_type = sys.argv[3]
 # Status = sys.argv[4]
 
+# the header = ('file_name'+'\t'+'mean_coverage'+'\t'+'rmse'+'\t'+ 'Cancer_type'+'\t'+ 'Status'+'\n')
 python ${script}/V2_randomness.py \
 ${DepthOfCoverage}/${Normal_Sample}_DepthofCoverage_Distribution.txt \
 ${Normal_Sample} \
@@ -119,8 +120,8 @@ ${Tumor_Sample} \
 ${Cancer_Type} \
 Tumor
 
-cat ${DepthOfCoverage}/${Normal_Sample}_randomness_summary.txt >> $summary_output/Total_WGS_${Cancer_Type}_Randomness_Summary.txt
-cat ${DepthOfCoverage}/${Tumor_Sample}_randomness_summary.txt >> $summary_output/Total_WGS_${Cancer_Type}_Randomness_Summary.txt
+tail -n +2 ${DepthOfCoverage}/${Normal_Sample}_randomness_summary.txt >> $summary_output/Total_WGS_${Cancer_Type}_Randomness_Summary.txt
+tail -n +2 ${DepthOfCoverage}/${Tumor_Sample}_randomness_summary.txt >> $summary_output/Total_WGS_${Cancer_Type}_Randomness_Summary.txt
 
 ###### Callable bases ########
 
