@@ -74,9 +74,9 @@ cd ${sam_file_output}/
 
 cat ${sam_file_output}/${Normal_Sample}.sam | cut -f5 > ${sam_file_output}/${Normal_Sample}-mapping_quality
 
-Ngt30=$(cat ${Normal_Sample}-mapping_quality | awk '{if ($1>=30) {print $1}}' | wc -l)
-Ngt60=$(cat ${Normal_Sample}-mapping_quality | awk '{if ($1>=60) {print $1}}' | wc -l)
-Ntotal=$(cat ${Normal_Sample}-mapping_quality| wc -l)
+Ngt30=$(cat ${sam_file_output}/${Normal_Sample}-mapping_quality | awk '{if ($1>=30) {print $1}}' | wc -l)
+Ngt60=$(cat ${sam_file_output}/${Normal_Sample}-mapping_quality | awk '{if ($1>=60) {print $1}}' | wc -l)
+Ntotal=$(cat ${sam_file_output}/${Normal_Sample}-mapping_quality| wc -l)
 Nfra30=$(echo "$((Ngt30))/$((Ntotal))" | bc -l)
 Nfra60=$(echo "$((Ngt60))/$((Ntotal))" | bc -l)
 
