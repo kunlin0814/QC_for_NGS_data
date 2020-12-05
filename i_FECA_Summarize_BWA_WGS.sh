@@ -66,7 +66,7 @@ ${Cancer_Type} \
 "Tumor"
 
 cat ${sam_file_output}/Normal-${Normal_Sample}-WGS_Mapping_summary.txt >> $summary_output/Total_WGS_BWA_${Bioproject}_${Cancer_Type}.txt
-cat ${sam_file_output}/Tumor-${Normal_Sample}-WGS_Mapping_summary.txt  >> $summary_output/Total_WGS_BWA_${Bioproject}_${Cancer_Type}.txt
+cat ${sam_file_output}/Tumor-${Tumor_Sample}-WGS_Mapping_summary.txt  >> $summary_output/Total_WGS_BWA_${Bioproject}_${Cancer_Type}.txt
 
 ##### Sequence Reads Mapping Quality #####
 
