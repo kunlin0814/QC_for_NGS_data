@@ -25,6 +25,7 @@ Sequence_length=100
 Cancer_Type='GLM'
 Normal_Sample='SRR10351812'
 Tumor_Sample='SRR10351814'
+Bioproject='PRJNA579792'
 
 module load SAMtools/1.9-GCC-8.3.0
 ml Anaconda3/2020.02
@@ -64,8 +65,8 @@ $Sequence_length \
 ${Cancer_Type} \
 "Tumor"
 
-cat ${sam_file_output}/Normal-${Normal_Sample}-WGS_Mapping_summary.txt >> $summary_output/Total_WGS_BWA_${Cancer_Type}.txt
-cat ${sam_file_output}/Tumor-${Normal_Sample}-WGS_Mapping_summary.txt  >> $summary_output/Total_WGS_BWA_${Cancer_Type}.txt
+cat ${sam_file_output}/Normal-${Normal_Sample}-WGS_Mapping_summary.txt >> $summary_output/Total_WGS_BWA_${Bioproject}_${Cancer_Type}.txt
+cat ${sam_file_output}/Tumor-${Normal_Sample}-WGS_Mapping_summary.txt  >> $summary_output/Total_WGS_BWA_${Bioproject}_${Cancer_Type}.txt
 
 ##### Sequence Reads Mapping Quality #####
 
@@ -79,7 +80,7 @@ Ntotal=$(cat ${Normal_Sample}-mapping_quality| wc -l)
 Nfra30=$(echo "$((Ngt30))/$((Ntotal))" | bc -l)
 Nfra60=$(echo "$((Ngt60))/$((Ntotal))" | bc -l)
 
-printf  "%s\t%4f\t%4f\t%s\t%s\n" "${Normal_Sample}" "${Nfra30}" "${Nfra60}" "${Cancer_Type}" "Normal" >> $summary_output/WGS_Total_Mapping_quality_${Cancer_Type}.txt
+printf  "%s\t%4f\t%4f\t%s\t%s\n" "${Normal_Sample}" "${Nfra30}" "${Nfra60}" "${Cancer_Type}" "Normal" >> $summary_output/WGS_Total_Mapping_quality_${Bioproject}_${Cancer_Type}.txt
 
 cat ${sam_file_output}/${Tumor_Sample}.sam | cut -f5 > ${sam_file_output}/${Tumor_Sample}-mapping_quality
 
@@ -89,7 +90,7 @@ Ttotal=$(cat ${sam_file_output}/${Tumor_Sample}-mapping_quality| wc -l)
 Tfra30=$(echo "$((Tgt30))/$((Ttotal))" | bc -l)
 Tfra60=$(echo "$((Tgt60))/$((Ttotal))" | bc -l)
 
-printf   "%s\t%4f\t%4f\t%s\t%s\n" "${Tumor_Sample}" "${Tfra30}" "${Tfra60}" "${Cancer_Type}" "Tumor" >> $summary_output/WGS_Total_Mapping_quality_${Cancer_Type}.txt
+printf   "%s\t%4f\t%4f\t%s\t%s\n" "${Tumor_Sample}" "${Tfra30}" "${Tfra60}" "${Cancer_Type}" "Tumor" >> $summary_output/WGS_Total_Mapping_quality_${Bioproject}_${Cancer_Type}.txt
 
 ###### QC of Depth of Coverage and Randomness ######
 
@@ -120,8 +121,8 @@ ${Tumor_Sample} \
 ${Cancer_Type} \
 Tumor
 
-tail -n +2 ${DepthOfCoverage}/${Normal_Sample}_randomness_summary.txt >> $summary_output/Total_WGS_${Cancer_Type}_Randomness_Summary.txt
-tail -n +2 ${DepthOfCoverage}/${Tumor_Sample}_randomness_summary.txt >> $summary_output/Total_WGS_${Cancer_Type}_Randomness_Summary.txt
+tail -n +2 ${DepthOfCoverage}/${Normal_Sample}_randomness_summary.txt >> $summary_output/Total_WGS_${Bioproject}_${Cancer_Type}_Randomness_Summary.txt
+tail -n +2 ${DepthOfCoverage}/${Tumor_Sample}_randomness_summary.txt >> $summary_output/Total_WGS_${Bioproject}_${Cancer_Type}_Randomness_Summary.txt
 
 ###### Callable bases ########
 
@@ -131,9 +132,9 @@ reference='/work/szlab/Lab_shared_PanCancer/source'
 
 cd ${sam_file_output}
 
-#callable=$(cat $Mutect/007_rg_added_sorted_dedupped_removed.bam_coverage.wig.txt | grep "^1"| wc -l)
+callable=$(cat $Mutect/${sample_name}_rg_added_sorted_dedupped_removed.bam_coverage.wig.txt | grep "^1"| wc -l)
 
-#printf  "%s\t%d\t%s\n" "007" "${callable}" "${Cancer_Type}" >> $summary_output/Total_WGS_Callable_${Cancer_Type}.txt
+printf  "%s\t%d\t%s\n" "${sample_name}" "${callable}" "${Cancer_Type}" >> $summary_output/Total_WGS_Callable_${Bioproject}_${Cancer_Type}.txt
 
 : "
 rm ${sam_file_output}/${Normal_Sample}.sam
