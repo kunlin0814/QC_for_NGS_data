@@ -82,7 +82,7 @@ public class SummarizeBwaWgs {
 						+ "cancer_type\t" + "status" + "\n");
 				bw.write(ID + "\t" + pairs + "\t" + unique_rate + "\t" + unmapped_rate + "\t" + 
 						Double.toString(unique) + "\t" + Double.toString(total_mean_coverage) + "\t"
-						+ Double.toString(uniq_mapped_mean_coverage) + "\t" + Cancer_Type + "\t" + Status);
+						+ Double.toString(uniq_mapped_mean_coverage) + "\t" + Cancer_Type + "\t" + Status+"\n");
 
 				bw.close();
 			}
