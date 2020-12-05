@@ -16,9 +16,9 @@
 
 sample_name="i_FECA"
 source_folder='/scratch/kh31516/Pan_cancer/glioma/results/store/WGS/results/i_FECA' #
-sam_file_output='/scratch/kh31516/Pan_cancer/glioma/results/store/WGS/results/i_FECA'
+sam_file_output='/scratch/kh31516/Pan_cancer/glioma/results/store/WGS/QC/i_FECA'
 script='/home/kh31516/kh31516_Lab_Share_script'
-summary_output='/scratch/kh31516/Pan_cancer/glioma/results/store/WGS/'
+summary_output='/scratch/kh31516/Pan_cancer/glioma/results/store/WGS'
 DepthOfCoverage='/scratch/kh31516/Pan_cancer/glioma/results/store/WGS/DepthOfCoverage/i_FECA'
 Mutect='/scratch/kh31516/Pan_cancer/glioma/results/store/WGS/Mutect/i_FECA'
 Sequence_length=100
@@ -31,7 +31,7 @@ module load SAMtools/1.9-GCC-8.3.0
 ml Anaconda3/2020.02
 #source activate py35
 ml Java/1.8.0_241
-
+mkdir $sam_file_output
 ## Convert the bam file into sam file
 cd ${source_folder}/
 
