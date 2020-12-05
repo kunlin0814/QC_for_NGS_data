@@ -1,13 +1,13 @@
 #!/bin/bash
-#SBATCH --job-name=Summarized_BWA_WGS         # Job name (Summarized_BWA_WGS)
+#SBATCH --job-name=i_FECA_Summarized_BWA_WGS         # Job name (i_FECA_Summarized_BWA_WGS)
 #SBATCH --partition=batch           # Queue name (batch)
 #SBATCH --nodes=1                   # Run all processes on a single node
 #SBATCH --ntasks=1                  # Run in a single task on a single node
 #SBATCH --cpus-per-task=1           # Number of CPU cores per task (4)
 #SBATCH --mem=40G                   # Job memory limit (10 GB)
 #SBATCH --time=40:00:00              # Time limit hrs:min:sec or days-hours:minutes:seconds
-#SBATCH --output=Summarized_BWA_WGS.%j.out    # Standard output log
-#SBATCH --error=Summarized_BWA_WGS.%j.err     # Standard error log
+#SBATCH --output=i_FECA_Summarized_BWA_WGS.%j.out    # Standard output log
+#SBATCH --error=i_FECA_Summarized_BWA_WGS.%j.err     # Standard error log
 #SBATCH --mail-user=kh31516@uga.edu
 #SBATCH --mail-type=END
 
