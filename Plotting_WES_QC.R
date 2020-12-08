@@ -20,11 +20,26 @@ library(data.table)
 #                     sheet ='All_samples_Retro_non_retro')
 
 
+
+
+
+
 exclude <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\Original_Data_summary.xlsx",
                       sheet ="Before_Matching_excluded")
 
 total_file <- read_excel("G:/MAC_Research_Data/Pan_cancer/Pan-Cancer-Manuscript/Methods_legends_tables/V6Combined_Summary_Public_Data.xlsx",
                          sheet ='NGS_Data_summary', skip = 3)
+
+
+MC <- total_file %>% 
+  filter(Tumor_Type == 'MT') %>% 
+  filter(RMSE > 0.002)
+
+  MC %>% 
+ggplot(aes(x=0,
+           y=as.numeric(RMSE), +
+  
+  geom_point(size=1.6,shape=20)))
 
 
 # 
@@ -36,7 +51,7 @@ Mut_rate <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\
 
 
 
-pdf("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\V12F1_and_supplementaryF1.pdf"
+pdf("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\V13F1_and_supplementaryF1.pdf"
     , height=4.98, width=4.84);
 
 regular.text <- element_text(colour="black",size=20);
@@ -224,7 +239,7 @@ dev.off()
 # pdf("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\callablebases.pdf"
 #     , height=3.6, width=6.2);
 
-pdf("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\V10callable_bases.pdf"
+pdf("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\V11callable_bases.pdf"
     , height=4.0, width=4.84);
 
 total_file %>% 
