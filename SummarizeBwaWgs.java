@@ -78,7 +78,7 @@ public class SummarizeBwaWgs {
 				bw = new BufferedWriter(fw);
 				// bw.write("ID\tTotal_pairs\tUniquely_mapped_rate\tRepeatedly_mapped_rate\t1read_mapped_rate\tIncorrectly_mapped_rate\tUnmapped_rate\tUniquely_mapped\tRepeatedly_mapped\t1read_mapped\tIncorrectly_mapped\tUnmapped\tTotal_reads\n');
 				bw.write("file_name\t" + "total_reads_pairs\t" + "Unique_mapped_rate\t" + "unmapped_rate\t"
-						+ "total_uniq_number\t" + "total_mean_coverage\t" + "unique_mapped_mean_coverage"
+						+ "total_uniq_number\t" + "total_mean_coverage\t" + "unique_mapped_mean_coverage\t"
 						+ "cancer_type\t" + "status" + "\n");
 				bw.write(ID + "\t" + pairs + "\t" + unique_rate + "\t" + unmapped_rate + "\t" + 
 						Double.toString(unique) + "\t" + Double.toString(total_mean_coverage) + "\t"
