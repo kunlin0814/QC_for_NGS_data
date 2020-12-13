@@ -63,9 +63,9 @@ public class Line_by_line_Total_dict_Get_exon_reads {
 				+ "Total_unique\t" + "Total_pass\t" + "Total_Unmapped\t" + "Total_Duplicate\t" + "Total_Onemapped\t"
 				+ "Total_Incorrect\t" + '\n');
 
-		bw.write(file_name + '\t' + summary.get(0) + '\t' + summary.get(1) + '\t' + summary.get(2) + '\t' + Cancer_Type
-				+ '\t' + Status + '\t' + summary.get(3) + '\t' + summary.get(4) + '\t' + summary.get(5) + '\t'
-				+ summary.get(6) + '\t' + summary.get(7) + '\t' + summary.get(8) + '\t' + summary.get(9) + '\t'
+		bw.write(file_name + '\t' + summary.get(0) + '\t' + summary.get(1) + '\t' + summary.get(2) + '\t'
+				+ summary.get(3) + '\t' + Cancer_Type + '\t' + Status
+				+ '\t'+ summary.get(4) + '\t'  + summary.get(5) + '\t' + summary.get(6) + '\t' + summary.get(7) + '\t' + summary.get(8) + '\t' + summary.get(9) + '\t'
 				+ summary.get(10) + '\t' + summary.get(11) + '\t' + summary.get(12) + '\t' + summary.get(13) + '\t'
 				+ summary.get(14) + '\n');
 		bw.close();
@@ -116,6 +116,7 @@ public class Line_by_line_Total_dict_Get_exon_reads {
 		int total_Incorrect = 0;// flag%16 =1
 		int total_Unmapped = 0;// flag%16 =13
 		int total_cds_pos = 35683639;
+		long dog_total_length = (long) (Math.pow(10, 9) * 2.41);
 
 		ArrayList<String> summary_list = new ArrayList<String>();
 		try (FileReader fileReader = new FileReader(SamFile)) {
@@ -138,13 +139,14 @@ public class Line_by_line_Total_dict_Get_exon_reads {
 				bufferedReader.close();
 			}
 		}
-		double uniq_mean_coverage = Double.valueOf(total_cds_pass) / Double.valueOf(total_cds_pos);
+		
 		double uniq_mapped_rate = Double.valueOf(total_unique) / Double.valueOf(total_line);
 		double uniq_Exonic_region_mapped_rate = Double.valueOf(total_cds_pass) / Double.valueOf(total_unique);
 		double unmappedRate = Double.valueOf(total_Unmapped) / Double.valueOf(total_line);
 		double DuplicateMapped_rate = Double.valueOf(total_Duplicate) / Double.valueOf(total_line);
 		double Onemapped_rate = Double.valueOf(total_Onemapped) / Double.valueOf(total_line);
 		double IncorrectMapped_rate = Double.valueOf(total_Incorrect) / Double.valueOf(total_line);
+		double uniq_mean_coverage = Double.valueOf(read_length) * Double.valueOf(total_cds_pass) / Double.valueOf(dog_total_length);
 
 		int pairs = total_line / 2;
 		summary_list.add(String.valueOf(pairs));
