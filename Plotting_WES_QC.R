@@ -83,8 +83,8 @@ total_file %>%
         axis.text.x = element_text(angle=30, hjust=1), 
         panel.background=element_blank(), 
         axis.line=element_line(color="black"),
-        legend.title=regular.text, 
         legend.position="top", 
+        legend.title=regular.text, 
         legend.text=regular.text, 
         legend.key=element_blank())+
   stat_summary(fun = median, fun.min = median, fun.max = median,position = "dodge",
