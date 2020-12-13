@@ -34,8 +34,8 @@ mkdir -p $file_output
 ## Convert the bam file into sam file
 cd ${source_folder}/
 
-cp $source_folder/${Normal_Sample}.sam $file_output/ # normal
-cp $source_folder/${Tumor_Sample}.sam $file_output/ # tumor
+samtools view $source_folder/${Normal_Sample}.bam > $sam_file_output/${Normal_Sample}.sam # normal
+samtools view $source_folder/${Tumor_Sample}.bam > $sam_file_output/${Tumor_Sample}.sam # tumor
 
 ###### Analyze the BWA mapping and CDS region mapping result ######
 
