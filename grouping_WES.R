@@ -4,7 +4,8 @@ library(wesanderson)
 library(RColorBrewer)
 library(data.table)
 
-total_data <- read_excel("C:\\Users\\abc73_000\\Desktop\\New_WES_QC_dataset.xlsx")
+total_data <- read_excel("C:\\Users\\abc73_000\\Desktop\\New_WES_QC_dataset.xlsx",
+                         sheet = "whole_new")
 total_data <- setDT(total_data)
 # modify this line, put the fill colors for normal and tumor
 fill_colors <- c("darkblue","red3");

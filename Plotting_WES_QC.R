@@ -19,7 +19,8 @@ library(data.table)
 # callable <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer_mapping_result\\Mutation_rate\\Mutation_rate.xlsx",
 #                     sheet ='All_samples_Retro_non_retro')
 
-
+new_uniq <- read_excel("G:/MAC_Research_Data/Pan_cancer/Pan-Cancer-Manuscript/Methods_legends_tables/V6Combined_Summary_Public_Data.xlsx",
+                       sheet ='NGS_Data_summary', skip = 3)
 
 
 
