@@ -13,9 +13,9 @@ fill_colors <- c("darkblue","red3");
 # creating a random dataset
 datasets <- c("MT Korean", "MT SNU","MT UGA","OSA Broad", "OSA Tgen","OSA Sanger",
               "OM Cros.Spcs", "OM Sanger",
-              "HSA_47 pairs","HSA Upenn", "GLM Cell","LYM Broad","UCL Broad");
+              "HSA Broad","HSA UPenn", "GLM Cell","LYM Broad","UCL Broad");
 
-tumor_types <- c("MT","OSA","OM","HSA", "GLM","LYM","UCL")
+tumor_types <- c("MT", "GLM", "LYM", "OM", "OSA", "HSA" ,"UCL")
 
 # plotting
 dot_size <- 1.4;
@@ -29,7 +29,7 @@ group_space <- 0.85;
 
 
 
-pdf("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\V14F1_and_supplementaryF1.pdf"
+pdf("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\V15F1_and_supplementaryF1.pdf"
     , height=5.0, width=6.84);
 
 ## plot Total reads
