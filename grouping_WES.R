@@ -4,14 +4,18 @@ library(wesanderson)
 library(RColorBrewer)
 library(data.table)
 
-total_data <- read_excel("C:\\Users\\abc73_000\\Desktop\\New_WES_QC_dataset.xlsx",
-                         sheet = "whole_new")
+base_dir <- "/Volumes/Research/MAC_Research_Data/Pan_cancer/Pan_cancer-analysis/Figure1"
+
+total_data <- read_excel(paste(base_dir,"New_WES_QC_dataset.xlsx",sep ="/"),
+  #"C:\\Users\\abc73_000\\Desktop\\New_WES_QC_dataset.xlsx",
+                         sheet = "Sheet1")
 total_data <- setDT(total_data)
+total_data <- total_data[Case_ID!="No-Pair"]
 # modify this line, put the fill colors for normal and tumor
 fill_colors <- c("darkblue","red3");
 
 # creating a random dataset
-datasets <- c("MT Korean", "MT SNU","MT UGA","OSA Broad", "OSA Tgen","OSA Sanger",
+datasets <- c("MT Korean", "MT SNU","OSA Broad", "OSA Tgen","OSA Sanger",
               "OM Cros.Spcs", "OM Sanger",
               "HSA Broad","HSA UPenn", "GLM Cell","LYM Broad","UCL Broad");
 
@@ -19,7 +23,7 @@ tumor_types <- c("MT", "GLM", "LYM", "OM", "OSA", "HSA" ,"UCL")
 
 # plotting
 dot_size <- 1.4;
-abs_text_size <- 16;
+abs_text_size <- 20;
 regular.text <- element_text(colour="black",size=abs_text_size);
 xangle <- 45;
 xaxis_just <- ifelse(xangle > 0, 1, 0.5);
@@ -29,7 +33,7 @@ group_space <- 0.85;
 
 
 
-pdf("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\V15F1_and_supplementaryF1.pdf"
+pdf(paste(base_dir,"V17F1_and_supplementaryF1.pdf",sep ="/")
     , height=5.0, width=6.84);
 
 ## plot Total reads
@@ -79,7 +83,7 @@ group <- factor(total_data$Tumor_Type, tumor_types);
 data <- data.frame(x=x, y=y, fill=fill, group=group);
 p <- ggplot(data, aes(x=x, y=y, fill=fill)) + 
   geom_jitter(aes(color=fill), size=dot_size, shape=20, position=position_jitterdodge())+
-  ylab("Fraction of mapping quality >30")
+  ylab("Fraction of \nmapping quality >30")
 p <- p + facet_grid(. ~ group, scales="free_x", space="free_x");
 p <- p + stat_summary(fun=median, fun.min=median, fun.max=median, position="dodge", geom="crossbar", size=0.2, width=0.8, color = "black", show.legend=FALSE);
 p <- p + scale_fill_manual(guide=FALSE, values=fill_colors, drop=FALSE) 
@@ -108,7 +112,7 @@ print(p)
 total_data <- total_data[!Total_pairs < 5000000 | Total_pairs==NaN, ]
 
 x <- factor(total_data$Symbol, datasets);
-y <- total_data$Uniquely_mapped_rate
+y <- total_data$Uniquely_coordinatly_mapped_rate
 fill <- factor(total_data$Status, c("Normal", "Tumor"));
 # group = cancer type
 group <- factor(total_data$Tumor_Type, tumor_types);
@@ -142,10 +146,10 @@ p <- p+geom_hline(yintercept=0.6, linetype="longdash", color = "yellow4", size =
 print(p)
 
 ## CDS Targeting
-total_data <- total_data[Total_pairs >= 5000000 & Uniquely_mapped_rate>0.6, ]
+total_data <- total_data[Total_pairs >= 5000000 & Uniquely_coordinatly_mapped_rate>0.6, ]
 
 x <- factor(total_data$Symbol, datasets);
-y <- total_data$uniq_CDS_region_paris_rates
+y <- total_data$Target_CDS_Mapping_Rates
 fill <- factor(total_data$Status, c("Normal", "Tumor"));
 group <- factor(total_data$Tumor_Type, tumor_types);
 data <- data.frame(x=x, y=y, fill=fill, group=group);
@@ -176,9 +180,9 @@ p <- p+geom_hline(yintercept=0.3, linetype="longdash", color = "yellow4", size =
 
 print(p)
 ## Mean Coverage
-total_data <- total_data[Total_pairs >= 5000000 & Uniquely_mapped_rate>0.6 & uniq_CDS_region_paris_rates>0.3]
+total_data <- total_data[Total_pairs >= 5000000 & Uniquely_coordinatly_mapped_rate>0.6 & Target_CDS_Mapping_Rates>0.3]
 x <- factor(total_data$Symbol, datasets);
-y <- total_data$mean
+y <- total_data$Mean
 fill <- factor(total_data$Status, c("Normal", "Tumor"));
 group <- factor(total_data$Tumor_Type, tumor_types);
 data <- data.frame(x=x, y=y, fill=fill, group=group);
@@ -208,8 +212,9 @@ p <- p + theme(
 
 print(p)
 ### RMSE
-total_data <- total_data[Total_pairs >= 5000000 & Uniquely_mapped_rate>0.6 & uniq_CDS_region_paris_rates>0.3
-                         & mean > 30, ]
+total_data <- total_data[Total_pairs >= 5000000 & Uniquely_coordinatly_mapped_rate>=0.6
+                         & Target_CDS_Mapping_Rates >=0.3 & Mean >=30] 
+                         
 x <- factor(total_data$Symbol, datasets);
 y <- total_data$RMSE
 fill <- factor(total_data$Status, c("Normal", "Tumor"));
@@ -244,10 +249,11 @@ p <- p + theme(
 
 print(p)
 
-exclude <- read_excel("G:\\MAC_Research_Data\\Pan_cancer\\Pan_cancer-analysis\\Figure1\\Original_Data_summary.xlsx",
+exclude <- read_excel(paste(base_dir,"Original_Data_summary.xlsx",sep="/"),
                       sheet ="Before_Matching_excluded")
 
 total_data <- total_data %>% 
+  filter(Case_ID != "No-Pair") %>% 
   filter(Status=='Tumor') %>% 
   filter(!Case_ID %in% exclude$Cases)
 
