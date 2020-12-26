@@ -12,7 +12,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+/*
+This script will take DBSNP and PON as the database and filtering out mutation rate that in the databases
 
+*/
 public class DbSNP_filtering {
 
 	public static void main(String[] args) throws NumberFormatException, FileNotFoundException, IOException {
