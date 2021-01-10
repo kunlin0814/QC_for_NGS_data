@@ -4,20 +4,22 @@ library(wesanderson)
 library(RColorBrewer)
 library(data.table)
 
-base_dir <- "/Volumes/Research/MAC_Research_Data/Pan_cancer/Pan_cancer-analysis/Figure1"
+base_dir <- "G:/MAC_Research_Data/Pan_cancer/Pan-Cancer-Manuscript/Figure1"
 
-total_data <- read_excel(paste(base_dir,"New_WES_QC_dataset.xlsx",sep ="/"),
+total_data <- read_excel(paste(base_dir,"WES_TableS1_1-05-21.xlsx",sep ="/"),skip = 1, 
   #"C:\\Users\\abc73_000\\Desktop\\New_WES_QC_dataset.xlsx",
-                         sheet = "Sheet1")
+                         sheet = "WESQCdata")
 total_data <- setDT(total_data)
 total_data <- total_data[Case_ID!="No-Pair"]
+
+unique(total_data$Symbol)
 # modify this line, put the fill colors for normal and tumor
 fill_colors <- c("darkblue","red3");
 
 # creating a random dataset
-datasets <- c("MT Korean", "MT SNU","OSA Broad", "OSA Tgen","OSA Sanger",
-              "OM Cros.Spcs", "OM Sanger",
-              "HSA Broad","HSA UPenn", "GLM Cell","LYM Broad","UCL Broad");
+datasets <- c("MT Korean", "MT SNU","OSA Broad", "OSA TGen","OSA Sanger",
+              "OM Cross.Spcs", "OM Sanger",
+              "HSA Broad","HSA UPenn", "GLM","LYM Broad","UCL Broad");
 
 tumor_types <- c("MT", "GLM", "LYM", "OM", "OSA", "HSA" ,"UCL")
 
@@ -33,7 +35,7 @@ group_space <- 0.85;
 
 
 
-pdf(paste(base_dir,"V17F1_and_supplementaryF1.pdf",sep ="/")
+pdf(paste(base_dir,"V18F1_and_supplementaryF1.pdf",sep ="/")
     , height=5.0, width=6.84);
 
 ## plot Total reads
@@ -182,7 +184,7 @@ print(p)
 ## Mean Coverage
 total_data <- total_data[Total_pairs >= 5000000 & Uniquely_coordinatly_mapped_rate>0.6 & Target_CDS_Mapping_Rates>0.3]
 x <- factor(total_data$Symbol, datasets);
-y <- total_data$Mean
+y <- total_data$Mean_Coverage
 fill <- factor(total_data$Status, c("Normal", "Tumor"));
 group <- factor(total_data$Tumor_Type, tumor_types);
 data <- data.frame(x=x, y=y, fill=fill, group=group);
@@ -213,7 +215,7 @@ p <- p + theme(
 print(p)
 ### RMSE
 total_data <- total_data[Total_pairs >= 5000000 & Uniquely_coordinatly_mapped_rate>=0.6
-                         & Target_CDS_Mapping_Rates >=0.3 & Mean >=30] 
+                         & Target_CDS_Mapping_Rates >=0.3 & Mean_Coverage >=30] 
                          
 x <- factor(total_data$Symbol, datasets);
 y <- total_data$RMSE
