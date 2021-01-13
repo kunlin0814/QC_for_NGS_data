@@ -28,83 +28,87 @@ from pathlib import Path
 from math import sqrt
 from collections import OrderedDict
 
-pdf = PdfPages('C:/Users/abc73_000/Desktop/OSA.pdf')
-location = "C:/Users/abc73_000/Desktop/Validation Data_Set/"
-CancerType = "OSA"
+pdf = PdfPages(r"C:\Users\abc73\Desktop/OMSC1_coverage_distribution.pdf")
+location = Path(r"G:/MAC_Research_Data/Pan_cancer/Pan_cancer-analysis/Pan-Cancer-QC/Randomness/Randomness_Distribution/Validation_OM")
+CancerType = "OM"
 #CaseName = "P1"
 #file_folders = os.listdir(location+CancerType+"/"+"*"+"/"+"*txt")
-for root, dirs, files in os.walk(location+CancerType+"/"):
+for root, dirs, files in os.walk(location):
     for file_name in files:
-        input_file =  root+"/"+file_name
-        with open(input_file,'r')as f:
-            file = f.read().split('\n')[:-1]
-        
-        file.remove('1 Total_Depth')
-        
-        
-        last_pos = int(file[-1].split(" ")[1])
-        if last_pos >= 1000:
-            last_pos = last_pos
-        else:
-            last_pos = 1000 
-        
-        toal_pos_cover=0
-        total_cover = 0
-        total_pos = 0
-        full_position_simultation ={}
-        
-        
-        for i in range(len(file)):
-            number_position = int(file[i].split(" ")[0])
-            cover_times = int(file[i].split(" ")[1])
-            full_position_simultation[cover_times]= int(number_position)
-            total_cover += cover_times
-            total_pos +=number_position
-            toal_pos_cover+=number_position*cover_times
-        
-        ratio_order_dict=OrderedDict()
-        order_dict = OrderedDict()
-        
-        ## fill up the gap data, if there is no data at that position, then fill up with 0    
-        for i in range(last_pos+1):
-            if i not in full_position_simultation.keys():
-                ratio_order_dict[i]=0
-                order_dict[i]=0
-            else:
-                ratio_order_dict[i] = full_position_simultation[i]/total_pos
-                order_dict[i] = full_position_simultation[i]
-                
+        if ".txt" in file_name:
+            input_file =  root+"/"+file_name
             
-        total_data = pd.DataFrame(list(order_dict.items()),columns=['cover_times','number_position'])
+            with open(input_file,'r')as f:
+                file = f.read().split('\n')[:-1]
+            
+            file.remove('1 Total_Depth')
+            
+            
+            last_pos = int(file[-1].split(" ")[1])
+            if last_pos >= 1000:
+                last_pos = last_pos
+            else:
+                last_pos = 1000 
+            
+            toal_pos_cover=0
+            total_cover = 0
+            total_pos = 0
+            full_position_simultation ={}
+            
+            
+            for i in range(len(file)):
+                number_position = int(file[i].split(" ")[0])
+                cover_times = int(file[i].split(" ")[1])
+                full_position_simultation[cover_times]= int(number_position)
+                total_cover += cover_times
+                total_pos +=number_position
+                toal_pos_cover+=number_position*cover_times
+            
+            ratio_order_dict=OrderedDict()
+            order_dict = OrderedDict()
+            
+            ## fill up the gap data, if there is no data at that position, then fill up with 0    
+            for i in range(last_pos+1):
+                if i not in full_position_simultation.keys():
+                    ratio_order_dict[i]=0
+                    order_dict[i]=0
+                else:
+                    ratio_order_dict[i] = full_position_simultation[i]/total_pos
+                    order_dict[i] = full_position_simultation[i]
+                    
+                
+            total_data = pd.DataFrame(list(order_dict.items()),columns=['cover_times','number_position'])
+            print((total_data['number_position'].iloc[0:]*total_data['cover_times'].iloc[0:]).sum()/(total_data['number_position'].iloc[0:].sum()))
+            cover_times_arr = total_data['cover_times'].values
+            number_pos_arr = total_data['number_position'].values
+            prob_arr= number_pos_arr/total_pos
+            
+            cover_1000 = cover_times_arr[0:1000]
+            pos_1000 = number_pos_arr[0:1000]
+            ratio_1000 = prob_arr[0:1000]
+            
+            plot_input = {'cover_times':cover_1000,'number_position':pos_1000,'ratio_of_pos':ratio_1000}
+            
+            plot_data = pd.DataFrame(plot_input)
+            
         
-        cover_times_arr = total_data['cover_times'].values
-        number_pos_arr = total_data['number_position'].values
-        prob_arr= number_pos_arr/total_pos
-        
-        cover_1000 = cover_times_arr[0:1000]
-        pos_1000 = number_pos_arr[0:1000]
-        ratio_1000 = prob_arr[0:1000]
-        
-        plot_input = {'cover_times':cover_1000,'number_position':pos_1000,'ratio_of_pos':ratio_1000}
-        
-        plot_data = pd.DataFrame(plot_input)
-        
-    
-        plt.figure(figsize=(13,6))
-        sns.set(font_scale=2)
-        sns.lineplot(data = plot_data, x="cover_times",y="number_position")
-        plt.title(file_name)
-        #p.set_yscale('log')  # set into log scale 
-        pdf.savefig()
-        plt.close()
-        
-        plt.figure(figsize=(13,6))
-        sns.set(font_scale=2)
-        plt.title(file_name)      
-        sns.lineplot(data = plot_data, x="cover_times",y="ratio_of_pos")
-        
-        pdf.savefig()
-        plt.close()
+            plt.figure(figsize=(13,6))
+            sns.set(font_scale=2)
+            sns.lineplot(data = plot_data, x="cover_times",y="number_position")
+            plt.title(file_name)
+            plt.yscale('log')
+            #p.set_yscale('log')  # set into log scale 
+            pdf.savefig()
+            plt.close()
+            
+            plt.figure(figsize=(13,6))
+            sns.set(font_scale=2)
+            plt.title(file_name)   
+            
+            sns.lineplot(data = plot_data, x="cover_times",y="ratio_of_pos")
+            
+            pdf.savefig()
+            plt.close()
         
         
 pdf.close()

@@ -6,7 +6,7 @@ library(data.table)
 
 base_dir <- "G:/MAC_Research_Data/Pan_cancer/Pan-Cancer-Manuscript/Figure1"
 
-total_data <- read_excel(paste(base_dir,"WES_TableS1_1-05-21.xlsx",sep ="/"),skip = 1, 
+total_data <- read_excel(paste(base_dir,"WES_TableS1_1-12-21.xlsx",sep ="/"),skip = 1, 
   #"C:\\Users\\abc73_000\\Desktop\\New_WES_QC_dataset.xlsx",
                          sheet = "WESQCdata")
 total_data <- setDT(total_data)
