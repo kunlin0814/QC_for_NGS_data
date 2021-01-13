@@ -17,9 +17,9 @@ unique(total_data$Symbol)
 fill_colors <- c("darkblue","red3");
 
 # creating a random dataset
-datasets <- c("MT Korean", "MT SNU","OSA Broad", "OSA TGen","OSA Sanger",
-              "OM Cross.Spcs", "OM Sanger",
-              "HSA Broad","HSA UPenn", "GLM","LYM Broad","UCL Broad");
+datasets <- c("MT CUK", "MT SNU","OSA BI", "OSA TGen","OSA SC",
+              "OM SC1", "OM SC2",
+              "HSA BI","HSA UPenn", "GLM JL","LYM BI","UCL BI");
 
 tumor_types <- c("MT", "GLM", "LYM", "OM", "OSA", "HSA" ,"UCL")
 
@@ -35,7 +35,7 @@ group_space <- 0.85;
 
 
 
-pdf(paste(base_dir,"V18F1_and_supplementaryF1.pdf",sep ="/")
+pdf(paste(base_dir,"V19F1_and_supplementaryF1.pdf",sep ="/")
     , height=5.0, width=6.84);
 
 ## plot Total reads
@@ -247,6 +247,7 @@ p <- p + theme(
   strip.background=element_rect(color="black", fill="transparent", size=1.5), 
   strip.text = element_text(hjust=0.5, size=12, face="plain",color="black"), 
   panel.spacing=unit(group_space, "lines"))
+p <- p+  geom_hline(yintercept=0.01, linetype="longdash", color = "yellow4", size = 0.7)
 
 
 print(p)
