@@ -6,19 +6,19 @@ library(data.table)
 
 base_dir <- "G:/MAC_Research_Data/Pan_cancer/Pan-Cancer-Manuscript/Figure1"
 
-total_data <- read_excel(paste(base_dir,"WES_TableS1_1-12-21.xlsx",sep ="/"),skip = 1, 
+total_data <- read_excel(paste(base_dir,"WES_TableS1_1-13-21.xlsx",sep ="/"),skip = 1, 
   #"C:\\Users\\abc73_000\\Desktop\\New_WES_QC_dataset.xlsx",
                          sheet = "WESQCdata")
 total_data <- setDT(total_data)
 total_data <- total_data[Case_ID!="No-Pair"]
-
+total_data <- total_data[!Symbol %in%c("OSA SC","OM SC2"),]
 unique(total_data$Symbol)
 # modify this line, put the fill colors for normal and tumor
 fill_colors <- c("darkblue","red3");
 
 # creating a random dataset
-datasets <- c("MT CUK", "MT SNU","OSA BI", "OSA TGen","OSA SC",
-              "OM SC1", "OM SC2",
+datasets <- c("MT CUK", "MT SNU","OSA BI", "OSA TGen",
+              "OM SC", 
               "HSA BI","HSA UPenn", "GLM JL","LYM BI","UCL BI");
 
 tumor_types <- c("MT", "GLM", "LYM", "OM", "OSA", "HSA" ,"UCL")
@@ -35,7 +35,7 @@ group_space <- 0.85;
 
 
 
-pdf(paste(base_dir,"V19F1_and_supplementaryF1.pdf",sep ="/")
+pdf(paste(base_dir,"V20F1_and_supplementaryF1_010321.pdf",sep ="/")
     , height=5.0, width=6.84);
 
 ## plot Total reads
