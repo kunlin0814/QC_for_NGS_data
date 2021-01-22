@@ -9,7 +9,7 @@ sep_field = "/"
 base_dir <- "G:/MAC_Research_Data/Pan_cancer/Pan_cancer-analysis/WGS_analysis"
   #"/Volumes/Research/MAC_Research_Data/Pan_cancer/Pan_cancer-analysis/WGS_analysis"
 total_file <- fread(paste(base_dir,"WGS_final_table.txt",sep = sep_field))
-total_callable <- fread(paste(base_dir,"total_callable.txt",sep =sep_field))
+
 
 exclude_sample <- total_file[The_reason_to_exclude!="Pass QC", .(Case_ID)]
 
@@ -34,12 +34,12 @@ for (i in 1:nrow(total_file)){
 
 total_file$callable_bases <- summary
 
-fwrite(total_file,file= paste(base_dir,"final_WGS_summary.txt",sep=sep_field),quote = F,
-       col.names = T,sep ="\t")
-
-uni <- unique(total_file[Unique_mapped_rate > 0.6 & total_mean_coverage <30,.(Case_ID)])
-
-a <- total_file[Unique_mapped_rate < 0.6,]
+# fwrite(total_file,file= paste(base_dir,"final_WGS_summary.txt",sep=sep_field),quote = F,
+#        col.names = T,sep ="\t")
+# 
+# # uni <- unique(total_file[Unique_mapped_rate > 0.6 & total_mean_coverage <30,.(Case_ID)])
+# 
+# a <- total_file[Unique_mapped_rate < 0.6,]
 
 # pdf(paste(base_dir,"WGS_QC.pdf",sep =sep_field),
 #      height=5.98, width=6.84);
@@ -155,10 +155,13 @@ total_file %>%
   geom_hline(yintercept=0.6, linetype="longdash", color = "yellow4", size = 0.7)
 dev.off()
 
+## mean coverage
+
 png(file = paste(base_dir,"mean_coverage.png",sep =sep_field),
     width = 3500, height =3000, units = "px", res = 500)
 
 total_file %>% 
+  filter(Unique_mapped_rate >=0.6) %>% 
   ggplot(aes(x=factor(Tumor_Type,levels = c("GLM","OM","OSA")),
              y=as.numeric(total_mean_coverage),fill=Status,color=Status)) +
   geom_point(size=1.6,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
@@ -225,6 +228,9 @@ png(file = paste(base_dir,"RMSE.png",sep =sep_field),
 
 
 total_file %>% 
+  filter(!Total_pairs < 5000000 | Total_pairs==NaN) %>% 
+  filter(Unique_mapped_rate >=0.6) %>% 
+  filter(total_mean_coverage >=30) %>% 
   ggplot(aes(x=factor(Tumor_Type,levels = c("GLM","OM","OSA")),
              y=as.numeric(RMSE),fill=Status,color=Status)) +
   geom_point(size=1.6,shape=20,position = position_jitterdodge(jitter.width = 0.28)) +
